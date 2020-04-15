@@ -2,8 +2,8 @@
 #=========================================================================
 # construct.py
 #=========================================================================
-# Author : 
-# Date   : 
+# Author :
+# Date   :
 #
 
 import os
@@ -32,7 +32,7 @@ def construct():
     'flatten_effort'    : 3,
     'topographical'     : False,
     # RTL Generation
-    'array_width'       : 2,
+    'array_width'       : 4,
     'array_height'      : 2,
     'interconnect_only' : True,
     # Testing
@@ -60,6 +60,7 @@ def construct():
   custom_power = Step( this_dir + '/../common/custom-power-hierarchical' )
   gls_args     = Step( this_dir + '/gls_args'                            )
   testbench    = Step( this_dir + '/testbench'                           )
+  tbg          = Step( this_dir + '/tbg'                                 )
 
   # Default steps
 
@@ -147,6 +148,7 @@ def construct():
   g.add_step( debugcalibre )
   g.add_step( gls_args     )
   g.add_step( testbench    )
+  g.add_step( tbg          )
   g.add_step( vcs_sim      )
 
   #-----------------------------------------------------------------------
@@ -249,12 +251,15 @@ def construct():
   g.connect_by_name( drc,      debugcalibre )
   g.connect_by_name( lvs,      debugcalibre )
 
-  g.connect_by_name( adk,           vcs_sim )
-  g.connect_by_name( testbench,     vcs_sim )
-  g.connect_by_name( gls_args,      vcs_sim )
-  g.connect_by_name( signoff,       vcs_sim )
-  g.connect_by_name( Tile_PE,       vcs_sim )
-  g.connect_by_name( Tile_MemCore,  vcs_sim )
+  g.connect_by_name( adk,          vcs_sim )
+  g.connect_by_name( tbg,          vcs_sim )
+  g.connect_by_name( testbench,    vcs_sim )
+  g.connect_by_name( gls_args,     vcs_sim )
+  g.connect_by_name( signoff,      vcs_sim )
+  g.connect_by_name( Tile_PE,      vcs_sim )
+  g.connect_by_name( Tile_MemCore, vcs_sim )
+
+  g.connect_by_name( rtl, tbg )
 
   #-----------------------------------------------------------------------
   # Parameterize
@@ -282,5 +287,3 @@ def construct():
 if __name__ == '__main__':
   g = construct()
 #  g.plot()
-
-

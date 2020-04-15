@@ -1,0 +1,18 @@
+name: tbg
+
+commands:
+  - aha halide $app
+  - aha map $app --width $array_width --height $array_height --unconstrained-io
+  - aha test $app --width $array_width --height $array_height --tb-only
+  - cp /aha/garnet/temp/garnet/Interconnect_tb.sv outputs/testbench.sv
+
+inputs:
+  - design.v
+
+outputs:
+  - testbench.sv
+
+parameters:
+  array_width: 4
+  array_height: 2
+  app: apps/pointwise
