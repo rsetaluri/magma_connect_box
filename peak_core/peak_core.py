@@ -4,6 +4,7 @@ import magma
 import peak
 from peak.assembler import Assembler
 from peak.family import PyFamily, MagmaFamily
+
 import mantle
 from gemstone.common.core import ConfigurableCore, PnRTag
 from gemstone.common.configurable import ConfigurationType
@@ -38,7 +39,7 @@ class _PeakWrapperMeta(type):
 
 class _PeakWrapper(metaclass=_PeakWrapperMeta):
     def __init__(self, peak_generator):
-        pe = peak_generator(PyFamily())
+        pe = peak_generator.Py
         assert issubclass(pe, peak.Peak)
         self._model = pe()
         #Lassen's name for the ISA is 'inst', so this is hardcoded
@@ -47,12 +48,6 @@ class _PeakWrapper(metaclass=_PeakWrapperMeta):
 
         inputs = OrderedDict(pe.input_t.field_dict)
 
-        #  Hardcoded name for Tuple inputs
-        if isinstance(inputs['inputs'], hwtypes.adt_meta.TupleMeta):
-            for i, v in enumerate(inputs['inputs']):
-                inputs["input" + str(i)] = v
-
-        del inputs["inputs"]
 
         self.__inputs = inputs
 
@@ -100,6 +95,7 @@ class PeakCore(ConfigurableCore):
         self.ignored_ports = {"clk_en", "reset", "config_addr", "config_data",
                               "config_en", "read_config_data"}
 
+
         self.wrapper = _PeakWrapper(peak_generator)
 
         # Generate core RTL (as magma).
@@ -110,8 +106,7 @@ class PeakCore(ConfigurableCore):
         outputs = self.wrapper.outputs()
 
         for ports, dir_ in ((inputs, magma.In), (outputs, magma.Out),):
-            lb = 0
-            ub = 0
+  
             for i, (name, typ) in enumerate(ports.items()):
                 
                 if name in self.ignored_ports:
@@ -123,13 +118,7 @@ class PeakCore(ConfigurableCore):
                     my_port = my_port[0]
                 magma_name = name if dir_ is magma.In else f"O{i}"
 
-                #  Hardcoded name for Tuple inputs
-                if "input" in name:
-                    ub += int(typ.size)
-                    self.wire(my_port, self.peak_circuit.ports["inputs"][lb:ub])
-                    lb += int(typ.size)
-                else:
-                    self.wire(my_port, self.peak_circuit.ports[magma_name])
+                self.wire(my_port, self.peak_circuit.ports[magma_name])
 
 
         self.add_ports(
@@ -166,7 +155,8 @@ class PeakCore(ConfigurableCore):
         self._setup_config()
 
     def get_config_bitstream(self, instr):
-        assert isinstance(instr, self.wrapper.instruction_type())
+        # breakpoint()
+        # assert isinstance(instr, self.wrapper.instruction_type())
         config = self.wrapper.assemble(instr)
         config_width = self.wrapper.instruction_width()
         num_config = math.ceil(config_width / 32)

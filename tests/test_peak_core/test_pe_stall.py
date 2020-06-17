@@ -38,8 +38,8 @@ def test_pe_stall(dw_files):
         # can't read back yet
 
     for i in range(100):
-        tester.poke(circuit.interface["data0"], i + 1)
-        tester.poke(circuit.interface["data1"], i + 1)
+        tester.poke(circuit.interface["input0"], i + 1)
+        tester.poke(circuit.interface["input1"], i + 1)
         tester.eval()
         tester.expect(circuit.interface["alu_res"], 0)
 

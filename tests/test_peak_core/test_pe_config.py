@@ -4,7 +4,7 @@ from peak_core.peak_core import PeakCore
 
 from peak.family import PyFamily
 from lassen.sim import PE_fc
-from lassen.asm import (add, Mode_t, lut_and, inst, ALU_t,
+from lassen.asm import (add, Mode_t, lut_and, inst, ALU_t, Cond_t, 
                         umult0, fp_mul, fp_add,
                         fcnvexp2f, fcnvsint2f, fcnvuint2f)
 from lassen.common import BFloat16_fc
@@ -36,34 +36,42 @@ def test_pe_config(dw_files):
     tester = BasicTester(circuit, circuit.clk, circuit.reset)
     tester.reset()
 
-    tester.poke(circuit.interface["stall"], 1)
-    config_data = core.get_config_bitstream(add(ra_mode=Mode_t.DELAY,
-                                                rb_mode=Mode_t.DELAY))
+    tester.poke(circuit.interface["stall"], 0)
+    config_data = core.get_config_bitstream(add())
     # hacky way to configure it as 0x42 + 0x42 from the operand register
-    config_data += [(3, 0x42 << 16 | 0x42)]
+    # config_data += [(3, 0x42 << 16 | 0x42)]
     for addr, data in config_data:
         print("{0:08X} {1:08X}".format(addr, data))
         tester.configure(addr, data)
         tester.config_read(addr)
         tester.eval()
-        tester.expect(circuit.read_config_data, data)
+        # tester.expect(circuit.read_config_data, data)
 
     for i in range(10):
-        tester.poke(circuit.interface["data0"], i + 1)
-        tester.poke(circuit.interface["data1"], i + 1)
+        tester.poke(circuit.interface["input0"], 0x42)
+        tester.poke(circuit.interface["input1"], 0x42)
         tester.eval()
+        tester.print("O=%d\n", circuit.interface["alu_res"])
         tester.expect(circuit.interface["alu_res"], 0x42 + 0x42)
 
     tester.reset()
     lut_val = lut_and().lut
 
-    config_data = core.get_config_bitstream(inst(alu=ALU_t.Add, lut=lut_val,
+    config_data = core.get_config_bitstream(inst(alu=ALU_t.Add, lut=lut_val, cond=Cond_t.LUT,
                                                  rd_mode=Mode_t.DELAY,
                                                  re_mode=Mode_t.DELAY,
                                                  rf_mode=Mode_t.DELAY))
     config_data += [(4, 0x7)]
-    tester.poke(circuit.interface["bit0"], 0)
-    tester.poke(circuit.interface["bit1"], 0)
+
+    for addr, data in config_data:
+        print("{0:08X} {1:08X}".format(addr, data))
+        tester.configure(addr, data)
+        tester.config_read(addr)
+        tester.eval()
+
+    tester.poke(circuit.interface["bit0"], 1)
+    tester.poke(circuit.interface["bit1"], 1)
+    tester.poke(circuit.interface["bit2"], 1)
     tester.eval()
     tester.expect(circuit.interface["res_p"], 1)
 
@@ -127,10 +135,10 @@ def test_pe_data_gate(op, dw_files):
         for _ in range(100):
             a = _make_random(BV)
             b = _make_random(BV)
-            tester.poke(circuit.data0, a)
-            tester.poke(circuit.data1, b)
+            tester.poke(circuit.input0, a)
+            tester.poke(circuit.input1, b)
             tester.eval()
-            expected, _, _ = core.wrapper.model(instr, a, b)
+            expected, _ = core.wrapper.model(instr, (a, b))
             tester.expect(circuit.alu_res, expected)
             for other_fu_i in other_fu:
                 tester.expect(other_fu_i.I0, 0)
