@@ -15,6 +15,7 @@ pytest --pycodestyle        \
     --ignore=filecmp.py     \
     --ignore=Genesis2/      \
     --ignore=tests/test_interconnect \
+    --ignore=tests/test_misc \
     -v --cov-report term-missing tests
 
 # coreir has memory leak. split them into two to get around
@@ -24,5 +25,16 @@ pytest --pycodestyle        \
     --cov memory_core       \
     --ignore=filecmp.py     \
     --ignore=Genesis2/      \
+    --ignore=tests/test_memory_core \
+    --ignore=tests/test_misc \
+    -v --cov-report term-missing tests/test_interconnect
+
+pytest --pycodestyle        \
+    --cov global_controller \
+    --cov io_core           \
+    --cov memory_core       \
+    --ignore=filecmp.py     \
+    --ignore=Genesis2/      \
+    --ignore=tests/test_interconnect \
     --ignore=tests/test_memory_core \
     -v --cov-report term-missing tests/test_interconnect
