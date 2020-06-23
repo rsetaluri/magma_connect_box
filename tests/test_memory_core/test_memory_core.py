@@ -422,7 +422,8 @@ def test_mult_ports_mult_aggs_double_buffer_conv():
     config_data.append((MCore.get_reg_index("strg_ub_agg_in_0_out_sched_1"), 1, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_3"), 0, 0))
@@ -491,7 +492,8 @@ def test_mult_ports_mult_aggs_double_buffer_conv():
     config_data.append((MCore.get_reg_index("strg_ub_agg_in_1_out_sched_1"), 1, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_3"), 0, 0))
@@ -634,7 +636,8 @@ def test_mult_ports_mult_aggs_double_buffer():
     config_data.append((MCore.get_reg_index("strg_ub_agg_in_0_out_sched_1"), 1, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_ranges_3"), 0, 0))
@@ -647,7 +650,8 @@ def test_mult_ports_mult_aggs_double_buffer():
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_0_strides_5"), 0, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_0_ranges_3"), 0, 0))
@@ -697,7 +701,8 @@ def test_mult_ports_mult_aggs_double_buffer():
     config_data.append((MCore.get_reg_index("strg_ub_agg_in_1_out_sched_1"), 1, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_ranges_3"), 0, 0))
@@ -710,7 +715,8 @@ def test_mult_ports_mult_aggs_double_buffer():
     config_data.append((MCore.get_reg_index("strg_ub_input_addr_ctrl_address_gen_1_strides_5"), 0, 0))
 
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_dimensionality"), 2, 0))
-    config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_ranges_0"), (int(depth / 4) - 1) * 1, 0))
+    config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_ranges_0"),
+                        (int(depth / 4) - 1) * 1, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_ranges_1"), (100 - 1) * 256, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_ranges_2"), 0, 0))
     config_data.append((MCore.get_reg_index("strg_ub_output_addr_ctrl_address_gen_1_ranges_3"), 0, 0))
