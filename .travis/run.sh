@@ -8,6 +8,15 @@ export PYTEST_ADDOPTS="--color=yes"
 
 cd /garnet/
 
+pytest tests/test_misc/     \
+    --pycodestyle           \
+    --cov global_controller \
+    --cov io_core           \
+    --cov memory_core       \
+    --ignore=filecmp.py     \
+    --ignore=Genesis2/      \
+    -v --cov-report term-missing
+
 pytest --pycodestyle        \
     --cov global_controller \
     --cov io_core           \
@@ -29,12 +38,4 @@ pytest --pycodestyle        \
     --ignore=tests/test_misc \
     -v --cov-report term-missing tests/test_interconnect
 
-pytest --pycodestyle        \
-    --cov global_controller \
-    --cov io_core           \
-    --cov memory_core       \
-    --ignore=filecmp.py     \
-    --ignore=Genesis2/      \
-    --ignore=tests/test_interconnect \
-    --ignore=tests/test_memory_core \
-    -v --cov-report term-missing tests/test_interconnect
+
