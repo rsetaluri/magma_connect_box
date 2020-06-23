@@ -466,6 +466,7 @@ class MemCore(ConfigurableCore):
 
             configurations.append((f"strg_ub_input_addr_ctrl_address_gen_{i}_dimensionality", 1 + kts.clog2(self.input_iterator_support)))
             configurations.append((f"strg_ub_input_addr_ctrl_address_gen_{i}_starting_addr", self.input_config_width))
+            configurations.append((f"strg_ub_input_addr_ctrl_address_gen_{i}_nonzero_loop", self.input_iterator_support))
             for j in range(self.input_iterator_support):
                 configurations.append((f"strg_ub_input_addr_ctrl_address_gen_{i}_ranges_{j}", self.input_config_width))
                 configurations.append((f"strg_ub_input_addr_ctrl_address_gen_{i}_strides_{j}", self.input_config_width))
@@ -489,6 +490,7 @@ class MemCore(ConfigurableCore):
 
             configurations.append((f"strg_ub_output_addr_ctrl_address_gen_{i}_dimensionality", 1 + kts.clog2(self.output_iterator_support)))
             configurations.append((f"strg_ub_output_addr_ctrl_address_gen_{i}_starting_addr", self.output_config_width))
+            configurations.append((f"strg_ub_output_addr_ctrl_address_gen_{i}_nonzero_loop", self.output_iterator_support))
             for j in range(self.output_iterator_support):
                 configurations.append((f"strg_ub_output_addr_ctrl_address_gen_{i}_ranges_{j}", self.output_config_width))
                 configurations.append((f"strg_ub_output_addr_ctrl_address_gen_{i}_strides_{j}", self.output_config_width))
