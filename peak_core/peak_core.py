@@ -1,5 +1,6 @@
 import math
 import hwtypes
+from hwtypes.modifiers import strip_modifiers
 import magma
 import peak
 from peak.assembler import Assembler
@@ -44,12 +45,12 @@ class _PeakWrapper(metaclass=_PeakWrapperMeta):
         self._model = pe()
         #Lassen's name for the ISA is 'inst', so this is hardcoded
         self.__instr_name = 'inst'
-        self.__instr_type = pe.input_t.field_dict['inst']
 
-        inputs = OrderedDict(pe.input_t.field_dict)
+        self.__instr_type = strip_modifiers(pe.input_t.field_dict['inst'])
 
 
-        self.__inputs = inputs
+        self.__inputs = OrderedDict(pe.input_t.field_dict)
+
 
         del self.__inputs['inst']
 
