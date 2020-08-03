@@ -117,7 +117,11 @@ class PeakCore(ConfigurableCore):
                 my_port = self.ports[name]
                 if magma_type is magma.Bits[1]:
                     my_port = my_port[0]
-                magma_name = name if dir_ is magma.In else f"O{i}"
+
+                if len(ports) == 1:
+                    magma_name = name if dir_ is magma.In else f"O"
+                else:
+                    magma_name = name if dir_ is magma.In else f"O{i}"
 
                 self.wire(my_port, self.peak_circuit.ports[magma_name])
 
