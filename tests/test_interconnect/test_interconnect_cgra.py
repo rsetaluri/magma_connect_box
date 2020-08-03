@@ -5,7 +5,8 @@ import shutil
 import os
 from gemstone.common.testers import BasicTester
 from canal.util import IOSide
-import lassen.asm as asm
+# import lassen.asm as asm
+from peak_gen.asm import asm_arch_closure
 from archipelago import pnr
 import pytest
 import random
@@ -13,7 +14,8 @@ from cgra import create_cgra
 from memory_core.memory_mode import Mode
 from memory_core.memory_core_magma import config_mem_tile
 from collections import deque
-
+from peak_gen.arch import read_arch
+from peak import family
 
 @pytest.fixture()
 def io_sides():
@@ -45,18 +47,22 @@ def test_interconnect_point_wise(batch_size: int, dw_files, io_sides):
                                mem_ratio=(1, 2))
 
     netlist = {
-        "e0": [("I0", "io2f_16"), ("p0", "data0")],
-        "e1": [("I1", "io2f_16"), ("p0", "data1")],
-        "e3": [("p0", "alu_res"), ("I2", "f2io_16")],
+        "e0": [("I0", "io2f_16"), ("p0", "inputs0")],
+        "e1": [("I1", "io2f_16"), ("p0", "inputs1")],
+        "e3": [("p0", "pe_outputs_0"), ("I2", "f2io_16")],
     }
     bus = {"e0": 16, "e1": 16, "e3": 16}
 
     placement, routing = pnr(interconnect, (netlist, bus))
     config_data = interconnect.get_route_bitstream(routing)
 
+    arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
+    asm_fc = asm_arch_closure(arch)
+    gen_inst = asm_fc(family.PyFamily())
+
     x, y = placement["p0"]
     tile = interconnect.tile_circuits[(x, y)]
-    add_bs = tile.core.get_config_bitstream(asm.umult0())
+    add_bs = tile.core.get_config_bitstream(gen_inst())
     for addr, data in add_bs:
         config_data.append((interconnect.get_config_addr(addr, 0, x, y), data))
 
@@ -88,7 +94,7 @@ def test_interconnect_point_wise(batch_size: int, dw_files, io_sides):
         tester.poke(circuit.interface[src_name1], num_2)
 
         tester.eval()
-        tester.expect(circuit.interface[dst_name], num_1 * num_2)
+        tester.expect(circuit.interface[dst_name], num_1 + num_2)
 
     with tempfile.TemporaryDirectory() as tempdir:
         for genesis_verilog in glob.glob("genesis_verif/*.*"):
