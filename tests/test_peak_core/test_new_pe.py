@@ -22,7 +22,7 @@ from peak_gen.asm import asm_arch_closure
 
 def test_peak_generator():
 
-    arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
+    arch = read_arch(str("../peak_generator/examples/misc_tests/lassen.json"))
     PE_fc = pe_arch_closure(arch)
     Inst_fc = inst_arch_closure(arch)
 
