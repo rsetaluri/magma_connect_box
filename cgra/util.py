@@ -48,7 +48,7 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
                                          List[Tuple[SwitchBoxSide,
                                                     SwitchBoxIO]]] = None):
     
-    arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
+    arch = read_arch(str("../peak_generator/examples/misc_tests/lassen.json"))
     PE_fc = pe_arch_closure(arch)
     Inst_fc = inst_arch_closure(arch)
 
