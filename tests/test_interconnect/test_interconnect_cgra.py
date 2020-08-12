@@ -56,7 +56,7 @@ def test_interconnect_point_wise(batch_size: int, dw_files, io_sides):
     placement, routing = pnr(interconnect, (netlist, bus))
     config_data = interconnect.get_route_bitstream(routing)
 
-    arch = read_arch(str("dse_pes/camera_pipeline_pe.json"))
+    arch = read_arch(str("dse_pes/pointwise_pe.json"))
     asm_fc = asm_arch_closure(arch)
     gen_inst = asm_fc(family.PyFamily())
 

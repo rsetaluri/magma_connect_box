@@ -20,7 +20,7 @@ from peak_gen.peak_wrapper import wrapped_peak_class
 
 def test_peak_generator():
 
-    arch = read_arch(str("dse_pes/camera_pipeline_pe.json"))
+    arch = read_arch(str("dse_pes/pointwise_pe.json"))
     PE_wrapped_fc = wrapped_peak_class(arch)
 
     asm_fc = asm_arch_closure(arch)

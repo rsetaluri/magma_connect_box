@@ -1,0 +1,30 @@
+{
+    "bit_outputs": [],
+    "enable_input_regs": false,
+    "enable_output_regs": false,
+    "input_width": 16,
+    "modules": [
+        {
+            "id": "0",
+            "type": "const"
+        },
+        {
+            "id": "1",
+            "in0": [
+                "in0"
+            ],
+            "in1": [
+                "0",
+                "in1"
+            ],
+            "type": "mul"
+        }
+    ],
+    "output_width": 16,
+    "outputs": [
+        [
+            "0",
+            "1"
+        ]
+    ]
+}
