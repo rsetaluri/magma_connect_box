@@ -46,7 +46,7 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
                                          List[Tuple[SwitchBoxSide,
                                                     SwitchBoxIO]]] = None):
     
-    arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
+    arch = read_arch(str("dse_pes/camera_pipeline_pe.json"))
     PE_fc = wrapped_peak_class(arch)
 
     peak_gen_core = PeakCore(PE_fc)
