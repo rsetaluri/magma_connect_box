@@ -12,9 +12,7 @@ from peak_core.peak_core import PeakCore
 from typing import Tuple, Dict, List, Tuple
 from tile_id_pass.tile_id_pass import tile_id_physical
 from clk_pass.clk_pass import clk_physical
-from peak_core.peak_wrapper import wrap_peak_class
-from peak_gen.sim import pe_arch_closure
-from peak_gen.isa import inst_arch_closure
+from peak_gen.peak_wrapper import wrapped_peak_class
 from peak_gen.arch import read_arch
 
 def get_actual_size(width: int, height: int, io_sides: IOSide):
@@ -49,12 +47,9 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
                                                     SwitchBoxIO]]] = None):
     
     arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
-    PE_fc = pe_arch_closure(arch)
-    Inst_fc = inst_arch_closure(arch)
+    PE_fc = wrapped_peak_class(arch)
 
-    PE_wrapped_fc = wrap_peak_class(PE_fc, Inst_fc)
-
-    peak_gen_core = PeakCore(PE_wrapped_fc)
+    peak_gen_core = PeakCore(PE_fc)
     
     # currently only add 16bit io cores
     bit_widths = [1, 16]

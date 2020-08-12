@@ -1,7 +1,6 @@
 from gemstone.common.testers import BasicTester
 from gemstone.common.run_verilog_sim import irun_available
 from peak_core.peak_core import PeakCore
-from peak_core.peak_wrapper import wrap_peak_class
 from peak.family import PyFamily
 
 import hwtypes
@@ -15,21 +14,17 @@ from functools import lru_cache
 import magma as m
 from hwtypes.adt import Tuple
 
-from peak_gen.sim import pe_arch_closure
-from peak_gen.isa import inst_arch_closure
 from peak_gen.arch import read_arch
 from peak_gen.asm import asm_arch_closure
+from peak_gen.peak_wrapper import wrapped_peak_class
 
 def test_peak_generator():
 
-    arch = read_arch(str("../../peak_generator/examples/misc_tests/lassen.json"))
-    PE_fc = pe_arch_closure(arch)
-    Inst_fc = inst_arch_closure(arch)
+    arch = read_arch(str("dse_pes/camera_pipeline_pe.json"))
+    PE_wrapped_fc = wrapped_peak_class(arch)
 
     asm_fc = asm_arch_closure(arch)
     gen_inst = asm_fc(family.PyFamily())
-
-    PE_wrapped_fc = wrap_peak_class(PE_fc, Inst_fc)
 
     core = PeakCore(PE_wrapped_fc)
     core.name = lambda: "PECore"
