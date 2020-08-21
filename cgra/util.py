@@ -40,7 +40,7 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
                 global_signal_wiring: GlobalSignalWiring =
                 GlobalSignalWiring.Meso,
                 standalone: bool = False,
-                add_pond: bool = True,
+                add_pond: bool = False,
                 switchbox_type: SwitchBoxType = SwitchBoxType.Imran,
                 port_conn_override: Dict[str,
                                          List[Tuple[SwitchBoxSide,
