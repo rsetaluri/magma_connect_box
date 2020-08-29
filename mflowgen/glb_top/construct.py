@@ -33,6 +33,9 @@ def construct():
     'topographical'  : True,
     # hold target slack
     'hold_target_slack' : 0.045,
+
+    # use synthesis result of glb_tile
+    'run_glb_tile_syn_only' : True,
   }
 
   #-----------------------------------------------------------------------
@@ -48,12 +51,14 @@ def construct():
 
   # Custom steps
 
-  rtl          = Step( this_dir + '/rtl'                                 )
-  glb_tile     = Step( this_dir + '/glb_tile'                            )
-  constraints  = Step( this_dir + '/constraints'                         )
-  custom_init  = Step( this_dir + '/custom-init'                         )
-  custom_lvs   = Step( this_dir + '/custom-lvs-rules'                    )
-  custom_power = Step( this_dir + '/../common/custom-power-hierarchical' )
+  rtl               = Step( this_dir + '/rtl'                                 )
+  rtl_with_tile_syn = Step( this_dir + '/rtl-with-tile-syn'                   )
+  glb_tile          = Step( this_dir + '/glb_tile'                            )
+  glb_tile_syn_only = Step( this_dir + '/glb_tile_syn_only'                   )
+  constraints       = Step( this_dir + '/constraints'                         )
+  custom_init       = Step( this_dir + '/custom-init'                         )
+  custom_lvs        = Step( this_dir + '/custom-lvs-rules'                    )
+  custom_power      = Step( this_dir + '/../common/custom-power-hierarchical' )
 
   # Default steps
 
@@ -86,7 +91,11 @@ def construct():
 
   # Add glb_tile macro inputs to downstream nodes
 
-  dc.extend_inputs( ['glb_tile.db'] )
+  if parameters['run_glb_tile_syn_only'] == True:
+    dc.extend_inputs( ['glb_tile.mapped.v'] )
+    rtl_with_tile_syn.extend_inputs( ['glb_tile.mapped.v'] )
+  else:
+    dc.extend_inputs( ['glb_tile.db'] )
   pt_signoff.extend_inputs( ['glb_tile.db'] )
   genlibdb.extend_inputs( ['glb_tile.db'] )
 
@@ -127,7 +136,9 @@ def construct():
 
   g.add_step( info           )
   g.add_step( rtl            )
+  g.add_step( rtl_with_tile_syn )
   g.add_step( glb_tile       )
+  g.add_step( glb_tile_syn_only )
   g.add_step( constraints    )
   g.add_step( dc             )
   g.add_step( iflow          )
@@ -171,7 +182,15 @@ def construct():
   g.connect_by_name( adk,      drc            )
   g.connect_by_name( adk,      lvs            )
 
-  g.connect_by_name( glb_tile,      dc           )
+  if parameters['run_glb_tile_syn_only'] == True:
+    g.connect_by_name( glb_tile_syn_only,     dc )
+    g.connect_by_name( glb_tile_syn_only, rtl_with_tile_syn )
+    g.connect_by_name( rtl_with_tile_syn,     dc )
+  else:
+    g.connect_by_name( glb_tile,       dc        )
+    g.connect_by_name( rtl,            dc        )
+  g.connect_by_name( constraints,      dc        )
+
   g.connect_by_name( glb_tile,      iflow        )
   g.connect_by_name( glb_tile,      init         )
   g.connect_by_name( glb_tile,      power        )
@@ -187,9 +206,6 @@ def construct():
   g.connect_by_name( glb_tile,      gdsmerge     )
   g.connect_by_name( glb_tile,      drc          )
   g.connect_by_name( glb_tile,      lvs          )
-
-  g.connect_by_name( rtl,         dc        )
-  g.connect_by_name( constraints, dc        )
 
   g.connect_by_name( dc,       iflow        )
   g.connect_by_name( dc,       init         )
