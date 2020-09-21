@@ -69,64 +69,6 @@ if [ "$DEBUG"=="true" ]; then
     VERBOSE=true
 fi
 
-##############################################################################
-##############################################################################
-##############################################################################
-# cmd="cat ~/tmpdir/foo | ~/tmpdir/step_alias.sh"
-##############################################################################
-##############################################################################
-##############################################################################
-
-
-# # Function to expand step aliases
-# # E.g. 'step_alias syn' returns 'synopsys-dc-synthesis' or 'cadence-genus-synthesis' as appropriate
-# function step_alias {
-#     case "$1" in
-#         # This is probably dangerous; init is heavily overloaded
-#         init)      s=cadence-innovus-init      ;;
-# 
-#         # "synthesis" will expand to dc or genus according to what's
-#         # in "make list" (see below). Same for gdsmerge etc.
-#         syn)       s=synthesis ;;
-#         gds)       s=gdsmerge ;;
-#         tape)      s=gdsmerge ;;
-#         merge)     s=gdsmerge ;;
-#         *)         s="$1" ;;
-#     esac
-# 
-#     # 1. First, look for exact match
-#     ntries=1
-#     s1=`make list |& egrep -- " $s"'$' | awk '{ print $NF; exit }'`
-# 
-#     # Then look for alias that expands to synopsys/cadence/mentor tool
-#     # Uses *first* pattern match found in "make list" to expand e.g.
-#     # "synthesis" => "synopsys-dc-synthesis" or "cadence-genus-synthesis"
-#     if ! [ "$s1" ]; then
-#         ntries=2
-#         p=' synopsys| cadence| mentor'
-#         s1=`make list |& egrep "$p" | egrep -- "$s"'$' | awk '{ print $NF; exit }'`
-#     fi
-# 
-#     # Then look for alias that expands to anything that kinda matches
-#     if ! [ "$s1" ]; then
-#         ntries=3
-#         s1=`make list |& egrep -- "$s"'$' | awk '{ print $NF; exit }'`
-#     fi
-# 
-#     DBG=""
-#     if [ "$DBG" ] ; then echo '---'; echo "FINAL '$s' -> '$s1' (after $ntries tries)"; fi
-# 
-#     # Note: returns null ("") if no alias found
-#     echo $s1; # return value = $s1
-#     return
-# 
-#     # UNIT TESTS for step_alias fn, cut'n'paste
-#     test_steps="syn init cts place route postroute gds tape merge gdsmerge lvs drc"
-#     test_steps="constraints MemCore PE rtl synthesis custom-dc-postcompile tsmc16 synthesis foooo"
-#     for s in $test_steps; do echo "'$s' ==> '`step_alias $s`'"; done
-#     for s in $test_steps; do step_alias $s; done
-# }
-
 ########################################################################
 # Turn build sequence into an array e.g. 'lvs,gls' => 'lvs gls'
 build_sequence=`echo $build_sequence | tr ',' ' '`
@@ -303,6 +245,7 @@ done
 echo ""
 echo "STEPS to take"
 for step in ${build_sequence[@]}; do
+    # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
     step_alias=`make list | $garnet/mflowgen/bin/step_alias`
     echo "  $step -> $step_alias"
 done
@@ -329,16 +272,8 @@ if [ "$copy_list" ]; then
         
         # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
         # echo "  $step -> `step_alias $step`"
-        # step=`step_alias $step`
         step=`make list | $garnet/mflowgen/bin/step_alias`
     
-#         set -x
-#         if ! test -d $cache; then 
-#             echo "WARNING Could not find cache for step '${step'"
-#             echo "Will try and go on without it..."
-#             continue
-#         fi
-
         # NOTE if cd command fails, pwd (disastrously) defaults to current dir
         # cache=`cd $gold/*${step}; pwd` || FAIL=true
         # if [ "$FAIL" == "true" ]; then
