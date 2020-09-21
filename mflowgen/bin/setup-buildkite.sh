@@ -291,11 +291,30 @@ echo "--- REQUIREMENTS CHECK"; echo ""
 # $garnet/bin/requirements_check.sh -v --debug
 $garnet/bin/requirements_check.sh -v --debug --pd_only
 
+
+########################################################################
+# Find or create the requested build directory
+if [ "$build_dir" ]; then
+
+    # Build in the requested cache directory 'build_dir'
+    build_dir="$build_dir"
+    if test -d $build_dir; then
+        echo "--- Using existing cache dir '$build_dir'"
+        cd $build_dir
+    else
+        echo "--- Making new cache dir '$build_dir'"
+        mkdir -p $build_dir
+        cd $build_dir
+    fi
+fi
+echo "--- Building in destination dir `pwd`"
+
+
 ##############################################################################
 # NEW MFLOWGEN --- see far below for old setup
 ##############################################################################
 # MFLOWGEN: Use a single common mflowgen for all builds why not
-echo "--- IDENTIFY, UPDATE, AND INSTALL MFLOWGEN REPO"
+echo "--- INSTALL LATEST MFLOWGEN"
 mflowgen=/sim/buildkite-agent/mflowgen
 pushd $mflowgen
   git checkout master
@@ -304,6 +323,21 @@ pushd $mflowgen
 popd
 echo ""
   
+# Okay. Ick. If we leave it here, we get all these weird and very
+# non-portable relative links e.g.
+#    % ls -l /build/gold.112/full_chip/17-tile_array/10-tsmc16/
+#    % multivt -> ../../../../../sim/buildkite-agent/mflowgen/adks/tsmc16/multivt/
+# 
+# So we make a local symlink to contain the damage. It still builds
+# an ugly relative link but now maybe it's more contained, something like
+#    % ls -l /build/gold.112/full_chip/17-tile_array/10-tsmc16/
+#    % multivt -> ../../../mflowgen/adks/tsmc16/multivt/
+
+mflowgen_orig=$mflowgen
+ln -s $mflowgen_orig
+mflowgen=`pwd`/mflowgen
+
+
 
 ########################################################################
 # NEW ADK SETUP --- see far below for old setup
@@ -343,22 +377,6 @@ else
 fi
 
 
-########################################################################
-# Find or create the requested build directory
-if [ "$build_dir" ]; then
-
-    # Build in the requested cache directory 'build_dir'
-    build_dir="$build_dir"
-    if test -d $build_dir; then
-        echo "--- Using existing cache dir '$build_dir'"
-        cd $build_dir
-    else
-        echo "--- Making new cache dir '$build_dir'"
-        mkdir -p $build_dir
-        cd $build_dir
-    fi
-fi
-echo "--- Building in destination dir `pwd`"
 
 
 
