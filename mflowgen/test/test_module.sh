@@ -246,7 +246,7 @@ echo ""
 echo "STEPS to take"
 for step in ${build_sequence[@]}; do
     # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
-    step_alias=`make list | $garnet/mflowgen/bin/step_alias`
+    step_alias=`make list | $garnet/mflowgen/bin/step_alias.sh`
     echo "  $step -> $step_alias"
 done
 echo ""
@@ -272,7 +272,7 @@ if [ "$copy_list" ]; then
         
         # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
         # echo "  $step -> `step_alias $step`"
-        step=`make list | $garnet/mflowgen/bin/step_alias`
+        step=`make list | $garnet/mflowgen/bin/step_alias.sh`
     
         # NOTE if cd command fails, pwd (disastrously) defaults to current dir
         # cache=`cd $gold/*${step}; pwd` || FAIL=true
@@ -344,7 +344,7 @@ for step in ${build_sequence[@]}; do
 
     # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
     # step_orig=$step; step=`step_alias $step`
-    step_orig=$step; step=`make list | $garnet/mflowgen/bin/step_alias $step`
+    step_orig=$step; step=`make list | $garnet/mflowgen/bin/step_alias.sh $step`
     echo "================================================================"
     echo "    Ready to do step $step_orig -> $step"
     # [ "$DEBUG" ] && echo "    $step_orig -> $step"
