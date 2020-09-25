@@ -15,7 +15,7 @@ if [[ -t 0 ]]; then
 fi
 
 # Siphon stdin off to temp file for safekeeping
-makelist=/tmp/deleteme.step_alias
+makelist=/tmp/deleteme.step_alias.$$
 cat > $makelist
 
 # E.g. 'step_alias.sh syn' returns 'synopsys-dc-synthesis' or
