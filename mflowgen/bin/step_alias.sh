@@ -8,8 +8,8 @@
 if [[ -t 0 ]]; then
     echo "Oops you forgot to give me 'make list' info"
     echo "Examples:"
-    echo "    make list | $0"
-    echo "    make list > tmp.txt; $0 < tmp.txt"
+    echo "    make list | $0 syn"
+    echo "    make list > tmp.txt; $0 syn < tmp.txt"
     echo ""
     exit 13
 fi
@@ -21,6 +21,12 @@ cat > $makelist
 
 # E.g. 'step_alias.sh syn' returns 'synopsys-dc-synthesis' or
 # 'cadence-genus-synthesis' as appropriate
+
+if [ "$1" == "" ]; then
+    echo "***ERROR: no step arg provided to '$0'"
+    echo "Usage: make list | $0 syn"
+    exit 13
+fi
 
 case "$1" in
     # This is probably dangerous; init is heavily overloaded
@@ -69,8 +75,8 @@ fi
 echo $s1; # return value = $s1
 
 # Clean up and exit
-(test -d $makelist && /bin/rm $makelist) >& /dev/null
-exit
+(test -d $makelist && /bin/rm $makelist) >& /dev/null || echo -n ""
+exit 0
 
 ##############################################################################
 # UNIT TESTS for step_alias, cut'n'paste

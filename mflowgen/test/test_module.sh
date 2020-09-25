@@ -245,8 +245,14 @@ done
 set -x
 echo ""
 echo "STEPS to take"
+echo bs = ${build_sequence[@]}
 for step in ${build_sequence[@]}; do
     # Expand aliases e.g. "syn" -> "synopsys-dc-synthesis"
+
+    make list
+    
+    echo $step
+
     step_alias=`make list | $garnet/mflowgen/bin/step_alias.sh $step`
     echo "  $step -> $step_alias"
 done
