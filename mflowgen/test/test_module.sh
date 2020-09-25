@@ -72,7 +72,7 @@ fi
 ########################################################################
 # Turn build sequence into an array e.g. 'lvs,gls' => 'lvs gls'
 build_sequence=`echo $build_sequence | tr ',' ' '`
-set -x
+
 if [ "$DEBUG"=="true" ]; then
     # ---
     echo "MODULES and subgraphs to build"
@@ -242,6 +242,7 @@ for sg in $subgraphs; do
     echo sg=$sg
 done
 
+set -x
 echo ""
 echo "STEPS to take"
 for step in ${build_sequence[@]}; do
