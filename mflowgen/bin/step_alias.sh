@@ -27,6 +27,7 @@ case "$1" in
 
     # "synthesis" will expand to dc or genus according to what's
     # in "make list" (see below). Same for gdsmerge etc.
+    dragon)    s=dragonphy ;;
     syn)       s=synthesis ;;
     gds)       s=gdsmerge ;;
     tape)      s=gdsmerge ;;
