@@ -72,7 +72,7 @@ fi
 ########################################################################
 # Turn build sequence into an array e.g. 'lvs,gls' => 'lvs gls'
 build_sequence=`echo $build_sequence | tr ',' ' '`
-
+set -x
 if [ "$DEBUG"=="true" ]; then
     # ---
     echo "MODULES and subgraphs to build"
