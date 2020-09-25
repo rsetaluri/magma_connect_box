@@ -14,6 +14,7 @@ if [[ -t 0 ]]; then
     exit 13
 fi
 
+set -x
 # Siphon stdin off to temp file for safekeeping
 makelist=/tmp/deleteme.step_alias.$$
 cat > $makelist
