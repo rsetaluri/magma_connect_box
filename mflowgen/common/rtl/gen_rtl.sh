@@ -14,7 +14,7 @@ else
     rm -f $GARNET_HOME/garnet.v
   
     # Build up the flags we want to pass to python garnet.v
-    flags="--width $array_width --height $array_height -v --no-sram-stub"
+    flags="--width $array_width --height $array_height --pipeline_config_interval $pipeline_config_interval -v --no-sram-stub"
    
     if [ $PWR_AWARE == False ]; then
      flags+=" --no-pd"
@@ -46,7 +46,7 @@ else
         git clone $GARNET_HOME ./garnet
         docker cp ./garnet $container_name:/aha/garnet
       fi
-  
+
       # run garnet.py in container and concat all verilog outputs
       docker exec $container_name /bin/bash -c \
         "source /aha/bin/activate && aha garnet $flags;

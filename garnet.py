@@ -11,7 +11,7 @@ from cgra.ifc_struct import AXI4LiteIfc, ProcPacketIfc
 from canal.global_signal import GlobalSignalWiring
 from mini_mapper import map_app, has_rom
 from cgra import glb_glc_wiring, glb_interconnect_wiring, \
-        glc_interconnect_wiring, create_cgra
+        glc_interconnect_wiring, create_cgra, compress_config_data
 import json
 import math
 import archipelago
@@ -23,7 +23,8 @@ set_debug_mode(False)
 class Garnet(Generator):
     def __init__(self, width, height, add_pd, add_pond: bool = True,
                  interconnect_only: bool = False,
-                 use_sram_stub: bool = True, standalone: bool = False):
+                 use_sram_stub: bool = True, standalone: bool = False,
+                 pipeline_config_interval: int = 8):
         super().__init__()
 
         # Check consistency of @standalone and @interconnect_only parameters. If
@@ -102,6 +103,7 @@ class Garnet(Generator):
                                    add_pond=add_pond,
                                    use_sram_stub=use_sram_stub,
                                    global_signal_wiring=wiring,
+                                   pipeline_config_interval=pipeline_config_interval,
                                    mem_ratio=(1, 4),
                                    standalone=standalone)
 
@@ -244,6 +246,8 @@ class Garnet(Generator):
         bitstream += self.interconnect.get_route_bitstream(routing)
         bitstream += self.get_placement_bitstream(placement, id_to_name,
                                                   instance_to_instr)
+        skip_addr = self.interconnect.get_skip_addr()
+        bitstream = compress_config_data(bitstream, skip_compression=skip_addr)
         inputs, outputs = self.get_input_output(netlist)
         input_interface, output_interface,\
             (reset, valid, en) = self.get_io_interface(inputs,
@@ -285,6 +289,7 @@ def main():
     parser = argparse.ArgumentParser(description='Garnet CGRA')
     parser.add_argument('--width', type=int, default=4)
     parser.add_argument('--height', type=int, default=2)
+    parser.add_argument('--pipeline_config_interval', type=int, default=8)
     parser.add_argument("--input-app", type=str, default="", dest="app")
     parser.add_argument("--input-file", type=str, default="", dest="input")
     parser.add_argument("--output-file", type=str, default="", dest="output")
@@ -307,6 +312,7 @@ def main():
     garnet = Garnet(width=args.width, height=args.height,
                     add_pd=not args.no_pd,
                     add_pond=not args.no_pond,
+                    pipeline_config_interval=args.pipeline_config_interval,
                     interconnect_only=args.interconnect_only,
                     use_sram_stub=not args.no_sram_stub,
                     standalone=args.standalone)
