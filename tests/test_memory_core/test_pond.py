@@ -224,9 +224,9 @@ def basic_tb(config_path,
         tester.eval()
         tester.step(2)
         tester.eval()
-        if i >= 16:
-             #tester.print(circuit.interface[dst_name])
-             tester.expect(circuit.interface[dst_name], i-16)
+        #if i >= 16:
+        #     #tester.print(circuit.interface[dst_name])
+        #     #tester.expect(circuit.interface[dst_name], i-16)
              
     with tempfile.TemporaryDirectory() as tempdir:
         #tempdir = "dump_new"
