@@ -14,7 +14,7 @@ from typing import Tuple, Dict, List, Tuple
 from passes.tile_id_pass.tile_id_pass import tile_id_physical
 from passes.clk_pass.clk_pass import clk_physical
 from passes.pipeline_config_pass.pipeline_config_pass import pipeline_config_signals
-from gemstone.common.util import compress_config_data
+import math
 
 
 def get_actual_size(width: int, height: int, io_sides: IOSide):
@@ -154,10 +154,13 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
             io_conn = None
         else:
             io_conn = {"in": io_in, "out": io_out}
+        bit_width_track = num_tracks
+        if bit_width == 1:
+            bit_width_track = int(math.ceil(num_tracks / 2))
         ic = create_uniform_interconnect(width, height, bit_width,
                                          create_core,
                                          port_conns,
-                                         {track_length: num_tracks},
+                                         {track_length: bit_width_track},
                                          switchbox_type,
                                          pipeline_regs,
                                          io_sides=io_sides,
