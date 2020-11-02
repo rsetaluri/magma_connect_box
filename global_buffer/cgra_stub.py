@@ -11,15 +11,23 @@ input [0:0] config_read,
 input [0:0] config_write,
 output [31:0] read_config_data,
 input  reset,
-input [3:0] stall,
 
 """
     # loop through the interfaces
     ports = []
+    # control signals
+    ports.append(f"input [{width - 1}:0] stall")
+    for i in range(width):
+        ports.append(f"input [31:0] config_{i}_config_addr")
+        ports.append(f"input [31:0] config_{i}_config_data")
+        ports.append(f"input [0:0] config_{i}_config_read")
+        ports.append(f"input [0:0] config_{i}_config_write")
+
     for i in range(width):
         for bit_width in [1, 16]:
             ports.append(f"input [{bit_width-1}:0] glb2io_{bit_width}_X{i:02X}_Y00")
             ports.append(f"output [{bit_width - 1}:0] io2glb_{bit_width}_X{i:02X}_Y00")
+    
     result += ",\n".join(ports)
     result += "\n);\n"
 
