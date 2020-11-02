@@ -211,6 +211,7 @@ else
     echo "Consider reducing space requrement e.g."
     echo "  $script --dir $build_dir    --need_space 0G"
     echo ""
+    return 13
 fi
 unset FAIL
 
