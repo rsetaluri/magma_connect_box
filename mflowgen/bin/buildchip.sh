@@ -149,46 +149,46 @@ if [ "$ACTION" == "new" ]; then
         echo "**ERROR: No build dir on command line"; Usage; exit 13;
     fi
 
-    ########################################################################
-    # Find a number, build a log
-    # 
-    # Maybe build numbers are coordinated by a world-writable build-manager directory
-    # full of build logs e.g. /build/buildchip_logs/{build.0,build.1,build.2...}
-
-    logdir=/proj/forward/CI/build.HIST ;  # For VDE
-    [ `hostname` == "r7arm-aha" ] && logdir=/build/CI/build.HIST ; # for ARM
-
-    # kiwi is for debugging the script
-    if [ `hostname` == "kiwi" ]; then
-        logdir=/tmp/deleteme.buildchip.CI/build.HIST
-        test -e $logdir || mkdir $logdir
-    fi
-    # kiwi test: CI=/tmp/deleteme.buildchip.CI; cd $CI
-    # kiwi test: $garnet/mflowgen/bin/buildchip.sh --new $CI |& tee tmp.log0
-    
-
-    if ! (test -d $logdir && test -w $logdir); then
-        echo "**ERROR: logdir $logdir not found or not writeable"; exit 13
-    fi
-
-
-    if [ "$BUILD_NUM" == "" ]; then
-        # No BUILD_NUM yet; choose a build-num and resubmit
-        build=`cd $logdir; get_next_name build` ; # e.g. 'build.14'
-        log=$logdir/$build;     # e.g. '/build/build.HIST/build.14'
-        echo "Remaining output tees to '$log'"
-        set -o pipefail; # Don't let 'tee' command obscure error status
-        exec $0 "${orig_args[@]}" --build_num $BUILD_NUM | tee -a $log
-        echo "WARNING should *never* be here on line 153"
-        exit
-    else
-        # Non-nul BUILD_NUM means we've already found the build num
-        # and we're now logging to $log
-        build=$BUILD_NUM
-    fi
-
-    log=$logdir/$build;                       # e.g. '/build/build.HIST/build.14'
-    build_dir=$build_dir/$build    
+#     ########################################################################
+#     # Find a number, build a log
+#     # 
+#     # Maybe build numbers are coordinated by a world-writable build-manager directory
+#     # full of build logs e.g. /build/buildchip_logs/{build.0,build.1,build.2...}
+# 
+#     logdir=/proj/forward/CI/build.HIST ;  # For VDE
+#     [ `hostname` == "r7arm-aha" ] && logdir=/build/CI/build.HIST ; # for ARM
+# 
+#     # kiwi is for debugging the script
+#     if [ `hostname` == "kiwi" ]; then
+#         logdir=/tmp/deleteme.buildchip.CI/build.HIST
+#         test -e $logdir || mkdir $logdir
+#     fi
+#     # kiwi test: CI=/tmp/deleteme.buildchip.CI; cd $CI
+#     # kiwi test: $garnet/mflowgen/bin/buildchip.sh --new $CI |& tee tmp.log0
+#     
+# 
+#     if ! (test -d $logdir && test -w $logdir); then
+#         echo "**ERROR: logdir $logdir not found or not writeable"; exit 13
+#     fi
+# 
+# 
+#     if [ "$BUILD_NUM" == "" ]; then
+#         # No BUILD_NUM yet; choose a build-num and resubmit
+#         build=`cd $logdir; get_next_name build` ; # e.g. 'build.14'
+#         log=$logdir/$build;     # e.g. '/build/build.HIST/build.14'
+#         echo "Remaining output tees to '$log'"
+#         set -o pipefail; # Don't let 'tee' command obscure error status
+#         exec $0 "${orig_args[@]}" --build_num $BUILD_NUM | tee -a $log
+#         echo "WARNING should *never* be here on line 153"
+#         exit
+#     else
+#         # Non-nul BUILD_NUM means we've already found the build num
+#         # and we're now logging to $log
+#         build=$BUILD_NUM
+#     fi
+# 
+#     log=$logdir/$build;                       # e.g. '/build/build.HIST/build.14'
+#     build_dir=$build_dir/$build    
 
     # echo `date` $build | tee $log
     # Remember, if we get this far we're already logging to $log (see 'exec' above)
