@@ -350,6 +350,9 @@ elif  [ "$ACTION" == "old" ]; then
 
 fi
 
+########################################################################
+# Okay we have found and are now situated in the build directory.
+# So...build already...?
 
 # # If no existing dir specified, build a new dir 'build.<n>'
 # if [ "$1" == "--restart" ]; then
@@ -366,8 +369,8 @@ fi
 # 
 # cd $build_dir
 
-
 # Logs go to to next avail directory logs00/, logs01/, logs02/ ...
+# Can handle up to 100 runs log00-log99
 # (yes this is different so what)
 i=0; ii=00; while test -e logs.$ii; do ((i+=1)); ii=`printf "%02d" $i`; done
 LD=logs.$ii; mkdir $LD
