@@ -190,18 +190,41 @@ if [ "$ACTION" == "new" ]; then
 #     log=$logdir/$build;                       # e.g. '/build/build.HIST/build.14'
 #     build_dir=$build_dir/$build    
 
-    # echo `date` $build | tee $log
-    # Remember, if we get this far we're already logging to $log (see 'exec' above)
-    echo `date` $build
-    echo "Initiating new build in dir '$build_dir'"
-    echo mkdir -p $build_dir; mkdir -p $build_dir
-    echo cd       $build_dir; cd       $build_dir
-    echo "Log file = '$log'"
 
-    # kiwi is for debugging the script
-    if [ `hostname` == "kiwi" ]; then
-        echo "okay we're debugged already"; exit
+    echo DATE: `date`
+
+    if ! test -e $build_dir; then
+        echo "INFO '$build_dir' does not exist (yet)"
+        echo "I will build it for you..."
+        echo "    mkdir -p $build_dir"; mkdir -p $build_dir
+        echo ""
     fi
+    echo "Initiating new build in dir '$build_dir'"
+    echo "    cd $build_dir"; cd $build_dir
+    echo ""
+
+    # Show how to read the logs
+    echo '----------------------------------------------------------------'
+    echo "How to read the logs:"
+    echo "fc=$build_dir" ; # E.g. "/build/CI/full_chip/build..7"
+    echo 'for f in $fc/logs.00/*; do echo $f: ; sed "s/^/  /" $f ; echo ""; done'
+    echo '----------------------------------------------------------------'
+    echo ""
+
+
+    # echo "Log file = '$log'"
+
+#     # kiwi is for debugging the script
+#     if [ `hostname` == "kiwi" ]; then
+#         printf "\nokay we're debugged already\n\n"
+#         exit
+#     fi
+#     exit
+
+
+    # TEMP for testing turn off setup for kiwi
+    [ `hostname` == kiwi ] || setup_CI
+
 
 
     ########################################################################
