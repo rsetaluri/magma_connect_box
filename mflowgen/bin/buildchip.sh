@@ -8,8 +8,8 @@ gdefault=/sim/steveri/soc/components/cgra/garnet
 mdefault=/sim/buildkite-agent/mflowgen
 
 ########################################################################
-cmd=$0
-cmd=buildchip.sh
+# Unpack command-line args
+cmd=$(basename $0)
 
 function Usage {
     echo "Usage: $cmd [ --new <dir> | --restart <dir> ]"
