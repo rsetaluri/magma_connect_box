@@ -85,6 +85,13 @@ while [ $# -gt 0 ] ; do
     shift
 done
 
+[ "$VERBOSE"==true ] && echo ACTION=$ACTION
+
+# [ `hostname` == "kiwi" ] && CI=/tmp/deleteme.buildchip.CI
+# echo "NOTE: Ignoring '--new', setting build_dir=$CI"; echo ""
+# build_dir=$CI
+
+
 ########################################################################
 # A special tool that will help us later...
 function get_next_name {
