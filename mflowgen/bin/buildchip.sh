@@ -298,9 +298,16 @@ if [ "$ACTION" == "new" ]; then
 #         (cd $GARNET_HOME; git checkout adad99d)
 #         git log | head
 
+
+
+        ########################################################################
+        echo "Initialize the design"
+        which mflowgen
+        echo "mflowgen run --design $GARNET_HOME/mflowgen/full_chip"
+        mflowgen run --design $GARNET_HOME/mflowgen/full_chip || exit 13
+
+    fi # if [ `hostname` == "r7arm-aha" ]
     
-    which mflowgen
-    mflowgen run --design $GARNET_HOME/mflowgen/full_chip || exit 13
 
 
 ########################################################################
