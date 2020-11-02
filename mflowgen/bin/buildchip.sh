@@ -92,14 +92,15 @@ done
 # build_dir=$CI
 
 
-########################################################################
-# A special tool that will help us later...
-function get_next_name {
-    # Given existing files /a/b/c.{0,1,14,22}, return next logical name "/a/b/c.23"
-    root=$1
-    n=`\ls -d $root.* |& \egrep "^$root.[0-9]*" | sed "s|^$root.||" | sort -n | tail -1`
-    if ! [ "$n" ]; then echo $root.0; else echo $root.$((n+1)); fi
-}
+# ########################################################################
+# # A special tool that will help us later...
+# function get_next_name {
+#     # Given existing files /a/b/c.{0,1,14,22}, return next logical name "/a/b/c.23"
+#     root=$1
+#     n=`\ls -d $root.* |& \egrep "^$root.[0-9]*" | sed "s|^$root.||" | sort -n | tail -1`
+#     if ! [ "$n" ]; then echo $root.0; else echo $root.$((n+1)); fi
+# }
+
 
 ########################################################################
 if [ "$ACTION" == "new" ]; then
