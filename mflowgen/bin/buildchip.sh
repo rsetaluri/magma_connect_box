@@ -322,18 +322,33 @@ if [ "$ACTION" == "new" ]; then
 
 
 elif  [ "$ACTION" == "old" ]; then
-    cd $build_dir
+
+    echo DATE: `date`
     if [ "$build_dir" == "" ]; then 
         echo "**ERROR: No build dir on command line"; Usage; exit 13
     fi
+
+    echo "Retry existing build in dir '$build_dir'"; echo ""
+    echo "  cd $build_dir"; cd $build_dir
+    echo ""
+
+    # Show how to read the logs
+    # echo "fc=$(basename $build_dir)" ; # E.g. "full_chip.7"
+    echo '----------------------------------------------------------------'
+    echo "# How to read the logs:"
+    echo "fc=$build_dir" ; # E.g. "/build/CI/full_chip/build..7"
+    echo 'for logdir in $fc/logs.??; do'
+    echo '  echo ------------------------------------------------'
+    # echo '  for f in $fc/logs.00/*; do echo $f: ; sed "s/^/  /" $f ; echo ""; done'
+    echo '  for f in $logdir/*; do echo $f: ; sed "s/^/  /" $f ; echo ""; done'
+    echo 'done'
+    echo '----------------------------------------------------------------'
+    echo ""
+
+    # TEMP for testing turn off setup for kiwi
+    [ `hostname` == kiwi ] || setup_CI
+
 fi
-
-if [ `hostname` == "kiwi" ]; then
-    echo "kiwi DONE bugging out"; exit
-fi
-
-
-# echo FOO; exit
 
 
 # # If no existing dir specified, build a new dir 'build.<n>'
