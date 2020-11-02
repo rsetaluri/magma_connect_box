@@ -429,10 +429,30 @@ echo PASS
 
 exit
 
-#unit tests
+
+
+#unit tests - r7arm
 if [ ] ; then
-alias bc=~/buildchip.sh
-mkdir /tmp/deleteme; cd /tmp/deleteme
+# alias bc=~/buildchip.sh
+alias bc=$garnet/mflowgen/bin/bigtest.sh
+# mkdir /tmp/deleteme; cd /tmp/deleteme
+
+test -e /tmp/deleteme.buildchip.CI || mkdir -p /tmp/deleteme.buildchip.CI
+cd /tmp/deleteme.buildchip.CI
+
+# bc --new /tmp/deleteme
+c; bc --new foo |& tee bc.log | less
+
+
+
+ls /tmp/deleteme.buildchip.CI/build.HIST
+#     build.0    build.109  build.15  build.26  build.37  build.48
+#     build.1    build.11   build.16  build.27  build.38  build.49
+#     ...
+
+
+
+
 bc |& tee bc.log
 #     make rtl                            >& logs.08/make-rtl.log
 #     make tile_array                     >& logs.08/make-tile_array.log
