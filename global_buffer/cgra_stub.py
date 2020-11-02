@@ -1,4 +1,7 @@
-def create_stub(width):
+import argparse
+
+
+def create_stub(width, args):
     result = """
 module Interconnect (
 input  clk,
@@ -20,19 +23,34 @@ input [3:0] stall,
     result += ",\n".join(ports)
     result += "\n);\n"
 
-    # read the actual logic in
-    with open("cgra_stub_logic.sv") as f:
-        result += f.read()
+    # instantiate the stub logic
+    for idx, (input_filename, x_start, x_out) in enumerate(args):
+        x_start = int(x_start)
+        x_out = int(x_out)
+        stub = f"""output_port #(.OUTPUT_FILE_NAME(\"{input_filename}\")) port_{idx}
+        (.clk(clock), .reset(reset), .start(glb2io_1_X{x_start:02X}_Y00),
+        .valid_out(io2glb_1_X{x_out:02X}_Y00), .data_out(io2glb_16_X{x_out:02X}_Y00));\n\n"""
+        result += stub
 
     result += "\nendmodule\n"
 
     return result
 
 
-if __name__ == "__main__":
-    import sys
-    assert len(sys.argv) == 2
-    w = int(sys.argv[1])
-    s = create_stub(w)
+def main():
+    parser = argparse.ArgumentParser("Stub generator")
+    parser.add_argument("-w", "--width", type=int, action="store", required=True)
+    parser.add_argument("-a", "--apps", action="append", nargs=3,
+                        required=True)
+    args = parser.parse_args()
+    for _, x_start, x_out in args.apps:
+        assert int(x_start) < args.width
+        assert int(x_out) < args.width
+
+    s = create_stub(args.width, args.apps)
     with open("cgra_stub.sv", "w+") as f_:
         f_.write(s)
+
+
+if __name__ == "__main__":
+    main()

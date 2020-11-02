@@ -1,11 +1,13 @@
-logic start;
-logic valid_out;
-logic [15:0] in, data_out;
-
-// hardcode the logic
-assign start = glb2io_1_X00_Y00;
-assign io2glb_1_X00_Y00 = valid_out;
-assign io2glb_16_X00_Y00 = data_out;
+module output_port #(
+    parameter string OUTPUT_FILE_NAME = "output.bs.out",
+    parameter string VALID_FILE_NAME = {OUTPUT_FILE_NAME, ".valid"}
+) (
+    input logic clk,
+    input logic reset,
+    input logic start,
+    output logic valid_out,
+    output logic [15:0] data_out
+);
 
 typedef enum logic {
     IDLE = 0,
@@ -13,7 +15,6 @@ typedef enum logic {
 } app_state_t;
 
 app_state_t state;
-
 
 int outputs[];
 int valid[];
@@ -25,8 +26,8 @@ initial begin
     int out_data[$];
     int valid_data[$];
     // need to modify the file names
-    out_fp = $fopen("output.bs.out", "rb");
-    valid_fp = $fopen("output.bs.out.valid", "rb");
+    out_fp = $fopen(OUTPUT_FILE_NAME, "rb");
+    valid_fp = $fopen(VALID_FILE_NAME, "rb");
     assert (out_fp != 0) else $finish(1);
     assert (valid_fp != 0) else $finish(1);
 
@@ -83,3 +84,5 @@ always_comb begin
         valid_out = valid[count]; 
     end
 end
+
+endmodule
