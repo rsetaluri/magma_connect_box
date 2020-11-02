@@ -21,7 +21,7 @@ function Help {
 This script builds our entire chip.
 It is recommended to have at least 100G of space available.
 
-Usage: $cmd [ --new <dir> | --restart <dir> ]
+Usage: $cmd [ --new <dir> | --retry <dir> ]
 
 Optional environment:
     GARNET_HOME,   default=\$gdefault
@@ -30,27 +30,26 @@ Optional environment:
 Options:
     (none)          basically does "make chip" in the current directory
 
-    '--make_only'   skip all the setup and just do the make commands
-
     '--new' <dir>   creates a new directory '<dir>/build.<n>' and builds the chip there.
 
     '--retry' <dir> attempts to restart an existing failed build <dir>
                     (same as 'cd <dir>; $cmd')
 
-History:
-   On arm machine, build history is maintained in /build/CI/build.HIST
-   On vde machine, build history is maintained in /proj/forward/CI/build.HIST
-    
 Examples:
-   $cmd --new   /build/CI          ; # Creates new directory "/build/build.<n>"
-   $cmd --new   /proj/forward/CI          ; # Creates new directory "build.<n>"
-   $cmd --retry /proj/forward/CI/build.14 ; # Builds in existing directory
-   $cmd |& tee buildchip.log              ; # Basically does "make lvs" in cur dir
 
-(Aliases for --restart include --retry, --continue, --cont ...)
+   # Build indicated directory, then run full_chip 'make drc'
+   $cmd --new /tmp/deleteme.buildchip.CI/full_chip.2
+
+   # Retry 'make drc' in the indicated (existing) directory
+   $cmd --retry /proj/forward/CI/build.14
+
+(Aliases for --retry include --restart, --continue, --cont ...)
 
 EOF
 }
+
+# How is this different than "--retry ." ??
+#     '--make_only'   skip all the setup and just do the make commands
 
 # Sequence:
 #    ssh buildkite-agent@r7arm-aha
@@ -85,7 +84,6 @@ while [ $# -gt 0 ] ; do
     esac
     shift
 done
-# echo ACTION=$ACTION
 
 ########################################################################
 # A special tool that will help us later...
