@@ -238,64 +238,66 @@ if [ "$ACTION" == "new" ]; then
             exit 13
         fi
 
-        # Do I want to do this?
-        # FIXME if we're gonna do it, we should do it up at the top
-        if [ "$GARNET_HOME" ]; then
-            echo "Found existing GARNET_HOME='$GARNET_HOME'; hope that's correct...!"
-        else
-            function where_this_script_lives {
-                s=${BASH_SOURCE[0]}
-                scriptpath=$s      # E.g. "build_tarfile.sh" or "foo/bar/build_tarfile.sh"
-                scriptdir=${s%/*}  # E.g. "build_tarfile.sh" or "foo/bar"
-                if test "$scriptdir" == "$scriptpath"; then scriptdir="."; fi
-                # scriptdir=`cd $scriptdir; pwd`
-                (cd $scriptdir; pwd)
-            }
-            script_home=`where_this_script_lives`
-            export GARNET_HOME=`cd $script_home/../..; pwd`
-            echo "Setting GARNET_HOME='$GARNET_HOME'; hope that's correct...!"
-        fi
-        echo sourcing things
-        need_space=100G
+##############################################################################
+# Okay we already did this up above, yes?
+#         ########################################################################
+#         # GARNET_HOME
+#         # 
+#         # Do I want to do this?
+#         # ALSO (FIXME) how does this interact w 'gdefault' up at the top
+#         # FIXME if we're gonna do it, we should do it up at the top
+#         if [ "$GARNET_HOME" ]; then
+#             echo "Found existing GARNET_HOME='$GARNET_HOME'; hope that's correct...!"
+#         else
+#             function where_this_script_lives {
+#                 s=${BASH_SOURCE[0]}
+#                 scriptpath=$s      # E.g. "build_tarfile.sh" or "foo/bar/build_tarfile.sh"
+#                 scriptdir=${s%/*}  # E.g. "build_tarfile.sh" or "foo/bar"
+#                 if test "$scriptdir" == "$scriptpath"; then scriptdir="."; fi
+#                 # scriptdir=`cd $scriptdir; pwd`
+#                 (cd $scriptdir; pwd)
+#             }
+#             script_home=`where_this_script_lives`
+#             export GARNET_HOME=`cd $script_home/../..; pwd`
+#             echo "Setting GARNET_HOME='$GARNET_HOME'; hope that's correct...!"
+#         fi
 
-        # Setup script "source setup-buildkite.sh --dir <d>" does the following:
-        #   - if unset yet, sets GARNET_HOME to wherever the setup script lives
-        #   - checks <d> for sufficient disk space;
-        #   - sets TMPDIR to /sim/tmp
-        #   - sets python env BUT ONLY if you're running as buildkite-agent
-        #   - source garnet-setup.sh for CAD paths
-        #   - *finds or creates requested build directory <d>*
-        #   - makes local link to mflowgen repo "/sim/buildkite-agent/mflowgen"
-        #   - makes local copy of adk
+# if [ `hostname` == "r7arm-aha" ]; then
 
-        # We still need/want this, right? Not sure how it's gonnna work on VDE
-        garnet=$GARNET_HOME
-        echo "Sourcing 'setup-buildkite.sh'..."
-        source $GARNET_HOME/mflowgen/bin/setup-buildkite.sh \
-               --dir $build_dir \
-               --need_space $need_space \
-            || exit 13
+# if [ `hostname` == "r7arm-aha" ]; then
 
-        # If there's already a valid garnet in top level, use that
-        top=`cd ..; pwd`
-        echo "Look for existing garnet repo $top/garnet"
-        if test -d $top/garnet; then
-            echo "Found existing garnet repo $top/garnet"
-            # (cd $top/garnet; git pull; git checkout adad99d)
-            export GARNET_HOME=$top/garnet
-        else
-            gtmp=/sim/tmp/deleteme.garnet
-            echo "Could not find existing garnet repo '$top/garnet'"
-            echo "Cloning a new repo in '$gtmp'"
-            test -e $gtmp && /bin/rm -rf $gtmp
-            mkdir -p $gtmp
-            git clone https://github.com/StanfordAHA/garnet $gtmp
-            export GARNET_HOME=$gtmp
-        fi
-        echo "Checking out last known good version #adad99d"
-        (cd $GARNET_HOME; git checkout adad99d)
-        git log | head
-    fi
+
+
+##############################################################################
+# But...? buildchip.sh lives in $GARNET_HOME...?
+# 
+#         ########################################################################
+#         # Find garnet repo on r7arm-aha
+#         # If there's already a valid garnet in top level, use that
+#         top=`cd ..; pwd`
+#         echo "Look for existing garnet repo $top/garnet"
+#         if test -d $top/garnet; then
+#             echo "Found existing garnet repo $top/garnet"
+#             # (cd $top/garnet; git pull; git checkout adad99d)
+#             export GARNET_HOME=$top/garnet
+#         else
+#             gtmp=/sim/tmp/deleteme.garnet
+#             echo "Could not find existing garnet repo '$top/garnet'"
+#             echo "Cloning a new repo in '$gtmp'"
+#             test -e $gtmp && /bin/rm -rf $gtmp
+#             mkdir -p $gtmp
+#             git clone https://github.com/StanfordAHA/garnet $gtmp
+#             export GARNET_HOME=$gtmp
+#         fi
+
+
+
+# ERROR cannot do this if running as buildkite-agent
+#         # FIXME this is just temporary, right?
+#         echo "Checking out last known good version #adad99d"
+#         (cd $GARNET_HOME; git checkout adad99d)
+#         git log | head
+
     
     which mflowgen
     mflowgen run --design $GARNET_HOME/mflowgen/full_chip || exit 13
