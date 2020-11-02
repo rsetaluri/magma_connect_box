@@ -102,6 +102,51 @@ done
 # }
 
 
+function setup_CI {
+    ########################################################################
+    # setup-buildkite environment
+    # 
+    # Setup script "source setup-buildkite.sh --dir <d>" does the following:
+    #   - if unset yet, sets GARNET_HOME to wherever the setup script lives
+    #   - checks <d> for sufficient disk space;
+    #   - sets TMPDIR to /sim/tmp
+    #   - sets python env BUT ONLY if you're running as buildkite-agent
+    #   - source garnet-setup.sh for CAD paths
+    #   - *finds or creates requested build directory <d>*
+    #   - makes local link to mflowgen repo "/sim/buildkite-agent/mflowgen"
+    #   - makes local copy of adk
+    # 
+    scriptdir=${0%/*} ; # Similar to csh $0:h
+    [ "$scriptdir" == "$0" ] && scriptdir="."
+    script_home=`cd $scriptdir; pwd`
+
+    echo "Sourcing '$script_home/setup-buildkite.sh' ..."
+    echo haha not really
+
+
+    source $script_home/setup-buildkite.sh \
+      --dir $build_dir --need_space 100G || exit 13
+    echo "DONE sourcing setup-buildkite.sh from '$script_home' ..."
+    echo ""
+
+    garnet=$GARNET_HOME
+
+#     echo sourcing things
+#     need_space=100G
+#     # 
+#     # We still need/want this, right? Not sure how it's gonnna work on VDE
+#     garnet=$GARNET_HOME
+#     source $GARNET_HOME/mflowgen/bin/setup-buildkite.sh \
+#            --dir $build_dir \
+#            --need_space $need_space \
+#         || exit 13
+
+
+
+}
+
+
+
 ########################################################################
 if [ "$ACTION" == "new" ]; then
     if [ "$build_dir" == "" ]; then 
