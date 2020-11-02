@@ -498,3 +498,38 @@ fi
 # Examples:
 #    $0 build                     => build.0
 #    $0 /tmp/deleteme.10329/build => /tmp/deleteme.10329/build.103
+
+
+##############################################################################
+# UNUSED MFLOWGEN_HOME stuff
+# if [ "$MFLOWGEN_HOME" ]; then
+#     echo "Found existing MFLOWGEN_HOME='$MFLOWGEN_HOME'; hope that's correct...!"
+# fi
+# 
+#     kiwi)      mdefault=/nobackup/steveri/github/mflowgen ;;
+#     r7arm-aha) mdefault=/sim/buildkite-agent/mflowgen ;;
+#                
+# [ "$MFLOWGEN_HOME" ] || export MFLOWGEN_HOME=$mdefault
+# echo "Using MFLOWGEN_HOME='$MFLOWGEN_HOME'"
+
+##############################################################################
+# NO LONGER NEEDED we don't diddle with garnet_home etc anymore, we have
+# setup-buildkite to take care of all that...
+# ########################################################################
+# # GARNET_HOME setup
+# # 
+# if [ "$GARNET_HOME" ]; then
+#     echo "Found existing GARNET_HOME='$GARNET_HOME'; hope that's correct...!"
+# fi
+# echo ""
+# 
+# case `hostname` in
+#     kiwi)      gdefault=/nobackup/steveri/github/garnet ;;
+#     r7arm-aha) gdefault=/sim/steveri/soc/components/cgra/garnet ;;
+# esac
+# 
+# [ "$GARNET_HOME"   ] || export GARNET_HOME=$gdefault
+# 
+# echo "Using GARNET_HOME='$GARNET_HOME'"
+# echo ""
+# garnet="$GARNET_HOME"
