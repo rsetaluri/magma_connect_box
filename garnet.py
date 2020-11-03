@@ -244,7 +244,7 @@ class Garnet(Generator):
         return input_interface, output_interface,\
                (reset_port_name, valid_port_name, en_port_name)
 
-    def compile(self, halide_src, unconstrained_io=False, compact=False):
+    def compile(self, halide_src, unconstrained_io=False, compact=False, add_pd=False):
         id_to_name, instance_to_instr, netlist, bus = self.map(halide_src)
         app_dir = os.path.dirname(halide_src)
         if unconstrained_io:
@@ -264,6 +264,9 @@ class Garnet(Generator):
         bitstream += self.interconnect.get_route_bitstream(routing)
         bitstream += self.get_placement_bitstream(placement, id_to_name,
                                                   instance_to_instr)
+        if add_pd:
+            pd_bs, tiles_off = archipelago.power.turn_off_tiles(routing, self.interconnect)
+            bitstream += pd_bs
         skip_addr = self.interconnect.get_skip_addr()
         bitstream = compress_config_data(bitstream, skip_compression=skip_addr)
         inputs, outputs = self.get_input_output(netlist)
@@ -377,7 +380,8 @@ def main():
             and len(args.output) > 0 and not args.virtualize:
         # do PnR and produce bitstream
         bitstream, (inputs, outputs, reset, valid, \
-            en, delay) = garnet.compile(args.app, args.unconstrained_io, compact=args.compact)
+            en, delay) = garnet.compile(args.app, args.unconstrained_io, compact=args.compact,
+                                        add_pd=not args.no_pd)
         # write out the config file
         if len(inputs) > 1:
             if reset in inputs:
