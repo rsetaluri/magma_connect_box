@@ -253,24 +253,41 @@ exit
 ##############################################################################
 ##############################################################################
 ##############################################################################
+exit
+# UNIT TESTS on kiwi - PASSED 11/4
 
-# UNIT TESTS on kiwi
+  # setup
+  alias bt='/nobackup/steveri/github/garnet/mflowgen/bin/bigtest.sh'
+  mkdir /tmp/deleteme.buildchip.CI
+  cd /tmp/deleteme.buildchip.CI
+  i=0
 
-alias bt='/nobackup/steveri/github/garnet/mflowgen/bin/bigtest.sh'
-cd /tmp/deleteme.buildchip.CI
-i=0
+  # Do a build or two - PASSED 11/4
+  # Should build a directory e.g. 'full_chip.0' plus subdirectory e.g. 'logs.00'
+  c; log=bt.log.$((i++)); echo "less $log"; bt |& tee $log
+  ls; ls full_chip.$((i-1)); ls full_chip.$((i-1))/logs.00
 
-c; log=bt.log.$((i++)); echo "less $log"; bt |& tee $log
-ls
+      bt.log.0  full_chip.0/
 
-bt --retry /tmp/deleteme.buildchip.CI/full_chip.2
-bt --retry full_chip.2
-bt --retry 2
+      buildchip.log  logs.00/
 
-bt --status
-bt --status all
-bt --status latest
-bt --logs
+      make00-rtl.log         make05-soc-rtl.log  make10-postroute.log
+      make01-tile_array.log  make06-syn.log      make11-hold.log
+      make02-glb_top.log     make07-cts.log      make12-lvs.log
+      make03-GLC.log         make08-place.log
+      make04-dragon.log      make09-route.log
+
+  # Test a retry or two - PASSED 11/4
+  bt --retry /tmp/deleteme.buildchip.CI/full_chip.2 ; # Builds logs.00
+  bt --retry full_chip.2                            ; # Builds logs.01
+  bt --retry 2                                      ; # Builds logs.02
+  ls; ls full_chip.2; ls full_chip.2/logs.01
+
+  # Test some of the bells and whistles maybe
+  bt --status
+  bt --status all
+  bt --status latest ; # (same as bt --status)
+  bt --logs | less   ; # confusing FIXME maybe needs work...
 
 
 # UNIT TESTS on arm7
