@@ -104,8 +104,8 @@ end
 //============================================================================//
 // Output assignment
 //============================================================================//
-assign packet_e2w_wsto = packet_e2w_wsto_int_d1;
-assign packet_w2e_esto = packet_w2e_esto_int_d1;
+assign packet_e2w_wsto = packet_e2w_wsto_int;
+assign packet_w2e_esto = packet_w2e_esto_int;
 assign packet_sr2sw  = packet_sr2sw_int;
 
 endmodule

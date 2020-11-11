@@ -183,14 +183,21 @@ assign pcfg_g2f_interrupt_pulse = pcfg_g2f_interrupt_pulse_int_d1;
 //============================================================================//
 packet_t strm_packet_w2e_wsti_d1;
 packet_t strm_packet_e2w_esti_d1;
+packet_t strm_packet_e2w_wsto_int;
+packet_t strm_packet_w2e_esto_int;
+
 always_ff @(posedge clk or posedge reset) begin
     if (reset) begin
         strm_packet_w2e_wsti_d1 <= '0;
         strm_packet_e2w_esti_d1 <= '0;
+        strm_packet_e2w_wsto <= '0;
+        strm_packet_w2e_esto <= '0;
     end
     else if (clk_en) begin
         strm_packet_w2e_wsti_d1 <= strm_packet_w2e_wsti;
         strm_packet_e2w_esti_d1 <= strm_packet_e2w_esti;
+        strm_packet_e2w_wsto <= strm_packet_e2w_wsto_int;
+        strm_packet_w2e_esto <= strm_packet_w2e_esto_int;
     end
 end
 
@@ -209,6 +216,8 @@ glb_core glb_core (
     .strm_start_pulse           (strm_start_pulse_int),
     .pc_start_pulse             (pc_start_pulse_int),
     .clk_en                     (clk_en_d1),
+    .strm_packet_e2w_wsto       (strm_packet_e2w_wsto_int),
+    .strm_packet_w2e_esto       (strm_packet_w2e_esto_int),
     .*);
 
 //============================================================================//

@@ -40,8 +40,11 @@ set_driving_cell -no_design_rule \
 set_min_delay -from [get_ports *_est* -filter "direction==in"] [expr ${clock_period}*0.65]
 set_min_delay -from [get_ports *_wst* -filter "direction==in"] [expr ${clock_period}*0.65]
 
+# set_min_delay for strm inputs to smaller number
+set_min_delay -from [get_ports strm*_est* -filter "direction==in"] [expr ${clock_period}*0.55]
+set_min_delay -from [get_ports strm*_wst* -filter "direction==in"] [expr ${clock_period}*0.55]
 # min delay for if_cfg ports should be set low
-set_min_delay -from [get_ports if_cfg_* -filter "direction==in"] [expr ${clock_period}*0.50]
+set_min_delay -from [get_ports if_cfg_* -filter "direction==in"] [expr ${clock_period}*0.55]
 
 # min delay for pc ports should be set low
 set_min_delay -from [get_ports pc_*_est* -filter "direction==in"] [expr ${clock_period}*0.50]
@@ -56,11 +59,11 @@ set_min_delay -to [get_ports *_esto*] [expr ${clock_period}*0.65]
 set_min_delay -to [get_ports *_wsto*] [expr ${clock_period}*0.65]
 
 # strm esto/wsto needs to have longer min delay to fix hold time
-set_min_delay -to [get_ports strm_*_wsto*] [expr ${clock_period}*0.70]
-set_min_delay -to [get_ports strm_*_esto*] [expr ${clock_period}*0.70]
+# set_min_delay -to [get_ports strm_*_wsto*] [expr ${clock_period}*0.70]
+# set_min_delay -to [get_ports strm_*_esto*] [expr ${clock_period}*0.70]
 
 # min delay for strm_rd_data should be set back to normal
-set_min_delay -to [get_ports strm_rd_data*_wsto*] [expr ${clock_period}*0.65]
+# set_min_delay -to [get_ports strm_rd_data*_wsto*] [expr ${clock_period}*0.65]
 
 # if_cfg ports should be set to low
 set_min_delay -to [get_ports if_cfg_* -filter "direction==out"] [expr ${clock_period}*0.50]
@@ -96,8 +99,12 @@ set_output_delay -clock ${clock_name} [expr ${clock_period}*0.75] [get_ports cgr
 # all est<->wst connections
 set_output_delay -clock ${clock_name} [expr ${clock_period}*0.4] [get_ports *_esto* -filter "direction==out"]
 set_output_delay -clock ${clock_name} [expr ${clock_period}*0.4] [get_ports *_wsto* -filter "direction==out"]
-set_output_delay -clock ${clock_name} [expr ${clock_period}*0.3] [get_ports proc*_esto* -filter "direction==out"]
-set_output_delay -clock ${clock_name} [expr ${clock_period}*0.3] [get_ports proc*_wsto* -filter "direction==out"]
+
+set_output_delay -clock ${clock_name} [expr ${clock_period}*0.2] [get_ports proc*_esto* -filter "direction==out"]
+set_output_delay -clock ${clock_name} [expr ${clock_period}*0.2] [get_ports proc*_wsto* -filter "direction==out"]
+set_output_delay -clock ${clock_name} [expr ${clock_period}*0.2] [get_ports strm*_esto* -filter "direction==out"]
+set_output_delay -clock ${clock_name} [expr ${clock_period}*0.2] [get_ports strm*_wsto* -filter "direction==out"]
+
 set_output_delay -clock ${clock_name} [expr ${clock_period}*0.5] [get_ports if_cfg_est* -filter "direction==out"]
 set_output_delay -clock ${clock_name} [expr ${clock_period}*0.5] [get_ports if_cfg_wst* -filter "direction==out"]
 set_output_delay -clock ${clock_name} [expr ${clock_period}*0.5] [get_ports if_sram_cfg_est* -filter "direction==out"]
