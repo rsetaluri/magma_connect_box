@@ -407,6 +407,7 @@ class TestBenchGenerator:
                                    num_cycles=1000000,
                                    no_warning=True,
                                    dump_vcd=False,
+                                   clock_step_delay=(1.1 / 2.0), 
                                    include_verilog_libraries=verilog_libraries,
                                    directory=tempdir)
         else:

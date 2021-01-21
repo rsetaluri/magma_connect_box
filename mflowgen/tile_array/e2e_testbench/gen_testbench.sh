@@ -33,7 +33,10 @@ docker cp ./garnet $container_name:/aha/garnet
 # run the tests in the container and get all relevant files (tb, place file)
 docker exec $container_name /bin/bash -c \
   "source /cad/modules/tcl/init/bash;
-   module load xcelium;
+   module load xcelium/19.03.003;
+   cd /aha/Halide-to-Hardware/;
+   git checkout manual-mappings-newlake;
+   cd /aha
    source /aha/bin/activate;
    aha garnet ${flags};
    cd garnet;

@@ -33,8 +33,8 @@ def construct():
     'flatten_effort'    : 3,
     'topographical'     : True,
     # RTL Generation
-    'array_width'       : 32,
-    'array_height'      : 16,
+    'array_width'       : 12,
+    'array_height'      : 12,
     'interconnect_only' : False,
     # Power Domains
     'PWR_AWARE'         : True,
