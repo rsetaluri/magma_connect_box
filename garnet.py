@@ -261,7 +261,9 @@ class Garnet(Generator):
         routing_fix = archipelago.power.reduce_switching(routing, self.interconnect,
                                                          compact=compact)
         routing.update(routing_fix)
-        bitstream = []
+        bitstream, on_off_tiles = archipelago.power.turn_off_tiles(routing, self.interconnect)
+        fix_x_routing = archipelago.power.fix_x(routing, self.interconnect, on_off_tiles)
+        routing.update(fix_x_routing)
         bitstream += self.interconnect.get_route_bitstream(routing)
         bitstream += self.get_placement_bitstream(placement, id_to_name,
                                                   instance_to_instr)
