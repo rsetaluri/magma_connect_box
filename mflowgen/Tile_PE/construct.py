@@ -12,6 +12,19 @@ import sys
 from mflowgen.components import Graph, Step
 from shutil import which
 
+# Find and import easysteps
+# E.g. curdir='/foo/garnet_repo/mflowgen/Tile_PE' => easysteps='../easysteps'
+script_dir=os.path.dirname(os.path.realpath(__file__))
+
+sys.path.append(script_dir + '/../esteps2')
+from esteps2 import CStep
+from esteps2 import DStep
+from esteps2 import EStep
+
+from esteps2 import reorder
+from esteps2 import econnect
+from esteps2 import connect_outstanding_nodes
+
 def construct():
 
   g = Graph()
@@ -82,45 +95,72 @@ def construct():
   g.set_adk( adk_name )
   adk = g.get_adk_step()
 
+  # 'econnect' allows connections to be declared up here with the step definition.
+  # Or: could implement 'AStep' to do the connections all-in-one like CStep etc.
+  econnect( adk, 'synth'        )
+  econnect( adk, 'iflow'        )
+  econnect( adk, 'init'         )
+  econnect( adk, 'power'        )
+  econnect( adk, 'place'        )
+  econnect( adk, 'cts'          )
+  econnect( adk, 'postcts_hold' )
+  econnect( adk, 'route'        )
+  econnect( adk, 'postroute'    )
+  econnect( adk, 'signoff'      )
+  econnect( adk, 'drc'          )
+  econnect( adk, 'lvs'          )
+  econnect( adk, 'genlibdb, pt_signoff, debugcalibre' )
+
+
+  # New alternative CStep() allows step define, add and connect to
+  # happen all in one place. In addition, EStep() automatically
+  # connects all outputs as successor-node inputs.
+
   # Custom steps
 
-  rtl                  = Step( this_dir + '/../common/rtl'                         )
-  constraints          = Step( this_dir + '/constraints'                           )
-  custom_init          = Step( this_dir + '/custom-init'                           )
-  custom_genus_scripts = Step( this_dir + '/custom-genus-scripts'                  )
-  custom_flowgen_setup = Step( this_dir + '/custom-flowgen-setup'                  )
-  custom_power         = Step( this_dir + '/../common/custom-power-leaf'           )
-  short_fix            = Step( this_dir + '/../common/custom-short-fix'  )
-  genlibdb_constraints = Step( this_dir + '/../common/custom-genlibdb-constraints' )
-  custom_timing_assert = Step( this_dir + '/../common/custom-timing-assert'        )
-  custom_dc_scripts    = Step( this_dir + '/custom-dc-scripts'                     )
-  testbench            = Step( this_dir + '/../common/testbench'                   )
-  application          = Step( this_dir + '/../common/application'                 )
+  rtl                  = CStep( g, '/../common/rtl',              'synth' )
+  constraints          = CStep( g, "constraints",                 'synth,iflow' )
+  custom_init          = EStep( g, 'custom-init',                 'init' )
+  custom_genus_scripts = EStep( g, 'custom-genus-scripts',        'synth'  )
+  custom_flowgen_setup = EStep( g, 'custom-flowgen-setup',        'iflow'  )
+  custom_power         = EStep( g, '../common/custom-power-leaf', 'power'  )
+  short_fix            = EStep( g, '../common/custom-short-fix',  'postroute'  )
+  genlibdb_constraints = EStep( g, '../common/custom-genlibdb-constraints', 'genlibdb' )
+  custom_timing_assert = EStep( g, '../common/custom-timing-assert',        'synth,postcts_hold,signoff'  )
+  custom_dc_scripts    = CStep( g, "custom-dc-scripts",     'iflow' )
+  testbench            = CStep( g, "../common/testbench",   'post_pnr_power' )
+  application          = CStep( g, "../common/application", 'post_pnr_power,testbench' )
+
   if synth_power:
-    post_synth_power     = Step( this_dir + '/../common/tile-post-synth-power'     )
-  post_pnr_power       = Step( this_dir + '/../common/tile-post-pnr-power'         )
+    post_synth_power = CStep(g, "../common/tile-post-synth-power", '' )
+  post_pnr_power = CStep(g, "../common/tile-post-pnr-power", '' )
 
   # Power aware setup
   power_domains = None
   pwr_aware_gls = None
   if pwr_aware:
+      # Note can still use old-style step declares interleaved with new style.
       power_domains = Step( this_dir + '/../common/power-domains' )
       pwr_aware_gls = Step( this_dir + '/../common/pwr-aware-gls' )
 
   # Default steps
-  info         = Step( 'info',                          default=True )
-  synth        = Step( 'cadence-genus-synthesis',       default=True )
-  iflow        = Step( 'cadence-innovus-flowsetup',     default=True )
-  init         = Step( 'cadence-innovus-init',          default=True )
-  power        = Step( 'cadence-innovus-power',         default=True )
-  place        = Step( 'cadence-innovus-place',         default=True )
-  cts          = Step( 'cadence-innovus-cts',           default=True )
-  postcts_hold = Step( 'cadence-innovus-postcts_hold',  default=True )
-  route        = Step( 'cadence-innovus-route',         default=True )
-  postroute    = Step( 'cadence-innovus-postroute',     default=True )
-  signoff      = Step( 'cadence-innovus-signoff',       default=True )
-  pt_signoff   = Step( 'synopsys-pt-timing-signoff',    default=True )
-  genlibdb     = Step( 'cadence-genus-genlib',          default=True )
+
+  # New DStep() allows default-step define, add and connect to happen all in one place.
+
+  info         = DStep( g, 'info', '' )
+  synth        = DStep( g, 'cadence-genus-synthesis',     'iflow, init, power, place, cts, custom_flowgen_setup')
+  iflow        = DStep( g, 'cadence-innovus-flowsetup',   'init, power, place, cts, postcts_hold, route, postroute, signoff')
+  init         = DStep( g, 'cadence-innovus-init',        'power' )
+  power        = DStep( g, 'cadence-innovus-power',       'place' )
+  place        = DStep( g, 'cadence-innovus-place',       'cts' )
+  cts          = DStep( g, 'cadence-innovus-cts',         'postcts_hold' )
+  postcts_hold = DStep( g, 'cadence-innovus-postcts_hold','route' )
+  route        = DStep( g, 'cadence-innovus-route',       'postroute' )
+  postroute    = DStep( g, 'cadence-innovus-postroute',   'signoff' )
+  signoff      = DStep( g, 'cadence-innovus-signoff',     'drc, lvs, genlibdb, post_pnr_power, pt_signoff')
+  pt_signoff   = DStep( g, 'synopsys-pt-timing-signoff',  'post_pnr_power' )
+  genlibdb     = DStep( g, 'cadence-genus-genlib',        '' )
+
   if which("calibre") is not None:
       drc          = Step( 'mentor-calibre-drc',            default=True )
       lvs          = Step( 'mentor-calibre-lvs',            default=True )
@@ -130,16 +170,10 @@ def construct():
   debugcalibre = Step( 'cadence-innovus-debug-calibre', default=True )
 
   # Add custom timing scripts
-  custom_timing_steps = [ synth, postcts_hold, signoff ] # connects to these
-  for c_step in custom_timing_steps:
-    c_step.extend_inputs( custom_timing_assert.all_outputs() )
+  # (No longer needed because done by EStep() above)
 
   # Add extra input edges to innovus steps that need custom tweaks
-  init.extend_inputs( custom_init.all_outputs() )
-  power.extend_inputs( custom_power.all_outputs() )
-  genlibdb.extend_inputs( genlibdb_constraints.all_outputs() )
-  synth.extend_inputs( custom_genus_scripts.all_outputs() )
-  iflow.extend_inputs( custom_flowgen_setup.all_outputs() )
+  # (No longer needed because done by EStep() above)
 
   # Extra input to DC for constraints
   synth.extend_inputs( ["common.tcl", "reporting.tcl", "generate-results.tcl", "scenarios.tcl", "report_alu.py", "parse_alu.py"] )
@@ -151,9 +185,10 @@ def construct():
   place.extend_inputs( ["sdc"] )
   cts.extend_inputs( ["sdc"] )
 
-  order = synth.get_param( 'order' )
-  order.append( 'copy_sdc.tcl' )
-  synth.set_param( 'order', order )
+  # New 'reorder()' method simplifies this common task...
+  # Or: could e.g. implement something more generic like
+  #    modify_parmlist( synth, 'order', 'last: copy_sdc.tcl' )
+  reorder( synth, 'last: copy_sdc.tcl' )
 
   # Power aware setup
   if pwr_aware:
@@ -168,142 +203,54 @@ def construct():
       signoff.extend_inputs(['conn-aon-cells-vdd.tcl', 'pd-generate-lvs-netlist.tcl', 'check-clamp-logic-structure.tcl'] )
       pwr_aware_gls.extend_inputs(['design.vcs.pg.v'])
   
-  # Add short_fix script(s) to list of available postroute scripts
-  postroute.extend_inputs( short_fix.all_outputs() )
-
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
   #-----------------------------------------------------------------------
 
-  g.add_step( info                     )
-  g.add_step( rtl                      )
-  g.add_step( constraints              )
-  g.add_step( custom_dc_scripts        )
-  g.add_step( synth                    )
-  g.add_step( custom_timing_assert     )
-  g.add_step( custom_genus_scripts     )
-  g.add_step( iflow                    )
-  g.add_step( custom_flowgen_setup     )
-  g.add_step( init                     )
-  g.add_step( custom_init              )
-  g.add_step( power                    )
-  g.add_step( custom_power             )
-  g.add_step( place                    )
-  g.add_step( cts                      )
-  g.add_step( postcts_hold             )
-  g.add_step( route                    )
-  g.add_step( postroute                )
-  g.add_step( short_fix                )
-  g.add_step( signoff                  )
-  g.add_step( pt_signoff               )
-  g.add_step( genlibdb_constraints     )
-  g.add_step( genlibdb                 )
+  # (Can still do old-style add_step() if desired)
+
   g.add_step( drc                      )
   g.add_step( lvs                      )
   g.add_step( debugcalibre             )
 
-  g.add_step( application              )
-  g.add_step( testbench                )
   if synth_power:
     g.add_step( post_synth_power       )
-  g.add_step( post_pnr_power           )
 
   # Power aware step
   if pwr_aware:
       g.add_step( power_domains        )
       g.add_step( pwr_aware_gls        )
-
+                      
   #-----------------------------------------------------------------------
   # Graph -- Add edges
   #-----------------------------------------------------------------------
 
   # Dynamically add edges
 
+  # Complete all easysteps connections
+  connect_outstanding_nodes(g, DBG=1)
+
   # Connect by name
 
-  g.connect_by_name( adk,      synth        )
-  g.connect_by_name( adk,      iflow        )
-  g.connect_by_name( adk,      init         )
-  g.connect_by_name( adk,      power        )
-  g.connect_by_name( adk,      place        )
-  g.connect_by_name( adk,      cts          )
-  g.connect_by_name( adk,      postcts_hold )
-  g.connect_by_name( adk,      route        )
-  g.connect_by_name( adk,      postroute    )
-  g.connect_by_name( adk,      signoff      )
-  g.connect_by_name( adk,      drc          )
-  g.connect_by_name( adk,      lvs          )
+  # I guess...this is another way to do extend_inputs/outputs()?
+  g.connect( signoff.o('design-merged.gds'), drc.i('design_merged.gds') )
+  g.connect( signoff.o('design-merged.gds'), lvs.i('design_merged.gds') )
 
-  g.connect_by_name( rtl,         synth          )
-  g.connect_by_name( constraints, synth          )
-  g.connect_by_name( custom_genus_scripts, synth )
-  g.connect_by_name( constraints, iflow          )
-  g.connect_by_name( custom_dc_scripts, iflow    )
 
-  for c_step in custom_timing_steps:
-    g.connect_by_name( custom_timing_assert, c_step )
-
-  g.connect_by_name( synth,       iflow                )
-  g.connect_by_name( synth,       init                 )
-  g.connect_by_name( synth,       power                )
-  g.connect_by_name( synth,       place                )
-  g.connect_by_name( synth,       cts                  )
-  g.connect_by_name( synth,       custom_flowgen_setup )
-
-  g.connect_by_name( custom_flowgen_setup, iflow )
-  g.connect_by_name( iflow,    init         )
-  g.connect_by_name( iflow,    power        )
-  g.connect_by_name( iflow,    place        )
-  g.connect_by_name( iflow,    cts          )
-  g.connect_by_name( iflow,    postcts_hold )
-  g.connect_by_name( iflow,    route        )
-  g.connect_by_name( iflow,    postroute    )
-  g.connect_by_name( iflow,    signoff      )
-
-  g.connect_by_name( custom_init,  init     )
-  g.connect_by_name( custom_power, power    )
-
-  # Fetch short-fix script in prep for eventual use by postroute
-  g.connect_by_name( short_fix, postroute )
-
-  g.connect_by_name( init,         power        )
-  g.connect_by_name( power,        place        )
-  g.connect_by_name( place,        cts          )
-  g.connect_by_name( cts,          postcts_hold )
-  g.connect_by_name( postcts_hold, route        )
-  g.connect_by_name( route,        postroute    )
-  g.connect_by_name( postroute,    signoff      )
-
-  g.connect_by_name( signoff,      drc          )
-  g.connect_by_name( signoff,      lvs          )
-  g.connect(signoff.o('design-merged.gds'), drc.i('design_merged.gds'))
-  g.connect(signoff.o('design-merged.gds'), lvs.i('design_merged.gds'))
-
-  g.connect_by_name( signoff,              genlibdb )
-  g.connect_by_name( adk,                  genlibdb )
-  g.connect_by_name( genlibdb_constraints, genlibdb )
-
-  g.connect_by_name( adk,          pt_signoff   )
-  g.connect_by_name( signoff,      pt_signoff   )
-
-  g.connect_by_name( application, testbench       )
+  # Old-style connect syntax still allowed...
   if synth_power:
       g.connect_by_name( application, post_synth_power )
       g.connect_by_name( synth,       post_synth_power )
       g.connect_by_name( testbench,   post_synth_power )
-  g.connect_by_name( application, post_pnr_power )
-  g.connect_by_name( signoff,     post_pnr_power )
-  g.connect_by_name( pt_signoff,  post_pnr_power )
-  g.connect_by_name( testbench,   post_pnr_power )
 
-  g.connect_by_name( adk,      debugcalibre )
+  # Old-style connect syntax still allowed...
   g.connect_by_name( synth,    debugcalibre )
   g.connect_by_name( iflow,    debugcalibre )
   g.connect_by_name( signoff,  debugcalibre )
   g.connect_by_name( drc,      debugcalibre )
   g.connect_by_name( lvs,      debugcalibre )
 
-  # Pwr aware steps:
+  # Pwr aware steps (old-style syntax):
   if pwr_aware:
       g.connect_by_name( power_domains,        synth        )
       g.connect_by_name( power_domains,        init         )
@@ -326,10 +273,9 @@ def construct():
 
   # Add custom timing scripts
 
+  custom_timing_steps = [ synth, postcts_hold, signoff ] # connects to these
   for c_step in custom_timing_steps:
-    order = c_step.get_param( 'order' )
-    order.append( 'report-special-timing.tcl' )
-    c_step.set_param( 'order', order )
+    reorder( c_step, 'last: report-special-timing.tcl' )
     c_step.extend_postconditions( [{ 'pytest': 'inputs/test_timing.py' }] )
 
   # Update PWR_AWARE variable
@@ -356,85 +302,66 @@ def construct():
   # init -- Add 'edge-blockages.tcl' after 'pin-assignments.tcl'
   # and 'additional-path-groups' after 'make_path_groups'
 
-  order = init.get_param('order') # get the default script run order
-  path_group_idx = order.index( 'make-path-groups.tcl' )
-  order.insert( path_group_idx + 1, 'additional-path-groups.tcl' )
-  pin_idx = order.index( 'pin-assignments.tcl' ) # find pin-assignments.tcl
-  order.insert( pin_idx + 1, 'edge-blockages.tcl' ) # add here
-  init.update_params( { 'order': order } )
+  reorder(init,
+          'after make-path-groups.tcl : additional-path-groups.tcl',
+          'after pin-assignments.tcl  : edge-blockages.tcl')
 
   # Adding new input for genlibdb node to run
-  order = genlibdb.get_param('order') # get the default script run order
-  read_idx = order.index( 'read_design.tcl' ) # find read_design.tcl
-  order.insert( read_idx + 1, 'genlibdb-constraints.tcl' ) # add here
-  genlibdb.update_params( { 'order': order } )
+  reorder( genlibdb, 'after read_design.tcl : genlibdb-constraints.tcl' )
 
   # Pwr aware steps:
   if pwr_aware:
+
       # init node
-      order = init.get_param('order')
-      read_idx = order.index( 'floorplan.tcl' ) # find floorplan.tcl
-      order.insert( read_idx + 1, 'pe-load-upf.tcl' ) # add here
-      order.insert( read_idx + 2, 'pd-pe-floorplan.tcl' ) # add here
-      order.insert( read_idx + 3, 'pe-add-endcaps-welltaps-setup.tcl' ) # add here
-      order.insert( read_idx + 4, 'pd-add-endcaps-welltaps.tcl' ) # add here
-      order.insert( read_idx + 5, 'pe-power-switches-setup.tcl') # add here
-      order.insert( read_idx + 6, 'add-power-switches.tcl' ) # add here
-      order.remove('add-endcaps-welltaps.tcl')
-      order.append('check-clamp-logic-structure.tcl')
-      init.update_params( { 'order': order } )
+      reorder(init,
+              'after floorplan.tcl: pe-load-upf.tcl',
+              'then  : pd-pe-floorplan.tcl',
+              'then  : pe-add-endcaps-welltaps-setup.tcl',
+              'then  : pd-add-endcaps-welltaps.tcl',
+              'then  : pe-power-switches-setup.tcl',
+              'then  : add-power-switches.tcl',
+              'remove: add-endcaps-welltaps.tcl',
+              'last  : check-clamp-logic-structure.tcl')
 
       # power node
-      order = power.get_param('order')
-      order.insert( 0, 'pd-globalnetconnect.tcl' ) # add here
-      order.remove('globalnetconnect.tcl')
-      power.update_params( { 'order': order } )
+      reorder(power,
+              'first : pd-globalnetconnect.tcl',
+              'delete: globalnetconnect.tcl')
 
       # place node
-      order = place.get_param('order')
-      read_idx = order.index( 'main.tcl' ) # find main.tcl
-      order.insert(read_idx + 1, 'add-aon-tie-cells.tcl')
-      order.insert(read_idx - 1, 'place-dont-use-constraints.tcl')
-      order.append('check-clamp-logic-structure.tcl')
-      place.update_params( { 'order': order } )
+      reorder(place,
+              'after  main.tcl: add-aon-tie-cells.tcl',
+              'before main.tcl: place-dont-use-constraints.tcl',
+              'last           : check-clamp-logic-structure.tcl')
 
       # cts node
-      order = cts.get_param('order')
-      order.insert( 0, 'conn-aon-cells-vdd.tcl' ) # add here
-      order.append('check-clamp-logic-structure.tcl')
-      cts.update_params( { 'order': order } )
+      reorder(cts,
+              'first: conn-aon-cells-vdd.tcl',
+              'last:  check-clamp-logic-structure.tcl')
 
       # postcts_hold node
-      order = postcts_hold.get_param('order')
-      order.insert( 0, 'conn-aon-cells-vdd.tcl' ) # add here
-      order.append('check-clamp-logic-structure.tcl')
-      postcts_hold.update_params( { 'order': order } )
+      reorder(postcts_hold,
+              'first: conn-aon-cells-vdd.tcl',
+              'last:  check-clamp-logic-structure.tcl')
 
       # route node
-      order = route.get_param('order')
-      order.insert( 0, 'conn-aon-cells-vdd.tcl' ) # add here
-      order.append('check-clamp-logic-structure.tcl')
-      route.update_params( { 'order': order } )
+      reorder(route,
+              'first: conn-aon-cells-vdd.tcl',
+              'last:  check-clamp-logic-structure.tcl')
 
       # postroute node
-      order = postroute.get_param('order')
-      order.insert( 0, 'conn-aon-cells-vdd.tcl' ) # add here
-      order.append('check-clamp-logic-structure.tcl')
-      postroute.update_params( { 'order': order } )
+      reorder(postroute,
+              'first: conn-aon-cells-vdd.tcl',
+              'last:  check-clamp-logic-structure.tcl')
 
       # Add fix-shorts as the last thing to do in postroute
-      order = postroute.get_param('order') ; # get the default script run order
-      order.append('fix-shorts.tcl' )      ; # Add fix-shorts at the end
-      postroute.update_params( { 'order': order } ) ; # Update
+      reorder(postroute, 'last:  fix-shorts.tcl')
 
       # signoff node
-      order = signoff.get_param('order')
-      order.insert( 0, 'conn-aon-cells-vdd.tcl' ) # add here
-      read_idx = order.index( 'generate-results.tcl' ) # find generate_results.tcl
-      order.insert(read_idx + 1, 'pd-generate-lvs-netlist.tcl')
-      order.append('check-clamp-logic-structure.tcl')
-      signoff.update_params( { 'order': order } )
-
+      reorder(signoff,
+              'first                     : conn-aon-cells-vdd.tcl',
+              'after generate-results.tcl: pd-generate-lvs-netlist.tcl',
+              'last                      : check-clamp-logic-structure.tcl')
   return g
 
 if __name__ == '__main__':
