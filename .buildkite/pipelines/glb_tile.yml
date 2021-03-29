@@ -20,7 +20,7 @@ steps:
   commands:
   - set -x; mkdir -p full_chip; cp -rp /sim/buildkite-agent/gold/full_chip/*-rtl full_chip/
   - set -x; mkdir -p full_chip/14-glb_top/inputs
-  - set -x; pushd full_chip/14-glb_top/inputs; ln -s ../../9-rtl/outputs/design.v; popd
+  - set -x; pushd full_chip/14-glb_top/inputs; ln -s ../../*[0-9]-rtl/outputs/design.v; popd
   - $TEST --need_space 3G full_chip glb_top --steps rtl --debug
   - $TEST --need_space 3G full_chip glb_top --steps glb_tile --debug
 - wait: { continue_on_failure: true } # One step at a time + continue on failure

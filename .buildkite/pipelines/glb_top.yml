@@ -1,0 +1,26 @@
+agents: { jobsize: "hours" }
+
+env:
+  GOLD: /build/glb_top.${BUILDKITE_BUILD_NUMBER}/full_chip
+
+steps:
+
+- label: 'setup'
+  commands:
+  - 'source mflowgen/bin/setup-buildkite.sh --dir $$GOLD;
+     mflowgen run --design $$GARNET_HOME/mflowgen/full_chip'
+- wait: ~
+
+- label: 'rtl'
+  commands:
+  - 'source mflowgen/bin/setup-buildkite.sh --dir $$GOLD --need_space 100G;
+     echo "--- MAKE RTL"; set -o pipefail;
+     make rtl |& tee make-rtl.log'
+- wait: ~
+
+- label: 'glb_top'
+  commands:
+  - 'source mflowgen/bin/setup-buildkite.sh --dir $$GOLD --need_space 84G;
+     echo "--- MAKE GLB_TOP"; set -o pipefail;
+     make glb_top |& tee make-glb_top.log'
+- wait: ~
