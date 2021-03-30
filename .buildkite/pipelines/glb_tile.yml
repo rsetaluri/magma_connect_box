@@ -1,3 +1,5 @@
+# Builds glb_tile ONLY using cached gold collateral
+
 agents: { jobsize: "hours" }
 
 ##############################################################################
