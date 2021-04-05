@@ -5,10 +5,11 @@
 ** Author: Taeyoung Kong
 ** Change history: 02/06/2020 - Implement first version
 **===========================================================================*/
+
+module glb_tile_cfg 
 import global_buffer_pkg::*;
 import global_buffer_param::*;
-
-module glb_tile_cfg (
+(
     input  logic                            clk,
     input  logic                            reset,
     input  logic [TILE_SEL_ADDR_WIDTH-1:0]  glb_tile_id,
@@ -30,6 +31,7 @@ module glb_tile_cfg (
     output logic [1:0]                      cfg_st_dma_mode,
     output logic                            cfg_pc_dma_mode,
     output logic [1:0]                      cfg_soft_reset_mux,
+    output logic                            cfg_use_valid,
     output logic [LATENCY_WIDTH-1:0]        cfg_latency,
     output logic [LATENCY_WIDTH-1:0]        cfg_pc_latency,
     output dma_st_header_t                  cfg_st_dma_header [QUEUE_DEPTH],
@@ -76,70 +78,71 @@ logic  [1:0] l2h_tile_ctrl_st_dma_mode_r;
 logic l2h_tile_ctrl_pc_dma_mode_r;
 logic  [LATENCY_WIDTH-1:0] l2h_latency_strm_latency_r;
 logic  [1:0] l2h_tile_ctrl_soft_reset_mux_r;
+logic  l2h_tile_ctrl_use_valid_r;
 logic  [LATENCY_WIDTH-1:0] l2h_latency_pc_latency_r;
 logic l2h_st_dma_header_0_validate_validate_r;
-logic  [21:0] l2h_st_dma_header_0_start_addr_start_addr_r;
-logic  [20:0] l2h_st_dma_header_0_num_words_num_words_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_st_dma_header_0_start_addr_start_addr_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_st_dma_header_0_num_words_num_words_r;
 logic l2h_st_dma_header_1_validate_validate_r;
-logic  [21:0] l2h_st_dma_header_1_start_addr_start_addr_r;
-logic  [20:0] l2h_st_dma_header_1_num_words_num_words_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_st_dma_header_1_start_addr_start_addr_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_st_dma_header_1_num_words_num_words_r;
 logic l2h_st_dma_header_2_validate_validate_r;
-logic  [21:0] l2h_st_dma_header_2_start_addr_start_addr_r;
-logic  [20:0] l2h_st_dma_header_2_num_words_num_words_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_st_dma_header_2_start_addr_start_addr_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_st_dma_header_2_num_words_num_words_r;
 logic l2h_st_dma_header_3_validate_validate_r;
-logic  [21:0] l2h_st_dma_header_3_start_addr_start_addr_r;
-logic  [20:0] l2h_st_dma_header_3_num_words_num_words_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_st_dma_header_3_start_addr_start_addr_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_st_dma_header_3_num_words_num_words_r;
 logic l2h_ld_dma_header_0_validate_validate_r;
-logic  [21:0] l2h_ld_dma_header_0_start_addr_start_addr_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_ld_dma_header_0_start_addr_start_addr_r;
 logic  [15:0] l2h_ld_dma_header_0_active_ctrl_num_active_words_r;
 logic  [15:0] l2h_ld_dma_header_0_active_ctrl_num_inactive_words_r;
-logic  [20:0] l2h_ld_dma_header_0_iter_ctrl_0_range_r;
-logic  [10:0] l2h_ld_dma_header_0_iter_ctrl_0_stride_r;
-logic  [20:0] l2h_ld_dma_header_0_iter_ctrl_1_range_r;
-logic  [10:0] l2h_ld_dma_header_0_iter_ctrl_1_stride_r;
-logic  [20:0] l2h_ld_dma_header_0_iter_ctrl_2_range_r;
-logic  [10:0] l2h_ld_dma_header_0_iter_ctrl_2_stride_r;
-logic  [20:0] l2h_ld_dma_header_0_iter_ctrl_3_range_r;
-logic  [10:0] l2h_ld_dma_header_0_iter_ctrl_3_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_0_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_0_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_1_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_1_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_2_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_2_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_3_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_0_iter_ctrl_3_stride_r;
 logic l2h_ld_dma_header_1_validate_validate_r;
-logic  [21:0] l2h_ld_dma_header_1_start_addr_start_addr_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_ld_dma_header_1_start_addr_start_addr_r;
 logic  [15:0] l2h_ld_dma_header_1_active_ctrl_num_active_words_r;
 logic  [15:0] l2h_ld_dma_header_1_active_ctrl_num_inactive_words_r;
-logic  [20:0] l2h_ld_dma_header_1_iter_ctrl_0_range_r;
-logic  [10:0] l2h_ld_dma_header_1_iter_ctrl_0_stride_r;
-logic  [20:0] l2h_ld_dma_header_1_iter_ctrl_1_range_r;
-logic  [10:0] l2h_ld_dma_header_1_iter_ctrl_1_stride_r;
-logic  [20:0] l2h_ld_dma_header_1_iter_ctrl_2_range_r;
-logic  [10:0] l2h_ld_dma_header_1_iter_ctrl_2_stride_r;
-logic  [20:0] l2h_ld_dma_header_1_iter_ctrl_3_range_r;
-logic  [10:0] l2h_ld_dma_header_1_iter_ctrl_3_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_0_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_0_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_1_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_1_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_2_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_2_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_3_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_1_iter_ctrl_3_stride_r;
 logic l2h_ld_dma_header_2_validate_validate_r;
-logic  [21:0] l2h_ld_dma_header_2_start_addr_start_addr_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_ld_dma_header_2_start_addr_start_addr_r;
 logic  [15:0] l2h_ld_dma_header_2_active_ctrl_num_active_words_r;
 logic  [15:0] l2h_ld_dma_header_2_active_ctrl_num_inactive_words_r;
-logic  [20:0] l2h_ld_dma_header_2_iter_ctrl_0_range_r;
-logic  [10:0] l2h_ld_dma_header_2_iter_ctrl_0_stride_r;
-logic  [20:0] l2h_ld_dma_header_2_iter_ctrl_1_range_r;
-logic  [10:0] l2h_ld_dma_header_2_iter_ctrl_1_stride_r;
-logic  [20:0] l2h_ld_dma_header_2_iter_ctrl_2_range_r;
-logic  [10:0] l2h_ld_dma_header_2_iter_ctrl_2_stride_r;
-logic  [20:0] l2h_ld_dma_header_2_iter_ctrl_3_range_r;
-logic  [10:0] l2h_ld_dma_header_2_iter_ctrl_3_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_0_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_0_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_1_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_1_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_2_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_2_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_3_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_2_iter_ctrl_3_stride_r;
 logic l2h_ld_dma_header_3_validate_validate_r;
-logic  [21:0] l2h_ld_dma_header_3_start_addr_start_addr_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_ld_dma_header_3_start_addr_start_addr_r;
 logic  [15:0] l2h_ld_dma_header_3_active_ctrl_num_active_words_r;
 logic  [15:0] l2h_ld_dma_header_3_active_ctrl_num_inactive_words_r;
-logic  [20:0] l2h_ld_dma_header_3_iter_ctrl_0_range_r;
-logic  [10:0] l2h_ld_dma_header_3_iter_ctrl_0_stride_r;
-logic  [20:0] l2h_ld_dma_header_3_iter_ctrl_1_range_r;
-logic  [10:0] l2h_ld_dma_header_3_iter_ctrl_1_stride_r;
-logic  [20:0] l2h_ld_dma_header_3_iter_ctrl_2_range_r;
-logic  [10:0] l2h_ld_dma_header_3_iter_ctrl_2_stride_r;
-logic  [20:0] l2h_ld_dma_header_3_iter_ctrl_3_range_r;
-logic  [10:0] l2h_ld_dma_header_3_iter_ctrl_3_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_0_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_0_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_1_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_1_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_2_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_2_stride_r;
+logic  [MAX_NUM_WORDS_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_3_range_r;
+logic  [MAX_STRIDE_WIDTH-1:0] l2h_ld_dma_header_3_iter_ctrl_3_stride_r;
 logic l2h_pc_dma_header_validate_validate_r;
-logic  [21:0] l2h_pc_dma_header_start_addr_start_addr_r;
-logic  [18:0] l2h_pc_dma_header_num_cfg_num_cfgs_r;
+logic  [GLB_ADDR_WIDTH-1:0] l2h_pc_dma_header_start_addr_start_addr_r;
+logic  [MAX_NUM_CFGS_WIDTH-1:0] l2h_pc_dma_header_num_cfg_num_cfgs_r;
 
 //============================================================================//
 // assigns
@@ -162,6 +165,7 @@ assign cfg_st_dma_mode                          = l2h_tile_ctrl_st_dma_mode_r;
 assign cfg_pc_dma_mode                          = l2h_tile_ctrl_pc_dma_mode_r;
 
 assign cfg_soft_reset_mux                       = l2h_tile_ctrl_soft_reset_mux_r;
+assign cfg_use_valid                            = l2h_tile_ctrl_use_valid_r;
 assign cfg_latency                              = l2h_latency_strm_latency_r;
 assign cfg_pc_latency                           = l2h_latency_pc_latency_r;
 

@@ -7,8 +7,7 @@ from canal.util import IOSide
 import lassen.asm as asm
 from archipelago import pnr
 import pytest
-from cgra import create_cgra
-from memory_core.memory_mode import Mode
+from cgra import create_cgra, compress_config_data
 from memory_core.memory_core_magma import config_mem_tile
 
 
@@ -17,19 +16,9 @@ def io_sides():
     return IOSide.North | IOSide.East | IOSide.South | IOSide.West
 
 
-@pytest.fixture(scope="module")
-def dw_files():
-    filenames = ["DW_fp_add.v", "DW_fp_mult.v"]
-    dirname = "peak_core"
-    result_filenames = []
-    for name in filenames:
-        filename = os.path.join(dirname, name)
-        assert os.path.isfile(filename)
-        result_filenames.append(filename)
-    return result_filenames
-
-
-def test_stall(dw_files, io_sides):
+# Skipping since config is totally out of date - we need another way to test stall
+@pytest.mark.skip
+def test_stall(run_tb, io_sides):
     chip_size = 2
     depth = 10
     interconnect = create_cgra(chip_size, chip_size, io_sides,
@@ -104,6 +93,7 @@ def test_stall(dw_files, io_sides):
                    ("wen_in_1_reg_sel", 1, 0),
                    ("ren_in_1_reg_sel", 1, 0)]
     config_mem_tile(interconnect, config_data, configs_mem, mem_x, mem_y, mcore)
+    config_data = compress_config_data(config_data)
 
     circuit = interconnect.circuit()
 
@@ -169,18 +159,4 @@ def test_stall(dw_files, io_sides):
         tester.expect(circuit.interface[valid], 1)
         tester.step(2)
 
-    with tempfile.TemporaryDirectory() as tempdir:
-        for genesis_verilog in glob.glob("genesis_verif/*.*"):
-            shutil.copy(genesis_verilog, tempdir)
-        for filename in dw_files:
-            shutil.copy(filename, tempdir)
-        shutil.copy(os.path.join("tests", "test_memory_core",
-                                 "sram_stub.v"),
-                    os.path.join(tempdir, "sram_512w_16b.v"))
-        for aoi_mux in glob.glob("tests/*.sv"):
-            shutil.copy(aoi_mux, tempdir)
-        tester.compile_and_run(target="verilator",
-                               magma_output="coreir-verilog",
-                               magma_opts={"coreir_libs": {"float_DW"}},
-                               directory=tempdir,
-                               flags=["-Wno-fatal"])
+    run_tb(tester)
