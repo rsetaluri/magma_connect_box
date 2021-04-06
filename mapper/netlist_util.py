@@ -37,7 +37,9 @@ class CreateBuses(Visitor):
         self.node_to_bid = {}
         self.netlist = defaultdict(lambda: [])
         self.run(dag)
-        return self.bid_to_width, self.netlist
+        #Filter bid_to_width to contain only whats in self.netlist
+        buses = {bid:w for bid,w in self.bid_to_width.items() if bid in self.netlist}
+        return buses, self.netlist
 
     def create_buses(self, adt):
         if adt == Bit:
@@ -338,7 +340,7 @@ def print_netlist_info(info):
 
     print("netlist")
     for bid, v in info["netlist"].items():
-        print(f"  {k}")
+        print(f"  {bid}")
         for _v in v:
             print(f"    {_v}")
 
@@ -346,14 +348,15 @@ def print_netlist_info(info):
 from lassen.sim import PE_fc as lassen_fc
 from metamapper. common_passes import print_dag
 
-def create_netlist_info(dag: Dag):
+def create_netlist_info(dag: Dag, tile_info: dict):
     fdag = FlattenIO().doit(dag)
-    print_dag(fdag)
 
-    node_info = {
-        "global.PE" : 'p',
-        #nodes.dag_nodes["global.MEM"] : 'm',
-    }
+    def tile_to_char(t):
+        if t.split(".")[1]=="PE":
+            return "p"
+        elif t.split(".")[1]=="MEM":
+            return "m"
+    node_info = {t:tile_to_char(t) for t in tile_info}
 
     info = {}
     nodes_to_ids = CreateIDs(node_info).doit(fdag)
@@ -361,9 +364,7 @@ def create_netlist_info(dag: Dag):
     nodes_to_instrs = CreateInstrs(node_info).doit(fdag)
     info["id_to_instrs"] = {id:nodes_to_instrs[node] for node, id in nodes_to_ids.items()}
 
-    node_info = {
-        "global.PE" : lassen_fc.Py.input_t,
-    }
+    node_info = {t:fc.Py.input_t for t,fc in tile_info.items()}
     bus_info, netlist = CreateBuses(node_info).doit(fdag)
     info["buses"] = bus_info
     info["netlist"] = {}
