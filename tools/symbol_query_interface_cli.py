@@ -7,10 +7,6 @@ from magma.symbol_table import SymbolTable
 from magma.symbol_table_utils import SymbolQueryInterface
 
 
-class _QueryArgumentError(Exception):
-    pass
-
-
 class _ReadFileError(Exception):
     pass
 
@@ -21,7 +17,7 @@ class _SymbolTableParseError(Exception):
 
 class _ExitCodes(enum.Enum):
     SUCCESS = 0
-    UNCAUGHT_EXCEPTION = 200 #enum.auto()
+    UNCAUGHT_EXCEPTION = 200
     COMMAND_LINE_ARGUMENT_ERROR = enum.auto()
     READ_FILE_ERROR = enum.auto()
     SYMBOL_TABLE_PARSE_ERROR = enum.auto()
@@ -57,12 +53,11 @@ def _command_to_function(cmd):
 
 
 def _get_query(args):
-    non_empty_args = {k: v for k, v in vars(args).items() if v is not None}
-    if len(non_empty_args) != 1:
-        raise _QueryArgumentError()
-    non_empty_args = list(non_empty_args.items())[0]
-    cmd, arg = non_empty_args
-    return _command_to_function(cmd), (arg,)
+    if args.module is not None:
+        return SymbolQueryInterface.get_module_name, (args.module,)
+    if args.instance is not None:
+        return SymbolQueryInterface.get_instance_name, (args.instance,)
+    raise ValueError(args)
 
 
 def _main():
@@ -70,19 +65,15 @@ def _main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=_exit_code_str())
     parser.add_argument("file", type=str, help="symbol table (json) filename")
-    parser.add_argument("--module", type=str, help="module name query")
-    parser.add_argument("--instance", type=str, help="instance name query")
+    query_group = parser.add_mutually_exclusive_group(required=True)
+    query_group.add_argument("--module", type=str, help="module name query")
+    query_group.add_argument("--instance", type=str, help="instance name query")
     try:
         args = parser.parse_args()
     except BaseException as e:
         sys.stderr.write(f"Error parsing command line arguments: {repr(e)}\n")
         sys.exit(_ExitCodes.COMMAND_LINE_ARGUMENT_ERROR.value)
-    query_keys = set(["module", "instance"])
-    query_args = argparse.Namespace(**{k: getattr(args, k) for k in query_keys})
-    try:
-        query = _get_query(query_args)
-    except _QueryArgumentError:
-        sys.exit(_ExitCodes.COMMAND_LINE_ARGUMENT_ERROR.value)
+    query = _get_query(args)
     fn, query_args = query
     try:
         table = _get_table(args.file)
