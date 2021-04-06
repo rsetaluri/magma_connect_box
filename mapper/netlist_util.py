@@ -337,7 +337,7 @@ def print_netlist_info(info):
         print(f"  {k}, {v}")
 
     print("netlist")
-    for k, v in info["netlist"].items():
+    for bid, v in info["netlist"].items():
         print(f"  {k}")
         for _v in v:
             print(f"    {_v}")
@@ -368,6 +368,6 @@ def create_netlist_info(dag: Dag):
     info["buses"] = bus_info
     info["netlist"] = {}
     for bid, ports in netlist.items():
-        info["netlist"][bid] = {nodes_to_ids[node]: field for node,field in ports}
+        info["netlist"][bid] = [(nodes_to_ids[node], field) for node, field in ports]
     return info
 
