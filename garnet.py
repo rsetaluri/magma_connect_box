@@ -356,6 +356,7 @@ def main():
     parser.add_argument("--virtualize-group-size", type=int, default=4)
     parser.add_argument("--virtualize", action="store_true")
     parser.add_argument("--use-io-valid", action="store_true")
+    parser.add_argument('--pe', type=str, default="")
     args = parser.parse_args()
 
     if not args.interconnect_only:
@@ -363,6 +364,12 @@ def main():
     if args.standalone and not args.interconnect_only:
         raise Exception("--standalone must be specified with "
                         "--interconnect-only as well")
+    
+    pe_fc = PE_fc
+    if args.pe:
+        arch = read_arch(args.pe)
+        pe_fc = wrapped_peak_class(arch)
+    
     garnet = Garnet(width=args.width, height=args.height,
                     glb_tile_mem_size=args.glb_tile_mem_size,
                     add_pd=not args.no_pd,
@@ -371,7 +378,8 @@ def main():
                     use_io_valid=args.use_io_valid,
                     interconnect_only=args.interconnect_only,
                     use_sram_stub=not args.no_sram_stub,
-                    standalone=args.standalone)
+                    standalone=args.standalone,
+                    pe_fc=pe_fc)
 
     if args.verilog:
         garnet_circ = garnet.circuit()

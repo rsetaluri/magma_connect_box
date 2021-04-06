@@ -53,11 +53,8 @@ def create_cgra(width: int, height: int, io_sides: IOSide,
                 switchbox_type: SwitchBoxType = SwitchBoxType.Imran,
                 port_conn_override: Dict[str,
                                          List[Tuple[SwitchBoxSide,
-                                                    SwitchBoxIO]]] = None):
-    arch = read_arch(str("dse_pes/pointwise_pe.json"))
-    PE_fc = wrapped_peak_class(arch)
-
-    peak_gen_core = PeakCore(PE_fc)
+                                                    SwitchBoxIO]]] = None,
+                pe_fc = PE_fc):
 
     # currently only add 16bit io cores
     bit_widths = [1, 16]
