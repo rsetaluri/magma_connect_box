@@ -12,7 +12,7 @@ set horiz_pitch [dbGet top.fPlan.coreSite.size_x]
 if { ! $::env(soc_only) } {
   # Params
   # Vertical distance (in # pitches) betwween GLB and Tile array
-  set ic2glb_y_dist 360
+  set ic2glb_y_dist 330
   set ic2glc_y_dist 600
 
   # power mesh vars
@@ -168,19 +168,20 @@ foreach_in_collection sram $srams {
   } else {
     placeinstance $sram_name $x_loc $y_loc -fixed
   }
-  # Create M3 pg net blockage to prevent DRC from interaction
-  # with M5 stripes
+  # Create M1,M3 pg net blockage to prevent DRC from interaction
+  # with M5 stripes or pgnet short with sram pins
   set llx [dbGet [dbGet -p top.insts.name $sram_name].box_llx]
   set lly [dbGet [dbGet -p top.insts.name $sram_name].box_lly]
   set urx [dbGet [dbGet -p top.insts.name $sram_name].box_urx]
   set ury [dbGet [dbGet -p top.insts.name $sram_name].box_ury]
   set tb_margin $vert_pitch
   set lr_margin [expr $horiz_pitch * 3]
-  addHaloToBlock [expr $horiz_pitch * 3] $vert_pitch [expr $horiz_pitch * 3] $vert_pitch $sram_name -snapToSite
+  addHaloToBlock $lr_margin $tb_margin $lr_margin $tb_margin $sram_name -snapToSite
+  # Make routing blockage smaller than halo so that endcaps are not obstructed by M1 blockage
   createRouteBlk \
     -inst $sram_name \
-    -box [expr $llx - $lr_margin] [expr $lly - $tb_margin] [expr $urx + $lr_margin] [expr $ury + $tb_margin] \
-    -layer 3 \
+    -box [expr $llx - (0.8 * $lr_margin)] [expr $lly - (0.8 * $tb_margin)] [expr $urx + (0.8 * $lr_margin)] [expr $ury + (0.8 * $tb_margin)] \
+    -layer [list 1 3] \
     -pgnetonly
   set row [expr $row + 1]
   set y_loc [expr $y_loc + $sram_height + $sram_spacing_y]
@@ -199,7 +200,8 @@ foreach_in_collection sram $srams {
 }
 
 # Place analog block
-placeInstance iphy 1352.685 4098.000 -fixed
+# placeInstance iphy 1352.685 4098.000 -fixed ; # dragonphy
+  placeInstance iphy 1703.075 4098.000 -fixed ; # dragonphy2 11/2020
 
 # Create route Blockage over dragonphy
 set llx [dbGet [dbGet -p top.insts.name iphy].box_llx]

@@ -10,6 +10,7 @@ import mantle
 from gemstone.common.core import ConfigurableCore, PnRTag
 from gemstone.common.configurable import ConfigurationType
 from gemstone.generator.from_magma import FromMagma
+from gemstone.generator.const import Const
 from gemstone.generator.generator import Generator
 from collections import OrderedDict
 from .data_gate import data_gate
@@ -169,7 +170,7 @@ class PeakCore(ConfigurableCore):
         result = []
         for i in range(num_config):
             name = f"{instr_name}_{i}"
-            reg_idx = self.registers[name].addr
+            reg_idx = self.get_reg_idx(name)
             data = int(config[i * 32:i * 32 + 32])
             result.append((reg_idx, data))
         return result

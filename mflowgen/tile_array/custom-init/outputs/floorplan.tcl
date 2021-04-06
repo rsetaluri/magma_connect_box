@@ -10,15 +10,18 @@
 # Floorplan variables
 #-------------------------------------------------------------------------
 
+set vert_pitch [dbGet top.fPlan.coreSite.size_y]
+set horiz_pitch [dbGet top.fPlan.coreSite.size_x]
+
 set tile_separation_x 0
 set tile_separation_y 0
 set grid_margin_t 300
 set grid_margin_b 100
 set grid_margin_l 500
 set grid_margin_r 200
+set rows_per_pipeline_stage $::env(pipeline_config_interval)
+set pipeline_stage_height [expr $::env(pipeline_stage_height) * $vert_pitch]
 
-set vert_pitch [dbGet top.fPlan.coreSite.size_y]
-set horiz_pitch [dbGet top.fPlan.coreSite.size_x]
 
 # Core bounding box margins
 
@@ -118,8 +121,8 @@ for {set row $max_row} {$row >= $min_row} {incr row -1} {
     set lly [dbGet [dbGet -p top.insts.name $tiles($row,$col,name)].box_lly]
     set urx [dbGet [dbGet -p top.insts.name $tiles($row,$col,name)].box_urx]
     set ury [dbGet [dbGet -p top.insts.name $tiles($row,$col,name)].box_ury]
-    set tb_margin $vert_pitch
-    set lr_margin [expr $horiz_pitch * 3]
+    set tb_margin [expr $vert_pitch * 2]
+    set lr_margin [expr $horiz_pitch * 6]
     createRouteBlk \
       -box [expr $llx - $lr_margin] [expr $lly - $tb_margin] [expr $urx + $lr_margin] [expr $ury + $tb_margin] \
       -layer {3 8} \
@@ -127,7 +130,16 @@ for {set row $max_row} {$row >= $min_row} {incr row -1} {
 
     set x_loc [expr $x_loc + $tiles($row,$col,width) + $tile_separation_x]
   }
-  set y_loc [expr $y_loc + $tiles($row,$min_col,height) + $tile_separation_y]
+  # Get row number without min_row offset (starting from 1)
+  set absolute_row [expr $row - $min_row + 1]
+  # If there's a pipeline stage before the next row,
+  # leave a space that's *pipeline_stage_height* tall
+  if { ($rows_per_pipeline_stage != 0) && ([expr ($absolute_row - 1) % $rows_per_pipeline_stage] == 0)} {
+    set y_space $pipeline_stage_height
+  } else {
+    set y_space $tile_separation_y
+  }
+  set y_loc [expr $y_loc + $tiles($row,$min_col,height) + $y_space]
 }
 
 addHaloToBlock -allMacro [expr $horiz_pitch * 3] $vert_pitch [expr $horiz_pitch * 3] $vert_pitch
@@ -179,50 +191,8 @@ for {set row $min_row} {$row <= $max_row} {incr row} {
       # We're going to draw a shape to connect these two pins
 
       # Find the nearest hi/lo pin to which we can connect the id pin
-      if {1 > 0} {
-          # Original code broke when magma implemented some optimizations.
-          # It was no good b/c $id_net was no longer unique for a given id pin :(
-          # E.g. every 'zero' pin had the same net name 'const_0_1_out_0_'
-          # So we wrote and used the new code in the else clause below.
-          #
-          # Original code was reinstated after we implemented a hack
-          # that pulls old un-optimized RTL code before tile_array
-          # step; also I guess maybe we want this to break when/if
-          # per-pin net names not unique b/c we think it will break
-          # LVS LVS, tiehi/tielo assignments later...maybe...?
-          set tie_pin [get_pins -of_objects $id_net -filter "hierarchical_name!~*id*"] 
+      set tie_pin [get_pins -of_objects $id_net -filter "hierarchical_name!~*id*"] 
           
-      } else {
-          # Alternative method for finding tie_pin, works with latest magma "optimization."
-          # Does not depend on per-pin unique net names,
-          # but makes other dumb assumptions, see below for details.
-          # I.e. works when all "0" level pins are connected to same net "const_0..."
-          
-          ################################################################
-          # BEGIN new code for finding hi/lo pin "tie_pin"
-          #
-          # Find hi/lo pins nearest targeted tile_id pin, e.g.
-          #   - id pin 0 is between lo[0] and hi[0]
-          #   - id pin 1 is between hi[0] and lo[1]
-          set lo_index [expr int(floor($index/2.0))]; # E.g. index=1 => lo_index=0
-          set hi_index [expr int( ceil($index/2.0))]; # E.g. index=1 => hi_index=1
-          set lo_pin "$tile_name/lo[$lo_index]"     ; # "Tile_X00_Y01/lo[0]"
-          set hi_pin "$tile_name/hi[$hi_index]"     ; # "Tile_X00_Y01/hi[1]"
-          #
-          # Decide which pin to connect, 'hi' or 'lo'
-          # Note new algorithm depends on the following assumptions:
-          #   * all zero-targeted id pins are part of net 'const_0_1_out_0_'
-          #   * all id pins whose net name is not 'const_0_1_out_0_' are one-targeted pins
-          if { $id_net_name == "const_0_1_out_0_" } then {
-              set tie_pin [get_pins -filter "hierarchical_name==$lo_pin"]
-          } else {
-              set tie_pin [get_pins -filter "hierarchical_name==$hi_pin"]
-          }
-          # set tie_pin_name [get_property $tie_pin hierarchical_name]
-          # END new code for finding hi/lo pin "tie_pin"
-          ################################################################
-      } 
-
       # Build the shape that connects id pin to hi/lo pin
       set tie_pin_y [get_property $tie_pin y_coordinate]
       # For X, start our shape at the lefmost edge of the tile

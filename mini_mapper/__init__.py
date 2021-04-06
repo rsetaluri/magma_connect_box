@@ -60,7 +60,7 @@ def __get_alu_mapping(op_str):
     elif op_str == "umin":
         return ALU.LTE_Min, Signed.unsigned
     elif op_str == "smin":
-        return ALU.LTE_min, Signed.signed
+        return ALU.LTE_Min, Signed.signed
     elif op_str == "sel":
         return ALU.Sel, Signed.unsigned
     elif op_str == "rshft":
@@ -108,7 +108,8 @@ __PORT_RENAME = {
 
 def is_conn_out(raw_name):
     port_names = ["out", "outb", "valid", "rdata", "res", "res_p", "io2f_16",
-                  "alu_res", "tofab", "data_out_0"]
+                  "alu_res", "tofab", "data_out_0", "data_out_1",
+                  "stencil_valid", "data_out_pond"]
     if isinstance(raw_name, six.text_type):
         raw_name = raw_name.split(".")
     if len(raw_name) > 1:
@@ -122,7 +123,7 @@ def is_conn_out(raw_name):
 def is_conn_in(raw_name):
     port_names = ["in", "wen", "cg_en", "ren", "wdata", "in0", "in1", "in",
                   "inb", "data0", "data1", "f2io_16", "clk_en", "fromfab",
-                  "data_in_0", "wen_in_0", "ren_in_0"]
+                  "data_in_0", "wen_in_0", "ren_in_0", "data_in_pond"]
     if isinstance(raw_name, six.text_type):
         raw_name = raw_name.split(".")
     if len(raw_name) > 1:
@@ -206,7 +207,6 @@ def determine_track_bus(netlists, id_to_name):
             elif "valid" in port:
                 bus = 1
                 break
-            print(blk_id, port)
         track_mode[net_id] = bus
     return track_mode
 
@@ -513,6 +513,8 @@ def change_name_to_id(instances):
                 blk_type = "I"
             elif instance_type == "cgralib.Mem":
                 blk_type = "m"
+            elif instance_type == "cgralib.Pond":
+                blk_type = "M"
             elif instance_type == "coreir.const":
                 blk_type = "c"
             elif instance_type == "coreir.reg":
@@ -576,12 +578,14 @@ def get_tile_op(instance, blk_id, changed_pe, rename_op=True):
                 return "alu", 0
         else:
             return None, None
-    elif pe_type == "cgralib.Mem":
+    elif pe_type == "cgralib.Mem" or pe_type == "cgralib.Pond":
         if rename_op:
             # this depends on the mode
             mode = instance["modargs"]["mode"][-1]
-            assert mode in {"sram", "linebuffer", "unified_buffer"}
-            if mode == "linebuffer":
+            assert mode in {"sram", "linebuffer", "unified_buffer", "lake"}
+            if mode == "lake":
+                op = "mem_lake_{}"
+            elif mode == "linebuffer":
                 op = "mem_lb_" + str(instance["modargs"]["depth"][-1])
             elif mode == "sram":
                 op = "mem_sram_" + \
@@ -778,8 +782,8 @@ def wire_reset_to_flush(netlist, id_to_name, bus):
     mems = []
     io_blk = None
     for blk_id, name in id_to_name.items():
-        if "cgramem" in name and "rom" not in name:
-            assert blk_id[0] == "m"
+        if "cgramem" in name or "rom" in name or "lakemem" in name:
+            assert blk_id[0] in {"m", "M"}
             mems.append(blk_id)
         if "reset" in name and blk_id[0] in {"i", "I"}:
             io_blk = blk_id
@@ -791,6 +795,11 @@ def wire_reset_to_flush(netlist, id_to_name, bus):
         if net[0][0] == io_blk:
             reset_net_id = net_id
             break
+    used_ports = set()
+    for net in netlist.values():
+        for port in net:
+            used_ports.add(port)
+
     if reset_net_id is None:
         new_id = get_new_id("e", len(netlist), netlist)
         netlist[new_id] = [(io_blk, "io2f_1")]
@@ -798,8 +807,10 @@ def wire_reset_to_flush(netlist, id_to_name, bus):
         bus[new_id] = 1
     net = netlist[reset_net_id]
     for mem in mems:
-        net.append((mem, "flush"))
-        print("add flush to", mem)
+        blk_port = (mem, "flush")
+        if blk_port not in used_ports:
+            net.append((mem, "flush"))
+            print("add flush to", mem)
 
 
 def has_rom(id_to_name):
@@ -817,6 +828,59 @@ def get_new_id(prefix, init_num, groups):
         if new_id not in groups:
             return new_id
         num += 1
+
+
+def get_app_name(name):
+    path = os.path.dirname(name)
+    app_name = os.path.basename(path)
+    while app_name == "bin":
+        path = os.path.dirname(path)
+        app_name = os.path.basename(path)
+    return app_name
+
+
+def merge_row_buffer(id_to_name, netlist, bus):
+    row_buffers = {}
+    for blk_id, blk_name in id_to_name.items():
+        if blk_id[0] != "m":
+            continue
+        if "lb" not in blk_name:
+            continue
+        # these is the row buffer
+        prefix = blk_name.split("$")[0]
+        if prefix not in row_buffers:
+            row_buffers[prefix] = []
+        row_buffers[prefix].append(blk_id)
+    # sort blk id based on names. this will be the same ordering
+    for name in row_buffers:
+        row_buffers[name].sort(key=lambda x: id_to_name[x])
+
+    # merge every interested row buffers
+    for ids in row_buffers.values():
+        first_id = ids[0]
+        assert len(ids[1:]) == 1
+        second_id = ids[1]
+        # need to rename every output of the second id into the first one (second port)
+        for net_id in netlist:
+            for i in range(len(netlist[net_id])):
+                blk_id, port_name = netlist[net_id][i]
+                if blk_id == second_id and port_name == "data_out_0":
+                    netlist[net_id][i] = (first_id, "data_out_1")
+                elif blk_id == second_id and port_name == "valid_out_0":
+                    netlist[net_id][i] = (first_id, "valid_out_1")
+        # first pass to remove some netlist
+        netlist_to_remove = set()
+        for net_id in netlist:
+            if netlist[net_id][0] == (first_id, "data_out_0"):
+                netlist[net_id].remove((second_id, "data_in_0"))
+            elif netlist[net_id][0] == (first_id, "valid_out_0"):
+                netlist_to_remove.add(net_id)
+            elif netlist[net_id][-1] == (second_id, "ren_in_0"):
+                netlist_to_remove.add(net_id)
+        for net_id in netlist_to_remove:
+            netlist.pop(net_id)
+            bus.pop(net_id)
+        id_to_name.pop(second_id)
 
 
 def insert_valid(id_to_name, netlist, bus):
@@ -844,6 +908,27 @@ def insert_valid(id_to_name, netlist, bus):
     id_to_name[new_io_blk] = "io1_valid"
     bus[new_net_id] = 1
     print("inserting net", new_net_id, netlist[new_net_id])
+
+
+def rewire_valid(id_to_name, netlist, bus):
+    valid_io = None
+    mem_id = None
+    for blk_id, blk_name in id_to_name.items():
+        if blk_id[0] == "i" and "valid" in blk_name and valid_io is None:
+            valid_io = blk_id
+        if blk_id[0] == "m" and "lb" in blk_name and mem_id is None:
+            mem_id = blk_id
+
+    assert valid_io is not None
+    assert mem_id is not None
+    # rewrite the netlist
+    net_to_edit = None
+    for net_id in netlist:
+        for blk_id, _ in netlist[net_id][1:]:
+            if blk_id == valid_io:
+                net_to_edit = net_id
+                break
+    netlist[net_id] = [(mem_id, "stencil_valid"), (valid_io, "io2f_1")]
 
 
 def remove_dead_regs(netlist, bus):
@@ -1007,16 +1092,27 @@ def insert_valid_delay(id_to_name, instance_to_instr, netlist, bus):
     bus[new_net_id] = 1
 
 
+def get_total_cycle_from_app(halide_src):
+    # in some cases there are delay files in the same directory as halide
+    # design top
+    dirname = os.path.dirname(halide_src)
+    config_file = os.path.join(dirname, "testing.json")
+    if os.path.isfile(config_file):
+        with open(config_file) as f:
+            data = json.load(f)
+            if "total_cycles" in data:
+                return data["total_cycles"]
+    return 0
+
+
 def map_app(pre_map):
-    with tempfile.NamedTemporaryFile() as temp_file:
-        src_file = temp_file.name
-        subprocess.check_call(["mapper", pre_map, src_file])
-        netlist, folded_blocks, id_to_name, changed_pe = \
-            parse_and_pack_netlist(src_file, fold_reg=True)
-        rename_id_changed(id_to_name, changed_pe)
-        bus = determine_track_bus(netlist, id_to_name)
-        blks = get_blks(netlist)
-        connections, instances = read_netlist_json(src_file)
+    src_file = pre_map
+    netlist, folded_blocks, id_to_name, changed_pe = \
+        parse_and_pack_netlist(src_file, fold_reg=True)
+    rename_id_changed(id_to_name, changed_pe)
+    bus = determine_track_bus(netlist, id_to_name)
+    blks = get_blks(netlist)
+    connections, instances = read_netlist_json(src_file)
 
     name_to_id = {}
     for blk_id in id_to_name:
@@ -1026,7 +1122,7 @@ def map_app(pre_map):
     for name in instances:
         instance = instances[name]
         blk_id = name_to_id[name]
-        if blk_id in folded_blocks:
+        if blk_id in folded_blocks or blk_id not in id_to_name:
             continue
         blk_id = name_to_id[name]
         # it might be absorbed already
@@ -1052,7 +1148,12 @@ def map_app(pre_map):
             args = tile_op.split("_")
             mem_mode = args[1]
             instr = {}
-            if mem_mode == "lb":
+            instr["name"] = name
+            instr["app_name"] = get_app_name(pre_map)
+            if mem_mode == "lake":
+                instr["depth"] = 0
+                instr.update(instance["modargs"])
+            elif mem_mode == "lb":
                 instr["mode"] = MemoryMode.DB
                 instr["depth"] = int(args[-1])
                 if instr["depth"] > 512:
@@ -1069,7 +1170,7 @@ def map_app(pre_map):
                 instr["mode"] = MemoryMode.DB
                 params = json.loads("_".join(args[2:]))
                 instr.update(params)
-                if instr["depth"] > 512:
+                if "depth" in instr and instr["depth"] > 512:
                     new_ub_names, idx = split_ub(blk_id, netlist, id_to_name,
                                            bus, instance_to_instr,
                                            instr)

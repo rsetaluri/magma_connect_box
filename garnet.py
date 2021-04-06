@@ -9,12 +9,18 @@ from global_buffer.global_buffer_magma import GlobalBuffer
 from global_controller.global_controller_magma import GlobalController
 from cgra.ifc_struct import AXI4LiteIfc, ProcPacketIfc
 from canal.global_signal import GlobalSignalWiring
-from mini_mapper import map_app, has_rom
+from mini_mapper import map_app, has_rom, get_total_cycle_from_app
 from cgra import glb_glc_wiring, glb_interconnect_wiring, \
-        glc_interconnect_wiring, create_cgra
+        glc_interconnect_wiring, create_cgra, compress_config_data
 import json
+from passes.collateral_pass.config_register import get_interconnect_regs, \
+    get_core_registers
+from passes.interconnect_port_pass import stall_port_pass, config_port_pass
 import math
+import os
 import archipelago
+import archipelago.power
+import archipelago.io
 
 # set the debug mode to false to speed up construction
 set_debug_mode(False)
@@ -22,7 +28,11 @@ set_debug_mode(False)
 
 class Garnet(Generator):
     def __init__(self, width, height, add_pd, interconnect_only: bool = False,
-                 use_sram_stub: bool = True, standalone: bool = False):
+                 use_sram_stub: bool = True, standalone: bool = False,
+                 add_pond: bool = True,
+                 use_io_valid: bool = False,
+                 pipeline_config_interval: int = 8,
+                 glb_tile_mem_size: int = 256):
         super().__init__()
 
         # Check consistency of @standalone and @interconnect_only parameters. If
@@ -61,9 +71,10 @@ class Garnet(Generator):
             assert (self.width % 2) == 0
             num_glb_tiles = self.width // 2
 
-            bank_addr_width = 17
             bank_data_width = 64
             banks_per_tile = 2
+            bank_addr_width = (magma.bitutils.clog2(glb_tile_mem_size)
+                               - magma.bitutils.clog2(banks_per_tile) + 10)
 
             glb_addr_width = (bank_addr_width
                               + magma.bitutils.clog2(banks_per_tile)
@@ -79,11 +90,12 @@ class Garnet(Generator):
                                                       axi_data_width=axi_data_width,
                                                       num_glb_tiles=num_glb_tiles,
                                                       glb_addr_width=glb_addr_width,
+                                                      glb_tile_mem_size=glb_tile_mem_size,
                                                       block_axi_addr_width=glb_axi_addr_width)
 
             self.global_buffer = GlobalBuffer(num_glb_tiles=num_glb_tiles,
                                               num_cgra_cols=width,
-                                              bank_addr_width=bank_addr_width,
+                                              glb_tile_mem_size=glb_tile_mem_size,
                                               bank_data_width=bank_data_width,
                                               cfg_addr_width=config_addr_width,
                                               cfg_data_width=config_data_width,
@@ -98,12 +110,20 @@ class Garnet(Generator):
                                    tile_id_width=tile_id_width,
                                    num_tracks=num_tracks,
                                    add_pd=add_pd,
+                                   add_pond=add_pond,
+                                   use_io_valid=use_io_valid,
                                    use_sram_stub=use_sram_stub,
                                    global_signal_wiring=wiring,
+                                   pipeline_config_interval=pipeline_config_interval,
                                    mem_ratio=(1, 4),
                                    standalone=standalone)
 
         self.interconnect = interconnect
+
+        # make multiple stall ports
+        stall_port_pass(self.interconnect)
+        # make multiple configuration ports
+        config_port_pass(self.interconnect)
 
         if not interconnect_only:
             self.add_ports(
@@ -147,11 +167,10 @@ class Garnet(Generator):
             self.add_ports(
                 clk=magma.In(magma.Clock),
                 reset=magma.In(magma.AsyncReset),
-                config=magma.In(
-                    ConfigurationType(self.interconnect.config_data_width,
-                                      self.interconnect.config_data_width)),
-                stall=magma.In(
-                    magma.Bits[self.interconnect.stall_signal_width]),
+                config=magma.In(magma.Array[width,
+                                ConfigurationType(config_data_width,
+                                                  config_data_width)]),
+                stall=magma.In(magma.Bits[self.width * self.interconnect.stall_signal_width]),
                 read_config_data=magma.Out(magma.Bits[config_data_width])
             )
 
@@ -176,7 +195,8 @@ class Garnet(Generator):
             if instance not in instrs:
                 continue
             instr = instrs[instance]
-            result += self.interconnect.configure_placement(x, y, instr)
+            result += self.interconnect.configure_placement(x, y, instr,
+                                                            node[0])
         return result
 
     def convert_mapped_to_netlist(self, mapped):
@@ -228,20 +248,28 @@ class Garnet(Generator):
         return input_interface, output_interface,\
                (reset_port_name, valid_port_name, en_port_name)
 
-    def compile(self, halide_src, unconstrained_io=False):
+    def compile(self, halide_src, unconstrained_io=False, compact=False):
         id_to_name, instance_to_instr, netlist, bus = self.map(halide_src)
+        app_dir = os.path.dirname(halide_src)
         if unconstrained_io:
             fixed_io = None
         else:
-            fixed_io = place_io_blk(id_to_name, self.width)
+            fixed_io = place_io_blk(id_to_name)
         placement, routing = archipelago.pnr(self.interconnect, (netlist, bus),
                                              cwd="temp",
                                              id_to_name=id_to_name,
-                                             fixed_pos=fixed_io)
+                                             fixed_pos=fixed_io,
+                                             compact=compact,
+                                             copy_to_dir=app_dir)
+        routing_fix = archipelago.power.reduce_switching(routing, self.interconnect,
+                                                         compact=compact)
+        routing.update(routing_fix)
         bitstream = []
         bitstream += self.interconnect.get_route_bitstream(routing)
         bitstream += self.get_placement_bitstream(placement, id_to_name,
                                                   instance_to_instr)
+        skip_addr = self.interconnect.get_skip_addr()
+        bitstream = compress_config_data(bitstream, skip_compression=skip_addr)
         inputs, outputs = self.get_input_output(netlist)
         input_interface, output_interface,\
             (reset, valid, en) = self.get_io_interface(inputs,
@@ -249,22 +277,41 @@ class Garnet(Generator):
                                                        placement,
                                                        id_to_name)
         delay = 1 if has_rom(id_to_name) else 0
+        # also write out the meta file
+        archipelago.io.dump_meta_file(halide_src, "design", os.path.dirname(halide_src))
         return bitstream, (input_interface, output_interface, reset, valid, en,
                            delay)
+
+    def compile_virtualize(self, halide_src, max_group):
+        id_to_name, instance_to_instr, netlist, bus = self.map(halide_src)
+        partition_result = archipelago.pnr_virtualize(self.interconnect, (netlist, bus), cwd="temp",
+                                                      id_to_name=id_to_name, max_group=max_group)
+        result = {}
+        for c_id, ((placement, routing), p_id_to_name) in partition_result.items():
+            bitstream = []
+            bitstream += self.interconnect.get_route_bitstream(routing)
+            bitstream += self.get_placement_bitstream(placement, p_id_to_name,
+                                                      instance_to_instr)
+            skip_addr = self.interconnect.get_skip_addr()
+            bitstream = compress_config_data(bitstream, skip_compression=skip_addr)
+            result[c_id] = bitstream
+        return result
 
     def create_stub(self):
         result = """
 module Interconnect (
    input  clk,
-   input [31:0] config_config_addr,
-   input [31:0] config_config_data,
-   input [0:0] config_read,
-   input [0:0] config_write,
    output [31:0] read_config_data,
    input  reset,
-   input [3:0] stall,
-
 """
+        # add stall based on the size
+        result += f"   input [{str(self.width * self.interconnect.stall_signal_width - 1)}:0] stall,\n\n"
+        # magma can't generate SV struct array, which would be the ideal solution here
+        for i in range(self.width):
+            result += f"   input [31:0] config_{i}_config_addr,\n"
+            result += f"   input [31:0] config_{i}_config_data,\n"
+            result += f"   input [0:0] config_{i}_read,\n"
+            result += f"   input [0:0] config_{i}_write,\n"
         # loop through the interfaces
         ports = []
         for port_name, port_node in self.interconnect.interface().items():
@@ -279,10 +326,19 @@ module Interconnect (
         return "Garnet"
 
 
+def write_out_bitstream(filename, bitstream):
+    with open(filename, "w+") as f:
+        bs = ["{0:08X} {1:08X}".format(entry[0], entry[1]) for entry
+              in bitstream]
+        f.write("\n".join(bs))
+
+
 def main():
     parser = argparse.ArgumentParser(description='Garnet CGRA')
     parser.add_argument('--width', type=int, default=4)
     parser.add_argument('--height', type=int, default=2)
+    parser.add_argument('--pipeline_config_interval', type=int, default=8)
+    parser.add_argument('--glb_tile_mem_size', type=int, default=256)
     parser.add_argument("--input-app", type=str, default="", dest="app")
     parser.add_argument("--input-file", type=str, default="", dest="input")
     parser.add_argument("--output-file", type=str, default="", dest="output")
@@ -290,10 +346,16 @@ def main():
                         dest="gold")
     parser.add_argument("-v", "--verilog", action="store_true")
     parser.add_argument("--no-pd", "--no-power-domain", action="store_true")
+    parser.add_argument("--no-pond", action="store_true")
     parser.add_argument("--interconnect-only", action="store_true")
+    parser.add_argument("--compact", action="store_true")
     parser.add_argument("--no-sram-stub", action="store_true")
     parser.add_argument("--standalone", action="store_true")
     parser.add_argument("--unconstrained-io", action="store_true")
+    parser.add_argument("--dump-config-reg", action="store_true")
+    parser.add_argument("--virtualize-group-size", type=int, default=4)
+    parser.add_argument("--virtualize", action="store_true")
+    parser.add_argument("--use-io-valid", action="store_true")
     args = parser.parse_args()
 
     if not args.interconnect_only:
@@ -302,7 +364,11 @@ def main():
         raise Exception("--standalone must be specified with "
                         "--interconnect-only as well")
     garnet = Garnet(width=args.width, height=args.height,
+                    glb_tile_mem_size=args.glb_tile_mem_size,
                     add_pd=not args.no_pd,
+                    pipeline_config_interval=args.pipeline_config_interval,
+                    add_pond=not args.no_pond,
+                    use_io_valid=args.use_io_valid,
                     interconnect_only=args.interconnect_only,
                     use_sram_stub=not args.no_sram_stub,
                     standalone=args.standalone)
@@ -310,14 +376,16 @@ def main():
     if args.verilog:
         garnet_circ = garnet.circuit()
         magma.compile("garnet", garnet_circ, output="coreir-verilog",
-                      coreir_libs={"float_DW"},
-                      passes = ["rungenerators", "inline_single_instances", "clock_gate"])
+                      coreir_libs={"float_CW"},
+                      passes = ["rungenerators", "inline_single_instances", "clock_gate"],
+                      disable_ndarray=True,
+                      inline=False)
         garnet.create_stub()
     if len(args.app) > 0 and len(args.input) > 0 and len(args.gold) > 0 \
-            and len(args.output) > 0:
+            and len(args.output) > 0 and not args.virtualize:
         # do PnR and produce bitstream
         bitstream, (inputs, outputs, reset, valid, \
-            en, delay) = garnet.compile(args.app, args.unconstrained_io)
+            en, delay) = garnet.compile(args.app, args.unconstrained_io, compact=args.compact)
         # write out the config file
         if len(inputs) > 1:
             if reset in inputs:
@@ -325,6 +393,7 @@ def main():
             for en_port in en:
                 if en_port in inputs:
                     inputs.remove(en_port)
+        total_cycle = get_total_cycle_from_app(args.app)
         if len(outputs) > 1:
             outputs.remove(valid)
         config = {
@@ -336,14 +405,24 @@ def main():
             "valid_port_name": valid,
             "reset_port_name": reset,
             "en_port_name": en,
-            "delay": delay
+            "delay": delay,
+            "total_cycle": total_cycle
         }
         with open(f"{args.output}.json", "w+") as f:
             json.dump(config, f)
-        with open(args.output, "w+") as f:
-            bs = ["{0:08X} {1:08X}".format(entry[0], entry[1]) for entry
-                  in bitstream]
-            f.write("\n".join(bs))
+        write_out_bitstream(args.output, bitstream)
+    elif args.virtualize and len(args.app) > 0:
+        group_size = args.virtualize_group_size
+        result = garnet.compile_virtualize(args.app, group_size)
+        for c_id, bitstream in result.items():
+            filename = os.path.join("temp", f"{c_id}.bs")
+            write_out_bitstream(filename, bitstream)
+    if args.dump_config_reg:
+        ic = garnet.interconnect
+        ic_reg = get_interconnect_regs(ic)
+        core_reg = get_core_registers(ic)
+        with open("config.json", "w+") as f:
+            json.dump(ic_reg + core_reg, f)
 
 
 if __name__ == "__main__":
