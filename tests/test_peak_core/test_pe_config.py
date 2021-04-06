@@ -4,9 +4,8 @@ from peak_core.peak_core import PeakCore
 
 from peak.family import PyFamily
 from lassen.sim import PE_fc
-from lassen.asm import (add, Mode_t, lut_and, inst, ALU_t, Cond_t, 
-                        umult0, fp_mul, fp_add,
-                        fcnvexp2f, fcnvsint2f, fcnvuint2f)
+from lassen.asm import (add, Mode_t, lut_and, inst, ALU_t,
+                        umult0, fp_mul, fp_add)
 from lassen.common import BFloat16_fc
 import hwtypes
 import shutil
@@ -96,7 +95,6 @@ def _make_random(cls):
     return NotImplemented
 
 
-_CAD_DIR = "/cad/synopsys/syn/P-2019.03/dw/sim_ver/"
 _EXPENSIVE = {
     "bits32.mul": ((umult0(),), "magma_Bits_32_mul_inst0", hwtypes.UIntVector[16]),  # noqa
     "bfloat16.mul": ((fp_mul(),), "magma_BFloat_16_mul_inst0", BFloat16_fc(PyFamily())),  # noqa
@@ -105,12 +103,16 @@ _EXPENSIVE = {
 
 
 @pytest.mark.parametrize("op", list(_EXPENSIVE.keys()))
-def test_pe_data_gate(op, dw_files):
+def test_pe_data_gate(op, run_tb):
     instrs, fu, BV = _EXPENSIVE[op]
 
     is_float = issubclass(BV, hwtypes.FPVector)
     if not irun_available() and is_float:
         pytest.skip("Need irun to test fp ops")
+
+    # note to skip mul since CW BFloat is faulty
+    if op == "bfloat16.mul":
+        pytest.skip("We don't have correct CW BFloat implementation yet")
 
     core = PeakCore(PE_fc)
     core.name = lambda: "PECore"
@@ -118,7 +120,7 @@ def test_pe_data_gate(op, dw_files):
 
     tester = BasicTester(circuit, circuit.clk, circuit.reset)
 
-    alu = tester.circuit.WrappedPE_inst0.PE_inst0.ALU_inst0.ALU_comb_inst0
+    alu = tester.circuit.WrappedPE_inst0.PE_inst0.ALU_inst0
     fu = getattr(alu, fu)
     other_fu = set(_EXPENSIVE[other_op][1]
                    for other_op in _EXPENSIVE
@@ -127,6 +129,7 @@ def test_pe_data_gate(op, dw_files):
 
     def _test_instr(instr):
         # Configure PE.
+        tester.zero_inputs()
         tester.reset()
         config_data = core.get_config_bitstream(instr)
         for addr, data in config_data:
@@ -147,24 +150,7 @@ def test_pe_data_gate(op, dw_files):
     for instr in instrs:
         _test_instr(instr)
 
-    with tempfile.TemporaryDirectory() as tempdir:
-        if is_float:
-            assert os.path.isdir(_CAD_DIR)
-            ext_srcs = list(map(os.path.basename, dw_files))
-            ext_srcs += ["DW_fp_addsub.v"]
-            ext_srcs = [os.path.join(_CAD_DIR, src) for src in ext_srcs]
-            tester.compile_and_run(target="system-verilog",
-                                   simulator="ncsim",
-                                   magma_output="coreir-verilog",
-                                   ext_srcs=ext_srcs,
-                                   magma_opts={"coreir_libs": {"float_DW"}},
-                                   directory=tempdir,)
-        else:
-            for filename in dw_files:
-                shutil.copy(filename, tempdir)
-            tester.compile_and_run(target="verilator",
-                                   magma_output="coreir-verilog",
-                                   magma_opts={"coreir_libs": {"float_DW"},
-                                               "verilator_debug": True},
-                                   directory=tempdir,
-                                   flags=["-Wno-fatal"])
+    if irun_available():
+        run_tb(tester)
+    else:
+        run_tb(tester, verilator_debug=True)

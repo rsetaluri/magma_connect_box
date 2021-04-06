@@ -10,6 +10,7 @@ import os
 import sys
 
 from mflowgen.components import Graph, Step
+from shutil import which
 
 def construct():
 
@@ -22,6 +23,15 @@ def construct():
   adk_name = 'tsmc16'
   adk_view = 'stdview'
 
+  if which("calibre") is not None:
+      drc_rule_deck = 'calibre-drc-chip.rule'
+      antenna_drc_rule_deck = 'calibre-drc-antenna.rule'
+      power_drc_rule_deck = 'calibre-drc-block.rule'
+  else:
+      drc_rule_deck = 'pegasus-drc-chip.rule'
+      antenna_drc_rule_deck = 'pegasus-drc-antenna.rule'
+      power_drc_rule_deck = 'pegasus-drc-block.rule'
+
   parameters = {
     'construct_path'    : __file__,
     'design_name'       : 'GarnetSOC_pad_frame',
@@ -29,18 +39,22 @@ def construct():
     'adk'               : adk_name,
     'adk_view'          : adk_view,
     # Synthesis
-    'flatten_effort'    : 1,
+    'flatten_effort'    : 0,
     'topographical'     : True,
     # RTL Generation
     'array_width'       : 32,
     'array_height'      : 16,
     'interconnect_only' : False,
+    # glb tile memory size (unit: KB)
+    'glb_tile_mem_size' : 64,
     # Power Domains
     'PWR_AWARE'         : True,
     # Include Garnet?
     'soc_only'          : False,
     # Include SoC core? (use 0 for false, 1 for true)
     'include_core'      : 1,
+    # Include sealring?
+    'include_sealring'  : True,
     # SRAM macros
     'num_words'         : 2048,
     'word_size'         : 64,
@@ -57,16 +71,23 @@ def construct():
     'signoff_engine' : True,
     'hold_target_slack'  : 0.060,
     # LVS
+    # - need lvs2 because dragonphy uses LVT cells
+    'lvs_extra_spice_include' : 'inputs/adk_lvs2/*.cdl',
     'lvs_hcells_file'   : 'inputs/adk/hcells.inc',
     'lvs_connect_names' : '"VDD VSS VDDPST"',
     'lvs_verify_netlist' : 0,
+    # TSMC16 support for LVS - need lvs2 because dragonphy uses LVT cells
+    'adk_view_lvs2'     : 'multivt',
     # TLX Ports Partitions
     'TLX_FWD_DATA_LO_WIDTH' : 16,
     'TLX_REV_DATA_LO_WIDTH' : 45,
     # DRC rule deck
-    'drc_rule_deck'         : 'calibre-drc-chip.rule',
-    'antenna_drc_rule_deck' : 'calibre-drc-antenna.rule',
-    'nthreads'              : 16
+    'drc_rule_deck'         : drc_rule_deck,
+    'antenna_drc_rule_deck' : antenna_drc_rule_deck,
+    'power_drc_rule_deck'   : power_drc_rule_deck,
+    'nthreads'              : 16,
+    # Testbench
+    'cgra_apps' : ["tests/conv_1_2", "tests/conv_2_1"]
   }
 
   #-----------------------------------------------------------------------
@@ -103,11 +124,22 @@ def construct():
   global_controller = Step( this_dir + '/global_controller' )
   dragonphy         = Step( this_dir + '/dragonphy'         )
 
+  # CGRA simulation
+
+  cgra_rtl_sim_compile  = Step( this_dir + '/cgra_rtl_sim_compile' )
+  cgra_rtl_sim_run      = Step( this_dir + '/cgra_rtl_sim_run'     )
+  cgra_sim_build        = Step( this_dir + '/cgra_sim_build'       )
+  # cgra_gl_sim_compile   = Step( this_dir + '/cgra_gl_sim_compile'  )
+  # cgra_gl_sim_run       = Step( this_dir + '/cgra_gl_sim_run'      )
+  # cgra_gl_ptpx          = Step( this_dir + '/cgra_gl_ptpx'         )
+  # cgra_rtl_sim_verdict  = Step( this_dir + '/cgra_rtl_sim_verdict' )
+  # cgra_gl_sim_verdict   = Step( this_dir + '/cgra_gl_sim_verdict'  )
+
   # Default steps
 
   info           = Step( 'info',                          default=True )
   #constraints    = Step( 'constraints',                   default=True )
-  dc             = Step( 'synopsys-dc-synthesis',         default=True )
+  synth          = Step( 'cadence-genus-synthesis',       default=True )
   iflow          = Step( 'cadence-innovus-flowsetup',     default=True )
   init           = Step( 'cadence-innovus-init',          default=True )
   power          = Step( 'cadence-innovus-power',         default=True )
@@ -119,13 +151,19 @@ def construct():
   postroute_hold = Step( 'cadence-innovus-postroute_hold', default=True )
   signoff        = Step( 'cadence-innovus-signoff',       default=True )
   pt_signoff     = Step( 'synopsys-pt-timing-signoff',    default=True )
-  gdsmerge       = Step( 'mentor-calibre-gdsmerge',       default=True )
-  merge_rdl      = Step( 'mentor-calibre-gdsmerge-child', default=True )
-  drc            = Step( 'mentor-calibre-drc',            default=True )
-  lvs            = Step( 'mentor-calibre-lvs',            default=True )
+  if which("calibre") is not None:
+      drc            = Step( 'mentor-calibre-drc',            default=True )
+      lvs            = Step( 'mentor-calibre-lvs',            default=True )
+      merge_rdl      = Step( 'mentor-calibre-gdsmerge-child', default=True )
+      fill           = Step( 'mentor-calibre-fill',           default=True )
+      merge_fill     = Step( 'mentor-calibre-gdsmerge-child', default=True )
+  else:
+      drc            = Step( 'cadence-pegasus-drc',            default=True )
+      lvs            = Step( 'cadence-pegasus-lvs',            default=True )
+      merge_rdl      = Step( 'cadence-pegasus-gdsmerge-child', default=True )
+      fill           = Step( 'cadence-pegasus-fill',           default=True )
+      merge_fill     = Step( 'cadence-pegasus-gdsmerge-child', default=True )
   debugcalibre   = Step( 'cadence-innovus-debug-calibre', default=True )
-  fill           = Step( 'mentor-calibre-fill',           default=True )
-  merge_fill     = Step( 'mentor-calibre-gdsmerge-child', default=True )
 
   merge_rdl.set_name('gdsmerge-dragonphy-rdl')
   merge_fill.set_name('gdsmerge-fill')
@@ -134,23 +172,20 @@ def construct():
   # 'power' step now gets its own design-rule check
   power_drc = drc.clone()
   power_drc.set_name( 'power-drc' )
-  # "power" now builds a gds file for its own drc check "power_drc";
-  # so need a gdsmerge step between the two
-  power_gdsmerge = gdsmerge.clone()
-  power_gdsmerge.set_name( 'power-gdsmerge' )
 
   # Antenna DRC Check
   antenna_drc = drc.clone()
   antenna_drc.set_name( 'antenna-drc' )
 
-
   # Add cgra tile macro inputs to downstream nodes
 
-  dc.extend_inputs( ['tile_array.db'] )
-  dc.extend_inputs( ['glb_top.db'] )
-  dc.extend_inputs( ['global_controller.db'] )
-  dc.extend_inputs( ['sram_tt.db'] )
-  dc.extend_inputs( ['dragonphy_top_tt.db'] )
+  synth.extend_inputs( ['tile_array_tt.lib', 'tile_array.lef'] )
+  synth.extend_inputs( ['glb_top_tt.lib', 'glb_top.lef'] )
+  synth.extend_inputs( ['global_controller_tt.lib', 'global_controller.lef'] )
+  synth.extend_inputs( ['sram_tt.lib', 'sram.lef'] )
+  synth.extend_inputs( ['dragonphy_top.lef'] )
+  # Exclude dragonphy_top from synth inputs to prevent floating
+  # dragonphy inputs from being tied to 0
   pt_signoff.extend_inputs( ['tile_array.db'] )
   pt_signoff.extend_inputs( ['glb_top.db'] )
   pt_signoff.extend_inputs( ['global_controller.db'] )
@@ -174,8 +209,8 @@ def construct():
     step.extend_inputs( ['dragonphy_top_tt.lib', 'dragonphy_top.lef'] )
     step.extend_inputs( ['dragonphy_RDL.lef'] )
 
-  # Need the cgra tile gds's to merge into the final layout
-  gdsmerge_nodes = [gdsmerge, power_gdsmerge]
+  # Need all block gds's to merge into the final layout
+  gdsmerge_nodes = [signoff, power]
   for node in gdsmerge_nodes:
       node.extend_inputs( ['tile_array.gds'] )
       node.extend_inputs( ['glb_top.gds'] )
@@ -193,6 +228,7 @@ def construct():
   lvs.extend_inputs( ['global_controller.lvs.v'] )
   lvs.extend_inputs( ['sram.spi'] )
   lvs.extend_inputs( ['dragonphy_top.spi'] )
+  lvs.extend_inputs( ['adk_lvs2'] )
 
   # Add extra input edges to innovus steps that need custom tweaks
 
@@ -200,11 +236,11 @@ def construct():
   init.extend_inputs( init_fc.all_outputs() )
   power.extend_inputs( custom_power.all_outputs() )
 
-  dc.extend_inputs( soc_rtl.all_outputs() )
-  dc.extend_inputs( read_design.all_outputs() )
-  dc.extend_inputs( ["cons_scripts"] )
+  synth.extend_inputs( soc_rtl.all_outputs() )
+  synth.extend_inputs( read_design.all_outputs() )
+  synth.extend_inputs( ["cons_scripts"] )
 
-  power.extend_outputs( ["design.gds.gz"] )
+  power.extend_outputs( ["design-merged.gds"] )
 
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
@@ -220,7 +256,7 @@ def construct():
   g.add_step( dragonphy         )
   g.add_step( constraints       )
   g.add_step( read_design       )
-  g.add_step( dc                )
+  g.add_step( synth             )
   g.add_step( iflow             )
   g.add_step( init              )
   g.add_step( init_fc           )
@@ -239,7 +275,6 @@ def construct():
   g.add_step( netlist_fixing    )
   g.add_step( signoff           )
   g.add_step( pt_signoff        )
-  g.add_step( gdsmerge          )
   g.add_step( merge_rdl         )
   g.add_step( fill              )
   g.add_step( merge_fill        )
@@ -251,7 +286,12 @@ def construct():
 
   # Post-Power DRC check
   g.add_step( power_drc         )
-  g.add_step( power_gdsmerge    )
+
+  # App test nodes
+  g.add_step( cgra_rtl_sim_compile )
+  g.add_step( cgra_sim_build       )
+  g.add_step( cgra_rtl_sim_run     )
+  # g.add_step( cgra_gl_sim_compile )
 
   #-----------------------------------------------------------------------
   # Graph -- Add edges
@@ -259,7 +299,8 @@ def construct():
 
   # Connect by name
 
-  g.connect_by_name( adk,      dc             )
+  g.connect_by_name( adk,      gen_sram       )
+  g.connect_by_name( adk,      synth          )
   g.connect_by_name( adk,      iflow          )
   g.connect_by_name( adk,      init           )
   g.connect_by_name( adk,      power          )
@@ -270,7 +311,6 @@ def construct():
   g.connect_by_name( adk,      postroute      )
   g.connect_by_name( adk,      postroute_hold )
   g.connect_by_name( adk,      signoff        )
-  g.connect_by_name( adk,      gdsmerge       )
   g.connect_by_name( adk,      merge_rdl      )
   g.connect_by_name( adk,      fill           )
   g.connect_by_name( adk,      merge_fill     )
@@ -279,15 +319,22 @@ def construct():
   g.connect_by_name( adk,      lvs            )
 
   # Post-Power DRC check
-  g.connect_by_name( adk,      power_gdsmerge )
   g.connect_by_name( adk,      power_drc )
+
+  # Connect RTL verification nodes
+  g.connect_by_name( rtl, cgra_rtl_sim_compile )
+  g.connect_by_name( cgra_sim_build, cgra_rtl_sim_run )
+  g.connect_by_name( cgra_rtl_sim_compile, cgra_rtl_sim_run )
+
+  # Connect GL verification nodes
+  # g.connect_by_name( signoff, cgra_gl_sim_compile )
 
   # All of the blocks within this hierarchical design
   # Skip these if we're doing soc_only
   if parameters['soc_only'] == False:
       blocks = [tile_array, glb_top, global_controller, dragonphy]
       for block in blocks:
-          g.connect_by_name( block, dc             )
+          g.connect_by_name( block, synth          )
           g.connect_by_name( block, iflow          )
           g.connect_by_name( block, init           )
           g.connect_by_name( block, power          )
@@ -299,25 +346,27 @@ def construct():
           g.connect_by_name( block, postroute_hold )
           g.connect_by_name( block, signoff        )
           g.connect_by_name( block, pt_signoff     )
-          g.connect_by_name( block, gdsmerge       )
-          g.connect_by_name( block, power_gdsmerge )
           g.connect_by_name( block, drc            )
           g.connect_by_name( block, lvs            )
       # Tile_array can use rtl from rtl node
       g.connect_by_name( rtl, tile_array )
+      # glb_top can use rtl from rtl node
+      g.connect_by_name( rtl, glb_top )
+      # global_controller can use rtl from rtl node
+      g.connect_by_name( rtl, global_controller )
 
-  g.connect_by_name( rtl,         dc        )
-  g.connect_by_name( soc_rtl,     dc        )
-  g.connect_by_name( constraints, dc        )
-  g.connect_by_name( read_design, dc        )
+  g.connect_by_name( rtl,         synth     )
+  g.connect_by_name( soc_rtl,     synth        )
+  g.connect_by_name( constraints, synth        )
+  g.connect_by_name( read_design, synth        )
 
   g.connect_by_name( soc_rtl,  io_file      )
 
-  g.connect_by_name( dc,       iflow        )
-  g.connect_by_name( dc,       init         )
-  g.connect_by_name( dc,       power        )
-  g.connect_by_name( dc,       place        )
-  g.connect_by_name( dc,       cts          )
+  g.connect_by_name( synth,       iflow        )
+  g.connect_by_name( synth,       init         )
+  g.connect_by_name( synth,       power        )
+  g.connect_by_name( synth,       place        )
+  g.connect_by_name( synth,       cts          )
 
   g.connect_by_name( iflow,    init           )
   g.connect_by_name( iflow,    power          )
@@ -334,7 +383,7 @@ def construct():
   g.connect_by_name( custom_power, power    )
 
   # SRAM macro
-  g.connect_by_name( gen_sram, dc             )
+  g.connect_by_name( gen_sram, synth          )
   g.connect_by_name( gen_sram, iflow          )
   g.connect_by_name( gen_sram, init           )
   g.connect_by_name( gen_sram, power          )
@@ -346,8 +395,6 @@ def construct():
   g.connect_by_name( gen_sram, postroute_hold )
   g.connect_by_name( gen_sram, signoff        )
   g.connect_by_name( gen_sram, pt_signoff     )
-  g.connect_by_name( gen_sram, gdsmerge       )
-  g.connect_by_name( gen_sram, power_gdsmerge )
   g.connect_by_name( gen_sram, drc            )
   g.connect_by_name( gen_sram, lvs            )
 
@@ -363,12 +410,12 @@ def construct():
   g.connect_by_name( route,          postroute      )
   g.connect_by_name( postroute,      postroute_hold )
   g.connect_by_name( postroute_hold, signoff        )
-  g.connect_by_name( signoff,        gdsmerge       )
   g.connect_by_name( signoff,        lvs            )
-  # Doing DRC on post-fill GDS instead
-  #g.connect_by_name( gdsmerge,       drc           )
+  g.connect(signoff.o('design-merged.gds'), drc.i('design_merged.gds'))
+  g.connect(signoff.o('design-merged.gds'), lvs.i('design_merged.gds'))
 
-  g.connect( gdsmerge.o('design_merged.gds'), merge_rdl.i('design.gds') )
+  # Skipping
+  g.connect( signoff.o('design-merged.gds'), merge_rdl.i('design.gds') )
   g.connect( dragonphy.o('dragonphy_RDL.gds'), merge_rdl.i('child.gds') )
   g.connect_by_name( merge_rdl, lvs )
 
@@ -387,7 +434,7 @@ def construct():
   g.connect_by_name( signoff,      pt_signoff   )
 
   g.connect_by_name( adk,      debugcalibre )
-  g.connect_by_name( dc,       debugcalibre )
+  g.connect_by_name( synth,    debugcalibre )
   g.connect_by_name( iflow,    debugcalibre )
   g.connect_by_name( signoff,  debugcalibre )
   g.connect_by_name( drc,      debugcalibre )
@@ -398,12 +445,10 @@ def construct():
   g.connect_by_name( netlist_fixing, signoff )
 
   # Post-Power DRC
-  g.connect_by_name( power, power_gdsmerge )
-  g.connect_by_name( power_gdsmerge, power_drc )
+  g.connect(power.o('design-merged.gds'), power_drc.i('design_merged.gds'))
   #-----------------------------------------------------------------------
   # Parameterize
   #-----------------------------------------------------------------------
-
   g.update_params( parameters )
 
   # Since we are adding an additional input script to the generic Innovus
@@ -411,10 +456,10 @@ def construct():
   # which scripts get run and when they get run.
 
   # DC needs these param to set the NO_CGRA macro
-  dc.update_params({'soc_only': parameters['soc_only']}, True)
+  synth.update_params({'soc_only': parameters['soc_only']}, True)
   # DC needs these params to set macros in soc rtl
-  dc.update_params({'TLX_FWD_DATA_LO_WIDTH' : parameters['TLX_FWD_DATA_LO_WIDTH']}, True)
-  dc.update_params({'TLX_REV_DATA_LO_WIDTH' : parameters['TLX_REV_DATA_LO_WIDTH']}, True)
+  synth.update_params({'TLX_FWD_DATA_LO_WIDTH' : parameters['TLX_FWD_DATA_LO_WIDTH']}, True)
+  synth.update_params({'TLX_REV_DATA_LO_WIDTH' : parameters['TLX_REV_DATA_LO_WIDTH']}, True)
   init.update_params({'soc_only': parameters['soc_only']}, True)
 
   init.update_params(
@@ -423,12 +468,24 @@ def construct():
       'stylus-compatibility-procs.tcl','floorplan.tcl','io-fillers.tcl',
       'alignment-cells.tcl',
       'analog-bumps/route-phy-bumps.tcl',
-      'analog-bumps/bump-connect.tcl', 
+      'analog-bumps/bump-connect.tcl',
       'gen-bumps.tcl', 'check-bumps.tcl', 'route-bumps.tcl',
       'place-macros.tcl', 'dont-touch.tcl'
     ]}
   )
 
+  # glb_top parameters update
+  glb_top.update_params({'num_tile_array_cols': parameters['array_width']}, True)
+  glb_top.update_params({'num_glb_tiles': int(parameters['array_width']/2)}, True)
+  glb_top.update_params({'glb_tile_mem_size': parameters['glb_tile_mem_size']}, True)
+
+  # App test parameters update
+  cgra_rtl_sim_compile.update_params({'array_width': parameters['array_width']}, True)
+  cgra_rtl_sim_compile.update_params({'array_height': parameters['array_height']}, True)
+  cgra_rtl_sim_compile.update_params({'clock_period': parameters['clock_period']}, True)
+  cgra_rtl_sim_compile.update_params({'glb_tile_mem_size': parameters['glb_tile_mem_size']}, True)
+
+  cgra_rtl_sim_run.update_params({'cgra_apps': parameters['cgra_apps']}, True)
 
   # Power node order manipulation
   order = power.get_param('order')
@@ -444,18 +501,27 @@ def construct():
   order.insert( 0, 'pre-route.tcl' )
   route.update_params( { 'order': order } )
 
-  # Add sealring at beginning of signoff, so it's in before we stream out GDS
+  # Signoff order additions
   order = signoff.get_param('order')
-  order.insert(0, 'add-sealring.tcl')
+  # Add sealring at beginning of signoff, so it's in before we stream out GDS
+  if parameters['include_sealring'] == True:
+      order.insert(0, 'add-sealring.tcl')
   # Add netlist-fixing script before we save new netlist
   index = order.index( 'generate-results.tcl' )
   order.insert( index, 'netlist-fixing.tcl' )
   signoff.update_params( { 'order': order } )
 
-  merge_rdl.update_params( {'coord_x': parameters['dragonphy_rdl_x'], 'coord_y': parameters['dragonphy_rdl_y'], 'flatten_child': True} )
+  merge_rdl.update_params( {'coord_x': parameters['dragonphy_rdl_x'], 'coord_y': parameters['dragonphy_rdl_y'], 'flatten_child': True,
+                            'design_top_cell': parameters['design_name'], 'child_top_cell': 'dragonphy_RDL'} )
+
+  merge_fill.update_params( {'design_top_cell': parameters['design_name'], 'child_top_cell': f"{parameters['design_name']}_F16a"} )
 
   # Antenna DRC node needs to use antenna rule deck
   antenna_drc.update_params( { 'drc_rule_deck': parameters['antenna_drc_rule_deck'] } )
+
+  # Power DRC node should use block level rule deck to improve runtimes and not report false errors
+  power_drc.update_params( {'drc_rule_deck': parameters['power_drc_rule_deck'] } )
+
   return g
 
 

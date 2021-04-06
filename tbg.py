@@ -20,33 +20,86 @@ def copy_file(src_filename, dst_filename, override=False):
 
 
 class BasicTester(Tester):
-    def __init__(self, circuit, clock, reset_port=None):
+    def __init__(self, circuit, clock, reset_port=None, y_interval=1):
         super().__init__(circuit, clock)
         self.reset_port = reset_port
+        self.__xmin = 0xFFFF
+        self.__xmax = 0
+        self.y_interval = y_interval
+
+        self.__last_addr = None
+
+    def __get_x(self, addr):
+        x = (addr >> 8) & 0xFF
+        if x > self.__xmax:
+            self.__xmax = x
+        if x < self.__xmin:
+            self.__xmin = x
+        return x
+
+    def __clear_last_addr(self, addr):
+        if self.__last_addr is not None:
+            last_addr = self.__last_addr
+            last_x = self.__get_x(last_addr)
+            x = self.__get_x(addr)
+            if last_x != x:
+                self.__last_addr = None
+                self.__config_write(last_addr, 0)
+                self.__config_read(last_addr, 0)
+
+    def __config_write(self, addr, value):
+        self.__clear_last_addr(addr)
+        x = self.__get_x(addr)
+        port_name = f"config_{x}_write"
+        self.poke(self._circuit.interface[port_name], value)
+        if value:
+            self.__last_addr = addr
+
+    def __config_read(self, addr, value):
+        self.__clear_last_addr(addr)
+        x = self.__get_x(addr)
+        port_name = f"config_{x}_read"
+        self.poke(self._circuit.interface[port_name], value)
+        if value:
+            self.__last_addr = addr
+
+    def __config_addr(self, addr, value):
+        x = self.__get_x(addr)
+        port_name = f"config_{x}_config_addr"
+        self.poke(self._circuit.interface[port_name], value)
+
+    def __config_data(self, addr, value):
+        x = self.__get_x(addr)
+        port_name = f"config_{x}_config_data"
+        self.poke(self._circuit.interface[port_name], value)
 
     def configure(self, addr, data, assert_wr=True):
         self.poke(self.clock, 0)
         self.poke(self.reset_port, 0)
-        self.poke(self._circuit.config_config_addr, addr)
-        self.poke(self._circuit.config_config_data, data)
-        self.poke(self._circuit.config_read, 0)
+        self.__config_addr(addr, addr)
+        self.__config_data(addr, data)
+        self.__config_read(addr, 0)
         # We can use assert_wr switch to check that no reconfiguration
         # occurs when write = 0
         if assert_wr:
-            self.poke(self._circuit.config_write, 1)
+            self.__config_write(addr, 1)
         else:
-            self.poke(self._circuit.config_write, 0)
-        #
+            self.__config_write(addr, 0)
         self.step(2)
-        self.poke(self._circuit.config_write, 0)
+        self.__config_write(addr, 0)
 
     def config_read(self, addr):
         self.poke(self.clock, 0)
         self.poke(self.reset_port, 0)
-        self.poke(self._circuit.config_config_addr, addr)
-        self.poke(self._circuit.config_read, 1)
-        self.poke(self._circuit.config_write, 0)
-        self.step(2)
+        self.__config_addr(addr, addr)
+        self.__config_read(addr, 1)
+        self.__config_write(addr, 0)
+        # SRAM content has to be read out immediately
+        x = (addr & 0xFF00) >> 8
+        if x % 4 == 3:
+            self.step(2)
+        else:
+            self.step(2 * self.y_interval)
 
     def reset(self):
         self.poke(self.reset_port, 1)
@@ -57,9 +110,25 @@ class BasicTester(Tester):
     def done_config(self):
         self.poke(self.clock, 0)
         self.poke(self.reset_port, 0)
-        self.poke(self._circuit.config_read, 0)
-        self.poke(self._circuit.config_write, 0)
+        # reset all read/write ports touched before
+        for x in range(self.__xmin, self.__xmax + 1):
+            addr = x << 8
+            self.__config_read(addr, 0)
+            self.__config_write(addr, 0)
+        self.unstall()
         self.step(2)
+
+    def stall(self, max_col):
+        mask = 0
+        for i in range(max_col):
+            mask = (mask << 1) | 1
+        self.poke(self._circuit.stall, mask)
+        self.eval()
+        self.step(2)
+
+    def unstall(self):
+        self.poke(self._circuit.stall, 0)
+        self.eval()
 
 
 class TestBenchGenerator:
@@ -72,12 +141,12 @@ class TestBenchGenerator:
         config_file = args.config_file
 
         # detect the environment
-        if shutil.which("ncsim"):
-            self.use_ncsim = True
+        if shutil.which("xrun"):
+            self.use_xcelium = True
         else:
-            self.use_ncsim = False
-        # if it's ncsim, rename copy it to .sv extension
-        if self.use_ncsim:
+            self.use_xcelium = False
+        # if it's xcelium, rename copy it to .sv extension
+        if self.use_xcelium:
             new_filename = os.path.splitext(stub_filename)[0] + ".sv"
             shutil.copy2(stub_filename, new_filename)
             stub_filename = new_filename
@@ -100,6 +169,14 @@ class TestBenchGenerator:
                 addr = int(addr, 16)
                 value = int(value, 16)
                 self.bitstream.append((addr, value))
+        # compute the config pipeline interval
+        max_y = 0
+        for addr, _ in self.bitstream:
+            y = addr & 0xFF
+            if y > max_y:
+                max_y = y
+        config_pipeline_interval = 8
+        self.y_interval = ((max_y - 1) // 8) + 1
         self.input_filename = config["input_filename"]
         self.output_filename = f"{bitstream_file}.out"
         self.gold_filename = config["gold_filename"]
@@ -123,6 +200,19 @@ class TestBenchGenerator:
 
         self._check_input(self.input_filename)
         self._check_output(self.gold_filename)
+
+        # if total cycle set, need to compute delay
+        if config.get("total_cycle", 0) > 0:
+            total_cycle = config["total_cycle"]
+            self.delay += total_cycle - self._loop_size
+
+    def get_max_col(self):
+        max_x = 0
+        for addr, _ in self.bitstream:
+            x = (addr & 0xFFFF) >> 8
+            if x > max_x:
+                max_x = x
+        return max_x + 1
 
     def _check_input(self, input_filename):
         ext = os.path.splitext(input_filename)[-1]
@@ -176,8 +266,9 @@ class TestBenchGenerator:
         return input_size, loop_size
 
     def test(self):
-        tester = BasicTester(self.circuit, self.circuit.clk, self.circuit.reset)
-        if self.use_ncsim:
+        tester = BasicTester(self.circuit, self.circuit.clk, self.circuit.reset,
+                             y_interval=self.y_interval)
+        if self.use_xcelium:
             tester.zero_inputs()
         tester.reset()
 
@@ -193,11 +284,13 @@ class TestBenchGenerator:
         else:
             valid_out = None
 
+        # before configuration stall it
+        tester.stall(self.get_max_col())
+
         # configure it
         for addr, value in self.bitstream:
             tester.configure(addr, value)
             tester.eval()
-
 
         for addr, value in self.bitstream:
             tester.config_read(addr)
@@ -259,7 +352,7 @@ class TestBenchGenerator:
         if not os.path.isdir(tempdir):
             os.makedirs(tempdir, exist_ok=True)
         # copy files over
-        if self.use_ncsim:
+        if self.use_xcelium:
             # coreir always outputs as verilog even though we have system-
             # verilog component
             copy_file(self.top_filename,
@@ -267,12 +360,14 @@ class TestBenchGenerator:
         else:
             copy_file(self.top_filename,
                       os.path.join(tempdir, "Interconnect.v"))
-        dw_files = ["DW_fp_add.v", "DW_fp_mult.v", "DW_fp_addsub.v"]
+        # dw_files = ["DW_fp_add.v", "DW_fp_mult.v", "DW_fp_addsub.v"]
+        cw_files = ["CW_fp_add.v", "CW_fp_mult.v"]
         base_dir = os.path.abspath(os.path.dirname(__file__))
-        cad_dir = "/cad/synopsys/dc_shell/J-2014.09-SP3/dw/sim_ver/"
-        for filename in dw_files:
+        # cad_dir = "/cad/synopsys/dc_shell/J-2014.09-SP3/dw/sim_ver/"
+        cad_dir = "/cad/cadence/GENUS_19.10.000_lnx86/share/synth/lib/chipware/sim/verilog/CW/"
+        for filename in cw_files:
             if os.path.isdir(cad_dir):
-                print("Use DW IP for", filename)
+                print("Use CW IP for", filename)
                 copy_file(os.path.join(cad_dir, filename),
                           os.path.join(tempdir, filename))
             else:
@@ -282,11 +377,6 @@ class TestBenchGenerator:
                 copy_file(os.path.join(base_dir, "peak_core", filename),
                           os.path.join(tempdir, filename))
 
-        # memory core
-        copy_file(os.path.join(base_dir,
-                               "tests", "test_memory_core",
-                               "sram_stub.v"),
-                  os.path.join(tempdir, "sram_512w_16b.v"))
         # std cells
         for std_cell in glob.glob(os.path.join(base_dir, "tests/*.sv")):
             copy_file(std_cell,
@@ -297,7 +387,7 @@ class TestBenchGenerator:
             copy_file(genesis_verilog,
                       os.path.join(tempdir, os.path.basename(genesis_verilog)))
 
-        if self.use_ncsim:
+        if self.use_xcelium:
             verilogs = list(glob.glob(os.path.join(tempdir, "*.v")))
             verilogs += list(glob.glob(os.path.join(tempdir, "*.sv")))
             verilog_libraries = [os.path.basename(f) for f in verilogs]
@@ -311,7 +401,7 @@ class TestBenchGenerator:
             tester.compile_and_run(target="system-verilog",
                                    skip_compile=True,
                                    skip_run=args.tb_only,
-                                   simulator="ncsim",
+                                   simulator="xcelium",
                                    # num_cycles is an experimental feature
                                    # need to be merged in fault
                                    num_cycles=1000000,

@@ -10,6 +10,7 @@ import os
 import sys
 
 from mflowgen.components import Graph, Step
+from shutil import which
 
 def construct():
 
@@ -32,7 +33,11 @@ def construct():
     'flatten_effort' : 3,
     'topographical'  : True,
     # hold target slack
-    'hold_target_slack' : 0.045,
+    'hold_target_slack'   : 0.045,
+    'num_tile_array_cols' : 32,
+    'num_glb_tiles'       : 16,
+    # glb tile memory size (unit: KB)
+    'glb_tile_mem_size' : 256
   }
 
   #-----------------------------------------------------------------------
@@ -48,34 +53,39 @@ def construct():
 
   # Custom steps
 
-  rtl          = Step( this_dir + '/rtl'                                 )
-  glb_tile     = Step( this_dir + '/glb_tile'                            )
-  constraints  = Step( this_dir + '/constraints'                         )
-  custom_init  = Step( this_dir + '/custom-init'                         )
-  custom_lvs   = Step( this_dir + '/custom-lvs-rules'                    )
-  custom_power = Step( this_dir + '/../common/custom-power-hierarchical' )
+  rtl               = Step( this_dir + '/rtl'                                 )
+  sim               = Step( this_dir + '/sim'                                 )
+  glb_tile          = Step( this_dir + '/glb_tile'                            )
+  glb_tile_rtl      = Step( this_dir + '/glb_tile_rtl'                        )
+  glb_tile_syn      = Step( this_dir + '/glb_tile_syn'                        )
+  constraints       = Step( this_dir + '/constraints'                         )
+  custom_init       = Step( this_dir + '/custom-init'                         )
+  custom_lvs        = Step( this_dir + '/custom-lvs-rules'                    )
+  custom_power      = Step( this_dir + '/../common/custom-power-hierarchical' )
 
   # Default steps
 
-  info         = Step( 'info',                              default=True )
-  # constraints  = Step( 'constraints',                       default=True )
-  dc           = Step( 'synopsys-dc-synthesis',             default=True )
-  iflow        = Step( 'cadence-innovus-flowsetup',         default=True )
-  init         = Step( 'cadence-innovus-init',              default=True )
-  power        = Step( 'cadence-innovus-power',             default=True )
-  place        = Step( 'cadence-innovus-place',             default=True )
-  cts          = Step( 'cadence-innovus-cts',               default=True )
-  postcts_hold = Step( 'cadence-innovus-postcts_hold',      default=True )
-  route        = Step( 'cadence-innovus-route',             default=True )
-  postroute    = Step( 'cadence-innovus-postroute',         default=True )
+  info           = Step( 'info',                            default=True )
+  synth          = Step( 'cadence-genus-synthesis',         default=True )
+  iflow          = Step( 'cadence-innovus-flowsetup',       default=True )
+  init           = Step( 'cadence-innovus-init',            default=True )
+  power          = Step( 'cadence-innovus-power',           default=True )
+  place          = Step( 'cadence-innovus-place',           default=True )
+  cts            = Step( 'cadence-innovus-cts',             default=True )
+  postcts_hold   = Step( 'cadence-innovus-postcts_hold',    default=True )
+  route          = Step( 'cadence-innovus-route',           default=True )
+  postroute      = Step( 'cadence-innovus-postroute',       default=True )
   postroute_hold = Step( 'cadence-innovus-postroute_hold',  default=True )
-  signoff      = Step( 'cadence-innovus-signoff',           default=True )
-  pt_signoff   = Step( 'synopsys-pt-timing-signoff',        default=True )
-  genlibdb     = Step( 'synopsys-ptpx-genlibdb',            default=True )
-  gdsmerge     = Step( 'mentor-calibre-gdsmerge',           default=True )
-  drc          = Step( 'mentor-calibre-drc',                default=True )
-  lvs          = Step( 'mentor-calibre-lvs',                default=True )
-  debugcalibre = Step( 'cadence-innovus-debug-calibre',     default=True )
+  signoff        = Step( 'cadence-innovus-signoff',         default=True )
+  pt_signoff     = Step( 'synopsys-pt-timing-signoff',      default=True )
+  genlib         = Step( 'cadence-genus-genlib',            default=True )
+  if which("calibre") is not None:
+      drc            = Step( 'mentor-calibre-drc',            default=True )
+      lvs            = Step( 'mentor-calibre-lvs',            default=True )
+  else:
+      drc            = Step( 'cadence-pegasus-drc',           default=True )
+      lvs            = Step( 'cadence-pegasus-lvs',           default=True )
+  debugcalibre   = Step( 'cadence-innovus-debug-calibre',   default=True )
 
   # Add (dummy) parameters to the default innovus init step
 
@@ -86,22 +96,19 @@ def construct():
 
   # Add glb_tile macro inputs to downstream nodes
 
-  dc.extend_inputs( ['glb_tile.db'] )
   pt_signoff.extend_inputs( ['glb_tile.db'] )
-  genlibdb.extend_inputs( ['glb_tile.db'] )
 
   # These steps need timing info for glb_tiles
-
   tile_steps = \
-    [ iflow, init, power, place, cts, postcts_hold,
-      route, postroute, postroute_hold, signoff, gdsmerge ]
+    [ synth, iflow, init, power, place, cts, postcts_hold,
+      route, postroute, postroute_hold, signoff, genlib ]
 
   for step in tile_steps:
     step.extend_inputs( ['glb_tile_tt.lib', 'glb_tile.lef'] )
 
   # Need the glb_tile gds to merge into the final layout
 
-  gdsmerge.extend_inputs( ['glb_tile.gds'] )
+  signoff.extend_inputs( ['glb_tile.gds'] )
 
   # Need glb_tile lvs.v file for LVS
 
@@ -111,15 +118,18 @@ def construct():
 
   lvs.extend_inputs( ['sram.spi'] )
 
-  xlist = dc.get_postconditions()
+  xlist = synth.get_postconditions()
   xlist = \
     [ _ for _ in xlist if 'percent_clock_gated' not in _ ]
-  xlist = dc.set_postconditions( xlist )
+  xlist = synth.set_postconditions( xlist )
 
   # Add extra input edges to innovus steps that need custom tweaks
 
   init.extend_inputs( custom_init.all_outputs() )
   power.extend_inputs( custom_power.all_outputs() )
+
+  sim.extend_inputs( ['design.v'] )
+  sim.extend_inputs( ['glb_tile.v'] )
 
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
@@ -127,9 +137,12 @@ def construct():
 
   g.add_step( info           )
   g.add_step( rtl            )
+  g.add_step( sim            )
   g.add_step( glb_tile       )
+  g.add_step( glb_tile_rtl   )
+  g.add_step( glb_tile_syn   )
   g.add_step( constraints    )
-  g.add_step( dc             )
+  g.add_step( synth          )
   g.add_step( iflow          )
   g.add_step( init           )
   g.add_step( custom_init    )
@@ -143,8 +156,7 @@ def construct():
   g.add_step( postroute_hold )
   g.add_step( signoff        )
   g.add_step( pt_signoff     )
-  g.add_step( genlibdb       )
-  g.add_step( gdsmerge       )
+  g.add_step( genlib         )
   g.add_step( drc            )
   g.add_step( lvs            )
   g.add_step( custom_lvs     )
@@ -156,7 +168,7 @@ def construct():
 
   # Connect by name
 
-  g.connect_by_name( adk,      dc             )
+  g.connect_by_name( adk,      synth             )
   g.connect_by_name( adk,      iflow          )
   g.connect_by_name( adk,      init           )
   g.connect_by_name( adk,      power          )
@@ -167,11 +179,10 @@ def construct():
   g.connect_by_name( adk,      postroute      )
   g.connect_by_name( adk,      postroute_hold )
   g.connect_by_name( adk,      signoff        )
-  g.connect_by_name( adk,      gdsmerge       )
   g.connect_by_name( adk,      drc            )
   g.connect_by_name( adk,      lvs            )
 
-  g.connect_by_name( glb_tile,      dc           )
+  g.connect_by_name( glb_tile,      synth           )
   g.connect_by_name( glb_tile,      iflow        )
   g.connect_by_name( glb_tile,      init         )
   g.connect_by_name( glb_tile,      power        )
@@ -183,19 +194,24 @@ def construct():
   g.connect_by_name( glb_tile,      postroute_hold )
   g.connect_by_name( glb_tile,      signoff      )
   g.connect_by_name( glb_tile,      pt_signoff   )
-  g.connect_by_name( glb_tile,      genlibdb     )
-  g.connect_by_name( glb_tile,      gdsmerge     )
+  g.connect_by_name( glb_tile,      genlib       )
   g.connect_by_name( glb_tile,      drc          )
   g.connect_by_name( glb_tile,      lvs          )
 
-  g.connect_by_name( rtl,         dc        )
-  g.connect_by_name( constraints, dc        )
+  g.connect_by_name( rtl,         sim        )
+  g.connect_by_name( glb_tile_rtl,         sim        )
 
-  g.connect_by_name( dc,       iflow        )
-  g.connect_by_name( dc,       init         )
-  g.connect_by_name( dc,       power        )
-  g.connect_by_name( dc,       place        )
-  g.connect_by_name( dc,       cts          )
+  g.connect_by_name( rtl,         synth        )
+  g.connect_by_name( constraints, synth        )
+
+  # glb_tile can use the same rtl as glb_top
+  g.connect_by_name( rtl,         glb_tile      )
+
+  g.connect_by_name( synth,       iflow        )
+  g.connect_by_name( synth,       init         )
+  g.connect_by_name( synth,       power        )
+  g.connect_by_name( synth,       place        )
+  g.connect_by_name( synth,       cts          )
 
   g.connect_by_name( iflow,    init         )
   g.connect_by_name( iflow,    power        )
@@ -219,20 +235,19 @@ def construct():
   g.connect_by_name( route,        postroute      )
   g.connect_by_name( postroute,    postroute_hold )
   g.connect_by_name( postroute_hold,    signoff   )
-  g.connect_by_name( signoff,      gdsmerge       )
   g.connect_by_name( signoff,      drc            )
   g.connect_by_name( signoff,      lvs            )
-  g.connect_by_name( gdsmerge,     drc            )
-  g.connect_by_name( gdsmerge,     lvs            )
+  g.connect(signoff.o('design-merged.gds'), drc.i('design_merged.gds'))
+  g.connect(signoff.o('design-merged.gds'), lvs.i('design_merged.gds'))
 
   g.connect_by_name( adk,          pt_signoff     )
   g.connect_by_name( signoff,      pt_signoff     )
 
-  g.connect_by_name( adk,          genlibdb   )
-  g.connect_by_name( signoff,      genlibdb   )
+  g.connect_by_name( adk,          genlib   )
+  g.connect_by_name( signoff,      genlib   )
 
   g.connect_by_name( adk,      debugcalibre )
-  g.connect_by_name( dc,       debugcalibre )
+  g.connect_by_name( synth,       debugcalibre )
   g.connect_by_name( iflow,    debugcalibre )
   g.connect_by_name( signoff,  debugcalibre )
   g.connect_by_name( drc,      debugcalibre )
@@ -248,8 +263,12 @@ def construct():
   # steps, we modify the order parameter for that node which determines
   # which scripts get run and when they get run.
 
+  # pin assignment parameters update
+  init.update_params( { 'num_tile_array_cols': parameters['num_tile_array_cols'] }, allow_new=True )
+  init.update_params( { 'num_glb_tiles': parameters['num_glb_tiles'] }, allow_new=True )
+
   # Change nthreads
-  dc.update_params( { 'nthreads': 4 } )
+  synth.update_params( { 'nthreads': 4 } )
   iflow.update_params( { 'nthreads': 4 } )
 
   order = init.get_param('order') # get the default script run order

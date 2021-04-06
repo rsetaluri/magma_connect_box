@@ -7,6 +7,7 @@ import os
 import sys
 
 from mflowgen.components import Graph, Step
+from shutil import which
 
 def construct():
   g = Graph()
@@ -82,10 +83,13 @@ def construct():
   signoff      = Step( 'cadence-innovus-signoff',       default=True )
   pt_signoff   = Step( 'synopsys-pt-timing-signoff',    default=True )
   genlibdb     = Step( 'synopsys-ptpx-genlibdb',        default=True )
-  gdsmerge     = Step( 'mentor-calibre-gdsmerge',       default=True )
-  drc          = Step( 'mentor-calibre-drc',            default=True )
   init_fill    = Step( 'mentor-calibre-fill',           default=True )
-  lvs          = Step( 'mentor-calibre-lvs',            default=True )
+  if which("calibre") is not None:
+      drc          = Step( 'mentor-calibre-drc',            default=True )
+      lvs          = Step( 'mentor-calibre-lvs',            default=True )
+  else:
+      drc          = Step( 'cadence-pegasus-drc',           default=True )
+      lvs          = Step( 'cadence-pegasus-lvs',           default=True )
   debugcalibre = Step( 'cadence-innovus-debug-calibre', default=True )
 
   # Die if unconnected bumps (why was this deleted?)
@@ -98,12 +102,6 @@ def construct():
   init_drc = drc.clone()
   init_drc.set_name( 'init-drc' )
 
-  # "init" now builds a gds file for its own drc check "init_drc";
-  # so need a gdsmerge step between the two
-  init_gdsmerge = gdsmerge.clone()
-  init_gdsmerge.set_name( 'init-gdsmerge' )
-
-
   #-----------------------------------------------------------------------
   # Add extra input edges to innovus steps that need custom tweaks
   #-----------------------------------------------------------------------
@@ -113,8 +111,7 @@ def construct():
 
   # Also: 'init' now produces a gds file
   # for intermediate drc check 'init-drc'
-  # by way of intermediate gdsmerge step "init-gdsmerge"
-  init.extend_outputs( ["design.gds.gz"] )
+  init.extend_outputs( ["design-merged.gds"] )
   
   # "power" inputs are "custom_power" outputs
   power.extend_inputs( custom_power.all_outputs() )
@@ -156,8 +153,6 @@ def construct():
   g.add_step( init_fullchip            )
   g.add_step( init                     )
 
-  # init => init_gdsmerge => init_drc
-  g.add_step( init_gdsmerge            )
   g.add_step( init_fill                )
   g.add_step( init_drc                 )
 
@@ -170,7 +165,6 @@ def construct():
   g.add_step( pt_signoff   )
   # g.add_step( genlibdb_constraints     )
   g.add_step( genlibdb                 )
-  g.add_step( gdsmerge                 )
   g.add_step( drc                      )
   g.add_step( lvs                      )
   g.add_step( debugcalibre             )
@@ -185,14 +179,12 @@ def construct():
   g.connect_by_name( adk,      pre_flowsetup )
   g.connect_by_name( adk,      iflow         )
   g.connect_by_name( adk,      init          )
-  g.connect_by_name( adk,      init_gdsmerge )
   g.connect_by_name( adk,      init_fill     )
   g.connect_by_name( adk,      init_drc      )
   g.connect_by_name( adk,      power         )
   g.connect_by_name( adk,      place         )
   g.connect_by_name( adk,      route         )
   g.connect_by_name( adk,      signoff       )
-  g.connect_by_name( adk,      gdsmerge      )
   g.connect_by_name( adk,      drc           )
   g.connect_by_name( adk,      lvs           )
 
@@ -225,20 +217,18 @@ def construct():
   g.connect_by_name( init_fullchip, init   )
   g.connect_by_name( custom_power,  power  )
 
-  # init => init_gdsmerge => init_drc
-  g.connect_by_name( init,         init_gdsmerge )
-  g.connect_by_name( init_gdsmerge,init_drc     )
-  g.connect( init_gdsmerge.o('design_merged.gds'), init_fill.i('design.gds') )
+  # init => init_drc
+  g.connect( init.o('design-merged.gds'), init_drc.i('design_merged.gds') )
+  g.connect( init.o('design-merged.gds'), init_fill.i('design.gds') )
 
   g.connect_by_name( init,         power        )
   g.connect_by_name( power,        place        )
   g.connect_by_name( place,        route        )
   g.connect_by_name( route,        signoff      )
-  g.connect_by_name( signoff,      gdsmerge     )
   g.connect_by_name( signoff,      drc          )
   g.connect_by_name( signoff,      lvs          )
-  g.connect_by_name( gdsmerge,     drc          )
-  g.connect_by_name( gdsmerge,     lvs          )
+  g.connect( signoff.o('design-merged.gds'), drc.i('design_merged.gds') )
+  g.connect( signoff.o('design-merged.gds'), lvs.i('design_merged.gds') )
 
   g.connect_by_name( signoff,              genlibdb )
   g.connect_by_name( adk,                  genlibdb )
