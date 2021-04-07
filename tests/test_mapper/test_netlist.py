@@ -62,24 +62,23 @@ def test_post_mapped(app, io_sides):
     interconnect = create_cgra(chip_size, chip_size, io_sides,
                                num_tracks=3,
                                add_pd=False,
-                               mem_ratio=(1, 2))
+                               mem_ratio=(1, 2),
+                               pe_fc=lassen_fc)
 
     placement, routing = pnr(interconnect, (netlist_info['netlist'], netlist_info['buses']))
     config_data = interconnect.get_route_bitstream(routing)
 
     print("CD", config_data)
-    assert 0
 
-    arch = read_arch(str("dse_pes/pointwise_pe.json"))
-    asm_fc = asm_arch_closure(arch)
-    gen_inst = asm_fc(family.PyFamily())
+    instr_t = list(lassen_fc.Py.input_t.field_dict.items())[0][1]
 
-    x, y = placement["p0"]
+    x, y = placement["p2"]
     tile = interconnect.tile_circuits[(x, y)]
-    add_bs = tile.core.get_config_bitstream(gen_inst())
+    add_bs = tile.core.get_config_bitstream(lassen_fc)
     for addr, data in add_bs:
         config_data.append((interconnect.get_config_addr(addr, 0, x, y), data))
     config_data = compress_config_data(config_data)
+    print(config_data)
 
     circuit = interconnect.circuit()
 #examples_coreir = [
