@@ -26,6 +26,15 @@ from lassen.sim import PE_fc
 from peak_gen.peak_wrapper import wrapped_peak_class
 from peak_gen.arch import read_arch
 
+import metamapper.coreir_util as cutil
+from metamapper.common_passes import VerifyNodes, print_dag
+from metamapper import CoreIRContext
+from metamapper.irs.coreir import gen_CoreIRNodes
+from metamapper.lake_mem import gen_MEM_fc
+from lassen.sim import PE_fc as lassen_fc
+import metamapper.peak_util as putil
+from mapper.netlist_util import create_netlist_info, print_netlist_info
+
 # set the debug mode to false to speed up construction
 set_debug_mode(False)
 
@@ -254,17 +263,51 @@ class Garnet(Generator):
         return input_interface, output_interface,\
                (reset_port_name, valid_port_name, en_port_name)
 
-    def compile(self, halide_src, unconstrained_io=False, compact=False):
-        id_to_name, instance_to_instr, netlist, bus = self.map(halide_src)
-        app_dir = os.path.dirname(halide_src)
-        if unconstrained_io:
-            fixed_io = None
-        else:
-            fixed_io = place_io_blk(id_to_name)
+    def metamapper_map(self,app):
+        base = "../MetaMapper"
+        lassen_header = f"{base}/libs/lassen_header.json"
+        mem_header = f"{base}/libs/mem_header.json"
+
+        app_file = f"{base}/examples/post_mapping/add3_const_mapped.json"
+        c = CoreIRContext(reset=True)
+        cmod = cutil.load_from_json(app_file)
+        #cmod.print_()
+        c = CoreIRContext()
+        c.run_passes(["flatten"])
+        #cmod.print_()
+
+        MEM_fc = gen_MEM_fc()
+        # Contains an empty nodes
+        nodes = gen_CoreIRNodes(16)
+        putil.load_and_link_peak(
+            nodes,
+            lassen_header,
+            {"global.PE": lassen_fc},
+        )
+        putil.load_and_link_peak(
+            nodes,
+            mem_header,
+            {"global.MEM": MEM_fc},
+        )
+        dag = cutil.coreir_to_dag(nodes, cmod)
+        #print_dag(dag)
+        print("-"*80)
+        tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
+        netlist_info = create_netlist_info(dag, tile_info)
+        print_netlist_info(netlist_info)
+        return netlist_info["id_to_name"], netlist_info["instance_to_instrs"], netlist_info["netlist"], netlist_info["buses"]
+
+
+    def compile(self, app, unconstrained_io=False, compact=False):
+        id_to_name, instance_to_instr, netlist, bus = self.metamapper_map(app)
+        app_dir = os.path.dirname(app)
+        # if unconstrained_io:
+        #     fixed_io = None
+        # else:
+        #     fixed_io = place_io_blk(id_to_name)
         placement, routing = archipelago.pnr(self.interconnect, (netlist, bus),
                                              cwd="temp",
                                              id_to_name=id_to_name,
-                                             fixed_pos=fixed_io,
                                              compact=compact,
                                              copy_to_dir=app_dir)
         routing_fix = archipelago.power.reduce_switching(routing, self.interconnect,
@@ -284,7 +327,7 @@ class Garnet(Generator):
                                                        id_to_name)
         delay = 1 if has_rom(id_to_name) else 0
         # also write out the meta file
-        archipelago.io.dump_meta_file(halide_src, "design", os.path.dirname(halide_src))
+        archipelago.io.dump_meta_file(app, "design", os.path.dirname(app))
         return bitstream, (input_interface, output_interface, reset, valid, en,
                            delay)
 

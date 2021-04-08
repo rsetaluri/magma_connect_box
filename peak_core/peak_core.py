@@ -161,12 +161,13 @@ class PeakCore(ConfigurableCore):
         self._setup_config()
 
     def get_config_bitstream(self, instr):
-        # breakpoint()
         # assert isinstance(instr, self.wrapper.instruction_type())
-        config = self.wrapper.assemble(instr)
-        config_width = self.wrapper.instruction_width()
+        # config = self.wrapper.assemble(instr)
+        # config_width = self.wrapper.instruction_width()
+        config = instr
+        config_width = instr.size
         num_config = math.ceil(config_width / 32)
-        instr_name = self.wrapper.instruction_name()
+        instr_name = "inst"
         result = []
         for i in range(num_config):
             name = f"{instr_name}_{i}"

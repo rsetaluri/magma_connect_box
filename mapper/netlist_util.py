@@ -363,6 +363,8 @@ def create_netlist_info(dag: Dag, tile_info: dict):
     info["id_to_name"] = {id: node.iname for node,id in nodes_to_ids.items()}
     nodes_to_instrs = CreateInstrs(node_info).doit(fdag)
     info["id_to_instrs"] = {id:nodes_to_instrs[node] for node, id in nodes_to_ids.items()}
+    info["instance_to_instrs"] = {node.iname:nodes_to_instrs[node] for node, id in nodes_to_ids.items() if "I" not in id}
+
 
     node_info = {t:fc.Py.input_t for t,fc in tile_info.items()}
     bus_info, netlist = CreateBuses(node_info).doit(fdag)

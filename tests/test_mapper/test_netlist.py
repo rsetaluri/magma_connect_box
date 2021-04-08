@@ -26,7 +26,7 @@ def io_sides():
     #"harris_to_metamapper",
 ])
 def test_post_mapped(app, io_sides):
-    base = "src/metamapper"
+    base = "../MetaMapper"
     lassen_header = f"{base}/libs/lassen_header.json"
     mem_header = f"{base}/libs/mem_header.json"
 
