@@ -20,9 +20,9 @@ def io_sides():
 
 
 @pytest.mark.parametrize("app", [
-    "add3_const_mapped",
+    #"add3_const_mapped",
     #"pointwise_to_metamapper",
-    #"gaussian_to_metamapper",
+    "gaussian_to_metamapper",
     #"harris_to_metamapper",
 ])
 def test_post_mapped(app, io_sides):
@@ -33,10 +33,8 @@ def test_post_mapped(app, io_sides):
     app_file = f"{base}/examples/post_mapping/{app}.json"
     c = CoreIRContext(reset=True)
     cmod = cutil.load_from_json(app_file)
-    #cmod.print_()
     c = CoreIRContext()
     c.run_passes(["flatten"])
-    #cmod.print_()
 
     MEM_fc = gen_MEM_fc()
     # Contains an empty nodes
@@ -57,7 +55,7 @@ def test_post_mapped(app, io_sides):
     tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
     netlist_info = create_netlist_info(dag, tile_info)
     print_netlist_info(netlist_info)
-
+    return
     chip_size = 4
     interconnect = create_cgra(chip_size, chip_size, io_sides,
                                num_tracks=3,
@@ -69,18 +67,8 @@ def test_post_mapped(app, io_sides):
     config_data = interconnect.get_route_bitstream(routing)
 
     print("CD", config_data)
+    return
 
-    instr_t = list(lassen_fc.Py.input_t.field_dict.items())[0][1]
-
-    x, y = placement["p2"]
-    tile = interconnect.tile_circuits[(x, y)]
-    add_bs = tile.core.get_config_bitstream(lassen_fc)
-    for addr, data in add_bs:
-        config_data.append((interconnect.get_config_addr(addr, 0, x, y), data))
-    config_data = compress_config_data(config_data)
-    print(config_data)
-
-    circuit = interconnect.circuit()
 #examples_coreir = [
 #    "add2",
 #    "pipe",
