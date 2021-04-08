@@ -22,6 +22,10 @@ import archipelago
 import archipelago.power
 import archipelago.io
 
+from lassen.sim import PE_fc
+from peak_gen.peak_wrapper import wrapped_peak_class
+from peak_gen.arch import read_arch
+
 # set the debug mode to false to speed up construction
 set_debug_mode(False)
 
@@ -32,7 +36,8 @@ class Garnet(Generator):
                  add_pond: bool = True,
                  use_io_valid: bool = False,
                  pipeline_config_interval: int = 8,
-                 glb_tile_mem_size: int = 256):
+                 glb_tile_mem_size: int = 256,
+                 pe_fc=PE_fc):
         super().__init__()
 
         # Check consistency of @standalone and @interconnect_only parameters. If
@@ -116,7 +121,8 @@ class Garnet(Generator):
                                    global_signal_wiring=wiring,
                                    pipeline_config_interval=pipeline_config_interval,
                                    mem_ratio=(1, 4),
-                                   standalone=standalone)
+                                   standalone=standalone,
+                                   pe_fc=pe_fc)
 
         self.interconnect = interconnect
 
