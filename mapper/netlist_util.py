@@ -149,6 +149,18 @@ class CreateInstrs(Visitor):
         assert isinstance(instr_child, Constant)
         self.node_to_instr[node] = instr_child.value
 
+class CreateMetaData(Visitor):
+    def doit(self, dag):
+        self.node_to_md = {}
+        self.run(dag)
+        return self.node_to_md
+
+    def generic_visit(self, node):
+        Visitor.generic_visit(self, node)
+        if hasattr(node, "_metadata_"):
+            self.node_to_md[node] = node._metadata_
+
+
 class CreateIDs(Visitor):
     def __init__(self, inst_info):
         self.inst_info = inst_info
@@ -264,22 +276,20 @@ class FlattenIO(Visitor):
 
     def visit_Output(self, node: Output):
         Visitor.generic_visit(self, node)
-
-        child = list(node.children())[0]
-        child_paths = self.node_to_opaths[child]
-        t = node.type
-        assert len(t.field_dict) == 1
-        k = list(t.field_dict.keys())[0]
-        for child_path, new_child in child_paths.items():
-            new_path = (k, *child_path)
-            assert new_path in self.opath_to_type
-            child_t = self.opath_to_type[new_path]
-            if child_t == Bit:
-                combine_children = [Constant(type=None, value=None), new_child]
-            else:
-                combine_children = [new_child, Constant(type=None, value=None)]
-            cnode = Combine(*combine_children, type=IO_Output_t)
-            self.outputs[new_path] = Output(cnode, type=IO_Output_t)
+        #ROSS TODO: Outputs should only have one input... It should not have a combine node?? think about both cases.
+        print(list(node.type.field_dict.items()))
+        for field, child in zip(node.type.field_dict, node.children()):
+            child_paths = self.node_to_opaths[child]
+            for child_path, new_child in child_paths.items():
+                new_path = (field, *child_path)
+                assert new_path in self.opath_to_type
+                child_t = self.opath_to_type[new_path]
+                if child_t == Bit:
+                    combine_children = [Constant(type=None, value=None), new_child]
+                else:
+                    combine_children = [new_child, Constant(type=None, value=None)]
+                cnode = Combine(*combine_children, type=IO_Output_t)
+                self.outputs[new_path] = Output(cnode, type=IO_Output_t)
 
     def visit_Combine(self, node: Combine):
         Visitor.generic_visit(self, node)
@@ -334,6 +344,10 @@ def print_netlist_info(info):
     for k, v in info["id_to_instrs"].items():
         print(f"  {k}, {v}")
 
+    print("id_to_metadata")
+    for k, v in info["id_to_metadata"].items():
+        print(f"  {k}, {v}")
+
     print("buses")
     for k,v in info["buses"].items():
         print(f"  {k}, {v}")
@@ -361,6 +375,10 @@ def create_netlist_info(dag: Dag, tile_info: dict):
     info = {}
     nodes_to_ids = CreateIDs(node_info).doit(fdag)
     info["id_to_name"] = {id: node.iname for node,id in nodes_to_ids.items()}
+
+    node_to_metadata = CreateMetaData().doit(fdag)
+    info["id_to_metadata"] = {nodes_to_ids[node]: md for node, md in node_to_metadata.items()}
+
     nodes_to_instrs = CreateInstrs(node_info).doit(fdag)
     info["id_to_instrs"] = {id:nodes_to_instrs[node] for node, id in nodes_to_ids.items()}
 
