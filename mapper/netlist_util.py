@@ -267,7 +267,7 @@ class FlattenIO(Visitor):
         self.opath_to_type = flatten_adt(output_t)
 
         isel = lambda t: "io2f_1" if t==Bit else "io2f_16"
-        real_inputs = [Input(type=IO_Input_t) for _ in ipath_to_type]
+        real_inputs = [Input(type=IO_Input_t, iname="_".join(str(field) for field in path)) for path in ipath_to_type]
         self.inputs = {path: inode.select(isel(t)) for inode, (path, t) in zip(real_inputs, ipath_to_type.items())}
 
         self.outputs = {}
@@ -289,7 +289,7 @@ class FlattenIO(Visitor):
                 else:
                     combine_children = [new_child, Constant(type=None, value=None)]
                 cnode = Combine(*combine_children, type=IO_Output_t)
-                self.outputs[new_path] = Output(cnode, type=IO_Output_t)
+                self.outputs[new_path] = Output(cnode, type=IO_Output_t, iname="_".join(str(field) for field in new_path))
 
     def visit_Combine(self, node: Combine):
         Visitor.generic_visit(self, node)

@@ -21,8 +21,8 @@ def io_sides():
 
 @pytest.mark.parametrize("app", [
     #"add3_const_mapped",
-    #"pointwise_to_metamapper",
-    "gaussian_to_metamapper",
+    "pointwise_to_metamapper",
+    #"gaussian_to_metamapper",
     #"harris_to_metamapper",
 ])
 def test_post_mapped(app, io_sides):
