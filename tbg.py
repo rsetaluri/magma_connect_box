@@ -145,6 +145,7 @@ class TestBenchGenerator:
             self.use_xcelium = True
         else:
             self.use_xcelium = False
+        # self.use_xcelium = False
         # if it's xcelium, rename copy it to .sv extension
         if self.use_xcelium:
             new_filename = os.path.splitext(stub_filename)[0] + ".sv"
@@ -414,6 +415,7 @@ class TestBenchGenerator:
             # determine whether we should build the verilator target
             verilator_lib = os.path.join(tempdir, "obj_dir", "VGarnet__ALL.a")
             skip_build = os.path.isfile(verilator_lib)
+            print("starting verilator")
             tester.compile_and_run(target="verilator",
                                    skip_compile=True,
                                    skip_verilator=skip_build,
