@@ -268,13 +268,12 @@ class Garnet(Generator):
         lassen_header = f"{base}/libs/lassen_header.json"
         mem_header = f"{base}/libs/mem_header.json"
 
-        app_file = f"{base}/examples/post_mapping/add3_const_mapped.json"
+        app_file = f"{base}/examples/post_mapping/pointwise_to_metamapper.json"
+        # app_file = app
         c = CoreIRContext(reset=True)
         cmod = cutil.load_from_json(app_file)
-        #cmod.print_()
         c = CoreIRContext()
         c.run_passes(["flatten"])
-        #cmod.print_()
 
         MEM_fc = gen_MEM_fc()
         # Contains an empty nodes

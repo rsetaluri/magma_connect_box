@@ -381,7 +381,10 @@ def create_netlist_info(dag: Dag, tile_info: dict):
 
     nodes_to_instrs = CreateInstrs(node_info).doit(fdag)
     info["id_to_instrs"] = {id:nodes_to_instrs[node] for node, id in nodes_to_ids.items()}
-    info["instance_to_instrs"] = {node.iname:nodes_to_instrs[node] for node, id in nodes_to_ids.items() if "I" not in id}
+    
+    info["instance_to_instrs"] = {node.iname:nodes_to_instrs[node] for node, id in nodes_to_ids.items() if ("p" in id or "m" in id)}
+    for node, md in node_to_metadata.items():
+        info["instance_to_instrs"][node.iname] = md
 
 
     node_info = {t:fc.Py.input_t for t,fc in tile_info.items()}

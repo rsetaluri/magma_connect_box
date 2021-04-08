@@ -16,13 +16,13 @@ import pytest
 
 @pytest.fixture()
 def io_sides():
-    return IOSide.North | IOSide.East | IOSide.South | IOSide.West
+    return IOSide.North
 
 
 @pytest.mark.parametrize("app", [
     #"add3_const_mapped",
-    #"pointwise_to_metamapper",
-    "gaussian_to_metamapper",
+    "pointwise_to_metamapper",
+    # "gaussian_to_metamapper",
     #"harris_to_metamapper",
 ])
 def test_post_mapped(app, io_sides):
@@ -55,7 +55,7 @@ def test_post_mapped(app, io_sides):
     tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
     netlist_info = create_netlist_info(dag, tile_info)
     print_netlist_info(netlist_info)
-    return
+    # return
     chip_size = 4
     interconnect = create_cgra(chip_size, chip_size, io_sides,
                                num_tracks=3,

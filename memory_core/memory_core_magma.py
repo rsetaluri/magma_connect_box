@@ -194,76 +194,76 @@ class MemCore(LakeCoreBase):
 
     def get_config_bitstream(self, instr):
         configs = []
-        if "init" in instr['config'][1]:
-            config_mem = [("tile_en", 1),
-                          ("mode", 2),
-                          ("wen_in_0_reg_sel", 1),
-                          ("wen_in_1_reg_sel", 1)]
-            for name, v in config_mem:
-                configs = [self.get_config_data(name, v)] + configs
-            # this is SRAM content
-            content = instr['config'][1]['init']
-            for addr, data in enumerate(content):
-                if (not isinstance(data, int)) and len(data) == 2:
-                    addr, data = data
-                feat_addr = addr // 256 + 1
-                addr = (addr % 256) >> 2
-                configs.append((addr, feat_addr, data))
-            print(configs)
-            return configs
+        # if "init" in instr['config'][1]:
+        #     config_mem = [("tile_en", 1),
+        #                   ("mode", 2),
+        #                   ("wen_in_0_reg_sel", 1),
+        #                   ("wen_in_1_reg_sel", 1)]
+        #     for name, v in config_mem:
+        #         configs = [self.get_config_data(name, v)] + configs
+        #     # this is SRAM content
+        #     content = instr['config'][1]['init']
+        #     for addr, data in enumerate(content):
+        #         if (not isinstance(data, int)) and len(data) == 2:
+        #             addr, data = data
+        #         feat_addr = addr // 256 + 1
+        #         addr = (addr % 256) >> 2
+        #         configs.append((addr, feat_addr, data))
+        #     print(configs)
+        #     return configs
 
-        # unified buffer buffer stuff
-        if "is_ub" in instr and instr["is_ub"]:
-            depth = instr["range_0"]
-            instr["depth"] = depth
-            print("configure ub to have depth", depth)
-        if "depth" in instr:
-            # need to download the csv and get configuration files
-            app_name = instr["app_name"]
-            # hardcode the config bitstream depends on the apps
-            config_mem = []
-            print("app is", app_name)
-            use_json = True
-            if use_json:
-                top_controller_node = instr['config'][1]
-                config_mem = self.dut.get_static_bitstream_json(top_controller_node)
-            elif app_name == "conv_3_3":
-                # Create a tempdir and download the files...
-                with tempfile.TemporaryDirectory() as tempdir:
-                    # Download files here and leverage lake bitstream code....
-                    print(f'Downloading app files for {app_name}')
-                    url_prefix = "https://raw.githubusercontent.com/dillonhuff/clockwork/" +\
-                                 "fix_config/lake_controllers/conv_3_3_aha/buf_inst_input" +\
-                                 "_10_to_buf_inst_output_3_ubuf/"
-                    file_suffix = ["input_agg2sram.csv",
-                                   "input_in2agg_0.csv",
-                                   "output_2_sram2tb.csv",
-                                   "output_2_tb2out_0.csv",
-                                   "output_2_tb2out_1.csv",
-                                   "stencil_valid.csv"]
-                    for fs in file_suffix:
-                        full_url = url_prefix + fs
-                        print(f"Downloading from {full_url}")
-                        urllib.request.urlretrieve(full_url, tempdir + "/" + fs)
-                    config_path = tempdir
-                    config_mem = self.get_static_bitstream(config_path=config_path,
-                                                           in_file_name="input",
-                                                           out_file_name="output")
+        # # unified buffer buffer stuff
+        # if "is_ub" in instr and instr["is_ub"]:
+        #     depth = instr["range_0"]
+        #     instr["depth"] = depth
+        #     print("configure ub to have depth", depth)
+        # if "depth" in instr:
+        #     # need to download the csv and get configuration files
+        #     app_name = instr["app_name"]
+        #     # hardcode the config bitstream depends on the apps
+        #     config_mem = []
+        #     print("app is", app_name)
+        #     use_json = True
+        #     if use_json:
+        #         top_controller_node = instr['config'][1]
+        #         config_mem = self.dut.get_static_bitstream_json(top_controller_node)
+        #     elif app_name == "conv_3_3":
+        #         # Create a tempdir and download the files...
+        #         with tempfile.TemporaryDirectory() as tempdir:
+        #             # Download files here and leverage lake bitstream code....
+        #             print(f'Downloading app files for {app_name}')
+        #             url_prefix = "https://raw.githubusercontent.com/dillonhuff/clockwork/" +\
+        #                          "fix_config/lake_controllers/conv_3_3_aha/buf_inst_input" +\
+        #                          "_10_to_buf_inst_output_3_ubuf/"
+        #             file_suffix = ["input_agg2sram.csv",
+        #                            "input_in2agg_0.csv",
+        #                            "output_2_sram2tb.csv",
+        #                            "output_2_tb2out_0.csv",
+        #                            "output_2_tb2out_1.csv",
+        #                            "stencil_valid.csv"]
+        #             for fs in file_suffix:
+        #                 full_url = url_prefix + fs
+        #                 print(f"Downloading from {full_url}")
+        #                 urllib.request.urlretrieve(full_url, tempdir + "/" + fs)
+        #             config_path = tempdir
+        #             config_mem = self.get_static_bitstream(config_path=config_path,
+        #                                                    in_file_name="input",
+        #                                                    out_file_name="output")
 
-            for name, v in config_mem:
-                configs += [self.get_config_data(name, v)]
-            # gate config signals
-            conf_names = ["wen_in_1_reg_sel"]
-            for conf_name in conf_names:
-                configs += [self.get_config_data(conf_name, 1)]
-        else:
+        #     for name, v in config_mem:
+        #         configs += [self.get_config_data(name, v)]
+        #     # gate config signals
+        #     conf_names = ["wen_in_1_reg_sel"]
+        #     for conf_name in conf_names:
+        #         configs += [self.get_config_data(conf_name, 1)]
+        # else:
             # for now config it as sram
-            config_mem = [("tile_en", 1),
-                          ("mode", 2),
-                          ("wen_in_0_reg_sel", 1),
-                          ("wen_in_1_reg_sel", 1)]
-            for name, v in config_mem:
-                configs = [self.get_config_data(name, v)] + configs
+        config_mem = [("tile_en", 1),
+                        ("mode", 2),
+                        ("wen_in_0_reg_sel", 1),
+                        ("wen_in_1_reg_sel", 1)]
+        for name, v in config_mem:
+            configs = [self.get_config_data(name, v)] + configs
         print(configs)
         return configs
 
