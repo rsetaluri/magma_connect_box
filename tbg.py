@@ -408,7 +408,7 @@ class TestBenchGenerator:
                                    # need to be merged in fault
                                    num_cycles=1000000,
                                    no_warning=True,
-                                   dump_vcd=False,
+                                   dump_vcd=True,
                                    include_verilog_libraries=verilog_libraries,
                                    directory=tempdir)
         else:
@@ -433,70 +433,86 @@ class TestBenchGenerator:
             has_valid = True
 
         # the code before is taken from the code I wrote for CGRAFlow
-        compare_size = os.path.getsize(self.gold_filename)
-        with open(self.output_filename, "rb") as design_f:
-            with open(self.gold_filename, "rb") as halide_f:
-                with open(valid_filename, "rb") as onebit_f:
-                    pos = 0
-                    skipped_pos = 0
-                    while True:
-                        design_byte = design_f.read(1)
-                        if pos % (self.pixel_size * self._input_size) == 0:
-                            onebit_byte = onebit_f.read(1)
-                        if not design_byte:
-                            break
-                        pos += 1
-                        design_byte = ord(design_byte)
-                        if not isinstance(onebit_byte, int):
-                            onebit_byte = ord(onebit_byte)
-                            print(onebit_byte)
-                        onebit_byte = onebit_byte if has_valid else 1
-                        if onebit_byte != 1:
-                            skipped_pos += 1
-                            continue
-                        halide_byte = halide_f.read(1)
-                        if len(halide_byte) == 0:
-                            break
-                        halide_byte = ord(halide_byte)
-                        if design_byte != halide_byte:
-                            print("design:", design_byte, file=sys.stderr)
-                            print("halide:", halide_byte, file=sys.stderr)
-                            raise Exception("Error at pos " + str(pos), "real pos",
-                                            pos - skipped_pos)
-
         # compare_size = os.path.getsize(self.gold_filename)
         # with open(self.output_filename, "rb") as design_f:
         #     with open(self.gold_filename, "rb") as halide_f:
-        #         pos = 0
-        #         skipped_pos = 0
-        #         while True:
-        #             design_byte = design_f.read(1)
-                  
-        #             if not design_byte:
-        #                 break
-        #             pos += 1
-        #             design_byte = ord(design_byte)
-                  
-        #             onebit_byte = 1
-        #             if onebit_byte != 1:
-        #                 skipped_pos += 1
-        #                 continue
-        #             halide_byte = halide_f.read(1)
-        #             if len(halide_byte) == 0:
-        #                 break
-        #             halide_byte = ord(halide_byte)
-        #             if design_byte != halide_byte:
-        #                 print("design:", design_byte)
-        #                 print("halide:", halide_byte)
-        #                 # raise Exception("Error at pos " + str(pos), "real pos",
-        #                 #                 pos - skipped_pos)
+        #         with open(valid_filename, "rb") as onebit_f:
+        #             pos = 0
+        #             skipped_pos = 0
+        #             while True:
+        #                 design_byte = design_f.read(1)
+        #                 if pos % (self.pixel_size * self._input_size) == 0:
+        #                     onebit_byte = onebit_f.read(1)
+        #                 if not design_byte:
+        #                     break
+        #                 pos += 1
+        #                 design_byte = ord(design_byte)
+        #                 if not isinstance(onebit_byte, int):
+        #                     onebit_byte = ord(onebit_byte)
+        #                 onebit_byte = onebit_byte if has_valid else 1
+        #                 if onebit_byte != 1:
+        #                     skipped_pos += 1
+        #                     continue
+        #                 halide_byte = halide_f.read(1)
+        #                 if len(halide_byte) == 0:
+        #                     break
+        #                 halide_byte = ord(halide_byte)
+        #                 if design_byte != halide_byte:
+        #                     print("design:", design_byte, file=sys.stderr)
+        #                     print("halide:", halide_byte, file=sys.stderr)
+        #                     raise Exception("Error at pos " + str(pos), "real pos",
+        #                                     pos - skipped_pos)
 
+        compare_size = os.path.getsize(self.gold_filename)
+        with open(self.output_filename, "rb") as design_f:
+            with open(self.gold_filename, "rb") as halide_f:
+                gold = []
+                design = []
+                while True:
+                    design_byte = design_f.read(1)
+                  
+                    if not design_byte:
+                        break
 
-        compared_size = pos - skipped_pos
-        if compared_size != compare_size:
-            raise Exception("Expected to produce " + str(compare_size) +
-                            " valid bytes, got " + str(compared_size))
-        print("PASS: compared with", pos - skipped_pos, "bytes")
+                    design_byte = ord(design_byte)
+
+                    design.append(design_byte)
+                  
+    
+                    halide_byte = halide_f.read(1)
+    
+                    if len(halide_byte) == 0:
+                        break
+                    halide_byte = ord(halide_byte)
+                    gold.append(halide_byte)
+         
+
+        end = False
+
+        gold_idx = 0
+        design_idx = 0
+        skipped_pos = 0
+        compared_pos = 0
+        
+        while True:
+            if gold_idx == len(gold) or design_idx == len(design):
+                break
+            gold_b = gold[gold_idx]
+            design_b = design[design_idx]
+
+            if not (design_b == 0 and gold_b != 0):
+                if (gold_b != design_b):
+                    print("Mismatch:", gold_b, design_b)
+                gold_idx += 1
+                compared_pos += 1
+            else:
+                skipped_pos += 1
+            design_idx += 1
+
+        if compared_pos == 0:
+            print("No design outputs")
+        else:
+            print("PASS: compared with", compared_pos, "bytes")
         print("Skipped", skipped_pos, "bytes")
 
 

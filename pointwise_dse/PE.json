@@ -1,0 +1,37 @@
+{
+    "bit_outputs": [
+        [
+            "12"
+        ]
+    ],
+    "enable_input_regs": false,
+    "enable_output_regs": false,
+    "input_width": 16,
+    "modules": [
+        {
+            "id": "3",
+            "in0": [
+                "5"
+            ],
+            "in1": [
+                "6"
+            ],
+            "type": "mul"
+        },
+        {
+            "id": "12",
+            "type": "bitconst"
+        },
+        {
+            "id": "15",
+            "type": "const"
+        }
+    ],
+    "output_width": 16,
+    "outputs": [
+        [
+            "3",
+            "15"
+        ]
+    ]
+}

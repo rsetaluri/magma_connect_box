@@ -22,7 +22,6 @@ import archipelago
 import archipelago.power
 import archipelago.io
 
-from lassen.sim import PE_fc
 from peak_gen.peak_wrapper import wrapped_peak_class
 from peak_gen.arch import read_arch
 
@@ -46,7 +45,7 @@ class Garnet(Generator):
                  use_io_valid: bool = False,
                  pipeline_config_interval: int = 8,
                  glb_tile_mem_size: int = 256,
-                 pe_fc=PE_fc):
+                 pe_fc=lassen_fc):
         super().__init__()
 
         # Check consistency of @standalone and @interconnect_only parameters. If
@@ -72,6 +71,7 @@ class Garnet(Generator):
         # size
         self.width = width
         self.height = height
+        self.pe_fc = pe_fc
 
         # only north side has IO
         if standalone:
@@ -264,12 +264,15 @@ class Garnet(Generator):
                (reset_port_name, valid_port_name, en_port_name)
 
     def metamapper_map(self,app):
-        base = "../MetaMapper"
-        lassen_header = f"{base}/libs/lassen_header.json"
-        mem_header = f"{base}/libs/mem_header.json"
+        # base = "../MetaMapper"
+        if self.pe_fc == lassen_fc:
+            pe_header = f"./headers/lassen_header.json"
+        else:
+            pe_header = f"./headers/pe_header.json"
+        mem_header = f"./headers/mem_header.json"
 
-        app_file = f"{base}/examples/post_mapping/pointwise_to_metamapper.json"
-        # app_file = app
+        # app_file = f"{base}/examples/post_mapping/pointwise_to_metamapper.json"
+        app_file = app
         c = CoreIRContext(reset=True)
         cmod = cutil.load_from_json(app_file)
         c = CoreIRContext()
@@ -280,8 +283,8 @@ class Garnet(Generator):
         nodes = gen_CoreIRNodes(16)
         putil.load_and_link_peak(
             nodes,
-            lassen_header,
-            {"global.PE": lassen_fc},
+            pe_header,
+            {"global.PE": self.pe_fc},
         )
         putil.load_and_link_peak(
             nodes,
@@ -291,7 +294,7 @@ class Garnet(Generator):
         dag = cutil.coreir_to_dag(nodes, cmod)
         #print_dag(dag)
         print("-"*80)
-        tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
+        tile_info = {"global.PE": self.pe_fc, "global.MEM": MEM_fc}
         netlist_info = create_netlist_info(dag, tile_info)
         print_netlist_info(netlist_info)
         return netlist_info["id_to_name"], netlist_info["instance_to_instrs"], netlist_info["netlist"], netlist_info["buses"]
@@ -413,10 +416,10 @@ def main():
         raise Exception("--standalone must be specified with "
                         "--interconnect-only as well")
     
-    pe_fc = PE_fc
+    pe_fc = lassen_fc
     if args.pe:
         arch = read_arch(args.pe)
-        pe_fc = wrapped_peak_class(arch)
+        pe_fc = wrapped_peak_class(arch, debug=True)
     
     garnet = Garnet(width=args.width, height=args.height,
                     glb_tile_mem_size=args.glb_tile_mem_size,
