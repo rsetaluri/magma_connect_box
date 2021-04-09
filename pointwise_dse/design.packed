@@ -1,0 +1,26 @@
+Netlists:
+e1: (i0, io2f_1)	(m1, flush)	(m3, flush)
+e4: (m1, stencil_valid)	(i2, f2io_1)
+e10: (m3, stencil_valid)	(i4, f2io_1)
+e14: (p5, alu_res)	(p7, data0)
+e16: (I6, io2f_16)	(p7, data1)
+e18: (p7, alu_res)	(I8, f2io_16)
+
+ID to Names:
+i0: reset
+m1: op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet
+i2: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_en
+m3: op_hcompute_hw_output_stencil_port_controller_garnet
+i4: hw_output_stencil_op_hcompute_hw_output_stencil_write_valid
+p5: op_hcompute_mult_stencil$inner_compute$i140614181667856_i140614188523664
+I6: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_0
+p7: op_hcompute_mult_stencil$inner_compute$i140614181676432_i140614184208400
+I8: hw_output_stencil_op_hcompute_hw_output_stencil_write_0
+
+Netlist Bus:
+e1: 1
+e4: 1
+e10: 1
+e14: 16
+e16: 16
+e18: 16

@@ -276,12 +276,12 @@ class TestBenchGenerator:
         # now load the file up
 
         # file in
-        file_in = tester.file_open(self.input_filename, "r",
+        file_in = tester.file_open("../../"+self.input_filename, "r",
                                    chunk_size=self._input_size)
-        file_out = tester.file_open(self.output_filename, "w",
+        file_out = tester.file_open("../../"+self.output_filename, "w",
                                     chunk_size=self._output_size)
         if len(self.valid_port_name) > 0:
-            valid_out = tester.file_open(f"{self.output_filename}.valid", "w")
+            valid_out = tester.file_open(f"../../{self.output_filename}.valid", "w")
         else:
             valid_out = None
 
@@ -319,6 +319,7 @@ class TestBenchGenerator:
         output_port_names.sort()
 
         loop = tester.loop(self._loop_size * len(input_port_names))
+        # loop = tester.loop(1)
         for input_port_name in input_port_names:
             value = loop.file_read(file_in)
             loop.poke(self.circuit.interface[input_port_name], value)
@@ -448,6 +449,7 @@ class TestBenchGenerator:
                         design_byte = ord(design_byte)
                         if not isinstance(onebit_byte, int):
                             onebit_byte = ord(onebit_byte)
+                            print(onebit_byte)
                         onebit_byte = onebit_byte if has_valid else 1
                         if onebit_byte != 1:
                             skipped_pos += 1
@@ -461,6 +463,34 @@ class TestBenchGenerator:
                             print("halide:", halide_byte, file=sys.stderr)
                             raise Exception("Error at pos " + str(pos), "real pos",
                                             pos - skipped_pos)
+
+        # compare_size = os.path.getsize(self.gold_filename)
+        # with open(self.output_filename, "rb") as design_f:
+        #     with open(self.gold_filename, "rb") as halide_f:
+        #         pos = 0
+        #         skipped_pos = 0
+        #         while True:
+        #             design_byte = design_f.read(1)
+                  
+        #             if not design_byte:
+        #                 break
+        #             pos += 1
+        #             design_byte = ord(design_byte)
+                  
+        #             onebit_byte = 1
+        #             if onebit_byte != 1:
+        #                 skipped_pos += 1
+        #                 continue
+        #             halide_byte = halide_f.read(1)
+        #             if len(halide_byte) == 0:
+        #                 break
+        #             halide_byte = ord(halide_byte)
+        #             if design_byte != halide_byte:
+        #                 print("design:", design_byte)
+        #                 print("halide:", halide_byte)
+        #                 # raise Exception("Error at pos " + str(pos), "real pos",
+        #                 #                 pos - skipped_pos)
+
 
         compared_size = pos - skipped_pos
         if compared_size != compare_size:

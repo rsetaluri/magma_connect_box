@@ -1,0 +1,11 @@
+Block Name			X	Y		#Block ID
+---------------------------
+hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_0		3	0		#I6
+hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_en		1	0		#i2
+hw_output_stencil_op_hcompute_hw_output_stencil_write_0		4	0		#I8
+hw_output_stencil_op_hcompute_hw_output_stencil_write_valid		0	0		#i4
+op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet		7	1		#m1
+op_hcompute_hw_output_stencil_port_controller_garnet		3	1		#m3
+op_hcompute_mult_stencil$inner_compute$i140614181667856_i140614188523664		4	2		#p5
+op_hcompute_mult_stencil$inner_compute$i140614181676432_i140614184208400		4	1		#p7
+reset		2	0		#i0
