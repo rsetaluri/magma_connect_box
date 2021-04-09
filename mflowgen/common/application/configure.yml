@@ -6,7 +6,7 @@ outputs:
   - tiles_Tile_MemCore.list
 
 commands:
-  - ./run.sh
+  - ./pe_dse_run.sh
 
 #-------------------------------------------------------------------------
 # Parameters

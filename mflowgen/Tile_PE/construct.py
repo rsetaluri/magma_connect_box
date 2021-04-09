@@ -24,7 +24,7 @@ def construct():
   adk_view = 'multicorner-multivt'
   pwr_aware = True
 
-  flatten = 3
+  flatten = 0
   if os.environ.get('FLATTEN'):
       flatten = os.environ.get('FLATTEN')
 
@@ -45,6 +45,7 @@ def construct():
     'flatten_effort'    : flatten,
     'topographical'     : True,
     # RTL Generation
+    'use_container': False,
     'interconnect_only' : True,
     # Power Domains
     'PWR_AWARE'         : pwr_aware,
