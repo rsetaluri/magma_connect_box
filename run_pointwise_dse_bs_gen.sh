@@ -1,1 +1,1 @@
-python garnet.py --no-pd --interconnect-only --width 8 --height 8 --input-app pointwise_dse/pointwise_to_metamapper.json --input-file pointwise_dse/input.raw --output-file pointwise_dse/pointwise.bs --gold-file pointwise_dse/gold.raw -v --pe pointwise_dse/PE.json
+python garnet.py --no-pd --no-pond --interconnect-only --width 8 --height 8 --input-app pointwise_dse/pointwise_to_metamapper.json --input-file pointwise_dse/input.raw --output-file pointwise_dse/pointwise.bs --gold-file pointwise_dse/gold.raw -v --pe pointwise_dse/PE.json
