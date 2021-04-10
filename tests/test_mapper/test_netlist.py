@@ -1,5 +1,5 @@
 import metamapper.coreir_util as cutil
-from metamapper.common_passes import VerifyNodes, print_dag
+from metamapper.common_passes import VerifyNodes, print_dag, gen_dag_img
 from metamapper import CoreIRContext
 from metamapper.irs.coreir import gen_CoreIRNodes
 from metamapper.lake_mem import gen_MEM_fc
@@ -21,9 +21,10 @@ def io_sides():
 
 @pytest.mark.parametrize("app", [
     #"add3_const_mapped",
+    #"add4_pipe_mapped",
     "pointwise_to_metamapper",
-    # "gaussian_to_metamapper",
-    #"harris_to_metamapper",
+    "gaussian_to_metamapper",
+    "harris_to_metamapper",
 ])
 def test_post_mapped(app, io_sides):
     base = "../MetaMapper"
@@ -33,7 +34,6 @@ def test_post_mapped(app, io_sides):
     app_file = f"{base}/examples/post_mapping/{app}.json"
     c = CoreIRContext(reset=True)
     cmod = cutil.load_from_json(app_file)
-    c = CoreIRContext()
     c.run_passes(["flatten"])
 
     MEM_fc = gen_MEM_fc()
@@ -47,7 +47,7 @@ def test_post_mapped(app, io_sides):
     putil.load_and_link_peak(
         nodes,
         mem_header,
-        {"global.MEM": MEM_fc},
+        {"global.MEM": (MEM_fc, True)},
     )
     dag = cutil.coreir_to_dag(nodes, cmod)
     #print_dag(dag)
@@ -55,7 +55,7 @@ def test_post_mapped(app, io_sides):
     tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
     netlist_info = create_netlist_info(dag, tile_info)
     print_netlist_info(netlist_info)
-    # return
+    return
     chip_size = 4
     interconnect = create_cgra(chip_size, chip_size, io_sides,
                                num_tracks=3,

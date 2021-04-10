@@ -1,8 +1,10 @@
 from collections import defaultdict
 from hwtypes.adt import Tuple, Product
-from metamapper.node import Dag, Input, Output, Combine, Select, DagNode, IODag, Constant
+from metamapper.node import Dag, Input, Output, Combine, Select, DagNode, IODag, Constant, Sink
+from metamapper.common_passes import gen_dag_img
 from DagVisitor import Visitor
 from hwtypes import Bit, BitVector
+from peak.mapper.utils import Unbound
 
 def sample_pnr_input():
     id_to_name = dict(
@@ -66,7 +68,7 @@ class CreateBuses(Visitor):
         else:
             raise NotImplementedError(f"{adt}")
 
-    def visit_Input(self, node):
+    def visit_Source(self, node):
         bid = self.create_buses(node.type)
         self.node_to_bid[node] = bid
 
@@ -83,6 +85,16 @@ class CreateBuses(Visitor):
         self.node_to_bid[node] = bid
         self.netlist[bid].append((child, node.field))
 
+    def visit_RegisterSource(self, node):
+        bid = self.create_buses(node.type)
+        self.node_to_bid[node] = bid
+        self.netlist[bid].append((node, "out"))
+
+    def visit_RegisterSink(self, node):
+        Visitor.generic_visit(self, node)
+        child_bid = self.node_to_bid[node.child]
+        self.netlist[child_bid].append((node, "in"))
+
     def generic_visit(self, node):
         Visitor.generic_visit(self, node)
         child_bids = [self.node_to_bid[child] for child in node.children()]
@@ -94,8 +106,9 @@ class CreateBuses(Visitor):
                 continue
             assert child_bid in self.netlist
             self.netlist[child_bid].append((node, field))
-        bid = self.create_buses(node.type)
-        self.node_to_bid[node] = bid
+        if not isinstance(node, Sink):
+            bid = self.create_buses(node.type)
+            self.node_to_bid[node] = bid
 
     def visit_Combine(self, node: Combine):
         Visitor.generic_visit(self, node)
@@ -110,10 +123,11 @@ class CreateBuses(Visitor):
 
     def visit_Output(self, node: Output):
         Visitor.generic_visit(self, node)
-        child_bid = [self.node_to_bid[child] for child in node.children()][0]
+        child_bid = self.node_to_bid[node.child]
         assert isinstance(child_bid, dict)
         for field, bid in child_bid.items():
             self.netlist[bid].append((node, field))
+
 
 class CreateInstrs(Visitor):
     def __init__(self, inst_info):
@@ -122,7 +136,10 @@ class CreateInstrs(Visitor):
     def doit(self, dag: IODag):
         self.node_to_instr = {}
         self.run(dag)
+        for src, sink in zip(dag.non_input_sources, dag.non_output_sinks):
+            self.node_to_instr[src] = self.node_to_instr[sink]
         return self.node_to_instr
+
 
     def visit_Input(self, node):
         self.node_to_instr[node] = 1
@@ -130,6 +147,9 @@ class CreateInstrs(Visitor):
     def visit_Output(self, node):
         Visitor.generic_visit(self, node)
         self.node_to_instr[node] = 2
+
+    def visit_Source(self, node):
+        pass
 
     def visit_Select(self, node):
         Visitor.generic_visit(self, node)
@@ -139,6 +159,13 @@ class CreateInstrs(Visitor):
 
     def visit_Constant(self, node):
         pass
+
+    def visit_RegisterSource(self, node):
+        pass
+
+    def visit_RegisterSink(self, node):
+        Visitor.generic_visit(self, node)
+        self.node_to_instr[node] = 0 #TODO what is the 'instr' for a register?
 
     def generic_visit(self, node: DagNode):
         Visitor.generic_visit(self, node)
@@ -169,9 +196,11 @@ class CreateIDs(Visitor):
         self.i = 0
         self.node_to_id = {}
         self.run(dag)
+        for src, sink in zip(dag.non_input_sources, dag.non_output_sinks):
+            self.node_to_id[src] = self.node_to_id[sink]
         return self.node_to_id
 
-    def visit_Input(self, node):
+    def visit_Source(self, node):
         pass
 
 
@@ -210,6 +239,20 @@ class CreateIDs(Visitor):
 
     def visit_Constant(self, node):
         pass
+
+    def visit_RegisterSource(self, node):
+        pass
+
+    def visit_RegisterSink(self, node):
+        Visitor.generic_visit(self, node)
+        if node.type == Bit:
+            id = f"r{self.i}"
+        elif node.type == BitVector[16]:
+            id = f"R{self.i}"
+        else:
+            raise NotImplementedError(f"{node}, {node.type}")
+        self.node_to_id[node] = id
+        self.i += 1
 
     def generic_visit(self, node: DagNode):
         Visitor.generic_visit(self, node)
@@ -272,12 +315,12 @@ class FlattenIO(Visitor):
 
         self.outputs = {}
         self.run(dag)
-        return IODag(inputs=real_inputs, outputs=self.outputs.values())
+        real_sources = [self.node_map[s] for s in dag.sources[1:]]
+        real_sinks = [self.node_map[s] for s in dag.sinks[1:]]
+        return IODag(inputs=real_inputs, outputs=self.outputs.values(), sources=real_sources, sinks=real_sinks)
 
     def visit_Output(self, node: Output):
         Visitor.generic_visit(self, node)
-        #ROSS TODO: Outputs should only have one input... It should not have a combine node?? think about both cases.
-        print(list(node.type.field_dict.items()))
         for field, child in zip(node.type.field_dict, node.children()):
             child_paths = self.node_to_opaths[child]
             for child_path, new_child in child_paths.items():
@@ -285,9 +328,9 @@ class FlattenIO(Visitor):
                 assert new_path in self.opath_to_type
                 child_t = self.opath_to_type[new_path]
                 if child_t == Bit:
-                    combine_children = [Constant(type=None, value=None), new_child]
+                    combine_children = [Constant(type=BitVector[16], value=Unbound), new_child]
                 else:
-                    combine_children = [new_child, Constant(type=None, value=None)]
+                    combine_children = [new_child, Constant(type=Bit, value=Unbound)]
                 cnode = Combine(*combine_children, type=IO_Output_t)
                 self.outputs[new_path] = Output(cnode, type=IO_Output_t, iname="_".join(str(field) for field in new_path))
 
@@ -364,7 +407,7 @@ from metamapper. common_passes import print_dag
 
 def create_netlist_info(dag: Dag, tile_info: dict):
     fdag = FlattenIO().doit(dag)
-
+    gen_dag_img(fdag, f"img/foo")
     def tile_to_char(t):
         if t.split(".")[1]=="PE":
             return "p"
