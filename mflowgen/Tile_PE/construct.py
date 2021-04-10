@@ -45,7 +45,7 @@ def construct():
     'flatten_effort'    : flatten,
     'topographical'     : True,
     # RTL Generation
-    'use_container': False,
+    'use_container'     : False,
     'interconnect_only' : True,
     'dse_pe'            : 'lassen',
     # Power Domains
