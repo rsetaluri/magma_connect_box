@@ -14,6 +14,7 @@ parameters:
   interconnect_only: False
   soc_only: False
   PWR_AWARE: True
+  dse_pe: "lassen"
 
   # If true, use docker container for python environment
   use_container: True

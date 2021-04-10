@@ -47,12 +47,15 @@ def construct():
     # RTL Generation
     'use_container': False,
     'interconnect_only' : True,
+    'dse_pe'            : 'lassen',
     # Power Domains
     'PWR_AWARE'         : pwr_aware,
     'core_density_target': 0.63,
     # Power analysis
     "use_sdf"           : False, # uses sdf but not the way it is in xrun node
-    'app_to_run'        : 'tests/conv_3_3',
+    'app_to_run'        : 'pointwise',
+    'app_array_width'   : 8,
+    'app_array_height'  : 8,
     'saif_instance'     : 'testbench/dut',
     'testbench_name'    : 'testbench',
     'strip_path'        : 'testbench/dut'

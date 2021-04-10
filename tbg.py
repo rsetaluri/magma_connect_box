@@ -433,36 +433,6 @@ class TestBenchGenerator:
             has_valid = True
 
         # the code before is taken from the code I wrote for CGRAFlow
-        compare_size = os.path.getsize(self.gold_filename)
-        with open(self.output_filename, "rb") as design_f:
-            with open(self.gold_filename, "rb") as halide_f:
-                with open(valid_filename, "rb") as onebit_f:
-                    pos = 0
-                    skipped_pos = 0
-                    while True:
-                        design_byte = design_f.read(1)
-                        if pos % (self.pixel_size * self._input_size) == 0:
-                            onebit_byte = onebit_f.read(1)
-                        if not design_byte:
-                            break
-                        pos += 1
-                        design_byte = ord(design_byte)
-                        if not isinstance(onebit_byte, int):
-                            onebit_byte = ord(onebit_byte)
-                        onebit_byte = onebit_byte if has_valid else 1
-                        if onebit_byte != 1:
-                            skipped_pos += 1
-                            continue
-                        halide_byte = halide_f.read(1)
-                        if len(halide_byte) == 0:
-                            break
-                        halide_byte = ord(halide_byte)
-                        if design_byte != halide_byte:
-                            print("design:", design_byte, file=sys.stderr)
-                            print("halide:", halide_byte, file=sys.stderr)
-                            raise Exception("Error at pos " + str(pos), "real pos",
-                                            pos - skipped_pos)
-
         # compare_size = os.path.getsize(self.gold_filename)
         # with open(self.output_filename, "rb") as design_f:
         #     with open(self.gold_filename, "rb") as halide_f:
