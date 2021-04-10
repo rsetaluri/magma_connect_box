@@ -24,12 +24,29 @@ def construct():
   adk_view = 'multicorner-multivt'
   pwr_aware = True
 
-  synth_power = False
+  synth_power = True
   if os.environ.get('SYNTH_POWER') == 'True':
       synth_power = True
   # power domains do not work with post-synth power
   if synth_power:
       pwr_aware = False
+
+  dse_pe = os.environ.get('DSE_PE')
+  if not dse_pe:
+      dse_pe = 'lassen'
+  app_to_run = os.environ.get('APP')
+  if not app_to_run:
+      app_to_run = 'pointwise'
+  width = os.environ.get('WIDTH')
+  if not width:
+      width = 8
+  else:
+      width=int(width)
+  height = os.environ.get('HEIGHT')
+  if not height:
+      height = 8
+  else:
+      height = int(height)
 
   parameters = {
     'construct_path'      : __file__,
@@ -38,7 +55,7 @@ def construct():
     'adk'                 : adk_name,
     'adk_view'            : adk_view,
     # Synthesis
-    'flatten_effort'      : 3,
+    'flatten_effort'      : 0,
     'topographical'       : True,
     # SRAM macros
     'num_words'           : 512,
@@ -54,14 +71,14 @@ def construct():
     # RTL Generation
     'interconnect_only'   : True,
     'use_container'       : False,
-    'dse_pe'              : 'lassen',
+    'dse_pe'              : dse_pe,
     # Power Domains
     'PWR_AWARE'         : pwr_aware,
     # Power analysis
     "use_sdf"           : False, # uses sdf but not the way it is in xrun node
-    'app_to_run'        : 'pointwise',
-    'app_array_width'   : 8,
-    'app_array_height'  : 8,
+    'app_to_run'        : app_to_run,
+    'app_array_width'   : width,
+    'app_array_height'  : height,
     'saif_instance'     : 'testbench/dut',
     'testbench_name'    : 'testbench',
     'strip_path'        : 'testbench/dut'

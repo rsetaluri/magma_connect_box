@@ -15,10 +15,10 @@ fi
 
 cd $GARNET_HOME
 python garnet.py ${flags}
-python tbg.py garnet.v garnet_stub.v pointwise/pointwise.bs.json
+python tbg.py garnet.v garnet_stub.v ${dse_pe}/${app_to_run}.bs.json
 
 cd -
 cp $GARNET_HOME/temp/garnet/waveforms.vcd outputs/run.vcd
 
-grep '#m' $GARNET_HOME/$app_to_run/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_MemCore.list
-grep '#p' $GARNET_HOME/$app_to_run/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_PE.list
+grep '#m' $GARNET_HOME/${dse_pe}/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_MemCore.list
+grep '#p' $GARNET_HOME/${dse_pe}/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_PE.list

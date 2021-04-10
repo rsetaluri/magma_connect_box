@@ -28,12 +28,29 @@ def construct():
   if os.environ.get('FLATTEN'):
       flatten = os.environ.get('FLATTEN')
 
-  synth_power = False
+  synth_power = True
   if os.environ.get('SYNTH_POWER') == 'True':
       synth_power = True
   # power domains do not work with post-synth power
   if synth_power:
       pwr_aware = False
+
+  dse_pe = os.environ.get('DSE_PE')
+  if not dse_pe:
+      dse_pe = 'lassen'
+  app_to_run = os.environ.get('APP')
+  if not app_to_run:
+      app_to_run = 'pointwise'
+  width = os.environ.get('WIDTH')
+  if not width:
+      width = 8
+  else:
+      width=int(width)
+  height = os.environ.get('HEIGHT')
+  if not height:
+      height = 8
+  else:
+      height = int(height)
 
   parameters = {
     'construct_path'    : __file__,
@@ -47,15 +64,15 @@ def construct():
     # RTL Generation
     'use_container'     : False,
     'interconnect_only' : True,
-    'dse_pe'            : 'lassen',
+    'dse_pe'            : dse_pe,
     # Power Domains
     'PWR_AWARE'         : pwr_aware,
     'core_density_target': 0.63,
     # Power analysis
     "use_sdf"           : False, # uses sdf but not the way it is in xrun node
-    'app_to_run'        : 'pointwise',
-    'app_array_width'   : 8,
-    'app_array_height'  : 8,
+    'app_to_run'        : app_to_run,
+    'app_array_width'   : width,
+    'app_array_height'  : height,
     'saif_instance'     : 'testbench/dut',
     'testbench_name'    : 'testbench',
     'strip_path'        : 'testbench/dut'

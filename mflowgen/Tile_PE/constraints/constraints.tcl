@@ -54,7 +54,7 @@ set sb_reg_path SB_ID0_5TRACKS_B*_PE/REG_T*_B*/value__CE/value_reg*/*
 set_false_path -from [get_ports config_* -filter direction==in] -to [get_pins $sb_reg_path]
 
 # Paths from config input ports to PE registers
-set pe_path PE_inst0/WrappedPE_inst0\$PE_inst0
+set pe_path PE_inst0/WrappedPE_inst0*
 set_false_path -from [get_ports config_* -filter direction==in] -to [get_pins [list $pe_path/* ]]
 
 # Paths from config input ports to the register file in Pond 
