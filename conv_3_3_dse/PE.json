@@ -1,0 +1,49 @@
+{
+    "bit_outputs": [
+        [
+            "20"
+        ]
+    ],
+    "enable_input_regs": false,
+    "enable_output_regs": false,
+    "input_width": 16,
+    "modules": [
+        {
+            "id": "0",
+            "type": "const"
+        },
+        {
+            "id": "1",
+            "in0": [
+                "7"
+            ],
+            "in1": [
+                "0",
+                "19"
+            ],
+            "type": "mul"
+        },
+        {
+            "id": "20",
+            "type": "bitconst"
+        },
+        {
+            "id": "23",
+            "in0": [
+                "19"
+            ],
+            "in1": [
+                "7"
+            ],
+            "type": "add"
+        }
+    ],
+    "output_width": 16,
+    "outputs": [
+        [
+            "1",
+            "23",
+            "0"
+        ]
+    ]
+}

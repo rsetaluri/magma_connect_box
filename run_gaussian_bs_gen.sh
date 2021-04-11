@@ -1,1 +1,1 @@
-python garnet.py --no-pd --interconnect-only --input-app gaussian/gaussian_to_metamapper.json --input-file gaussian/input.raw --output-file gaussian/gaussian.bs --gold-file gaussian/gold.raw
+python garnet.py --no-pd --no-pond --interconnect-only --width 16 --height 16 --input-app gaussian/gaussian_to_metamapper.json --input-file gaussian/input.raw --output-file gaussian/gaussian.bs --gold-file gaussian/gold.raw -v --pe gaussian/PE.json 

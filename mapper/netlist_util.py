@@ -88,12 +88,12 @@ class CreateBuses(Visitor):
     def visit_RegisterSource(self, node):
         bid = self.create_buses(node.type)
         self.node_to_bid[node] = bid
-        self.netlist[bid].append((node, "out"))
+        self.netlist[bid].append((node, "reg"))
 
     def visit_RegisterSink(self, node):
         Visitor.generic_visit(self, node)
         child_bid = self.node_to_bid[node.child]
-        self.netlist[child_bid].append((node, "in"))
+        self.netlist[child_bid].append((node, "reg"))
 
     def generic_visit(self, node):
         Visitor.generic_visit(self, node)
@@ -248,7 +248,7 @@ class CreateIDs(Visitor):
         if node.type == Bit:
             id = f"r{self.i}"
         elif node.type == BitVector[16]:
-            id = f"R{self.i}"
+            id = f"r{self.i}"
         else:
             raise NotImplementedError(f"{node}, {node.type}")
         self.node_to_id[node] = id

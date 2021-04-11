@@ -55,7 +55,6 @@ def test_post_mapped(app, io_sides):
     tile_info = {"global.PE": lassen_fc, "global.MEM": MEM_fc}
     netlist_info = create_netlist_info(dag, tile_info)
     print_netlist_info(netlist_info)
-    return
     chip_size = 4
     interconnect = create_cgra(chip_size, chip_size, io_sides,
                                num_tracks=3,

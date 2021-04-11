@@ -324,8 +324,8 @@ class TestBenchGenerator:
             value = loop.file_read(file_in)
             loop.poke(self.circuit.interface[input_port_name], value)
             loop.eval()
-        for output_port_name in output_port_names:
-            loop.file_write(file_out, self.circuit.interface[output_port_name])
+        # for output_port_name in output_port_names:
+        loop.file_write(file_out, self.circuit.interface[output_port_names[0]])
         if valid_out is not None:
             loop.file_write(valid_out,
                             self.circuit.interface[self.valid_port_name])
@@ -449,6 +449,7 @@ class TestBenchGenerator:
         #                 design_byte = ord(design_byte)
         #                 if not isinstance(onebit_byte, int):
         #                     onebit_byte = ord(onebit_byte)
+        #                     print(onebit_byte)
         #                 onebit_byte = onebit_byte if has_valid else 1
         #                 if onebit_byte != 1:
         #                     skipped_pos += 1
@@ -458,61 +459,76 @@ class TestBenchGenerator:
         #                     break
         #                 halide_byte = ord(halide_byte)
         #                 if design_byte != halide_byte:
-        #                     print("design:", design_byte, file=sys.stderr)
-        #                     print("halide:", halide_byte, file=sys.stderr)
-        #                     raise Exception("Error at pos " + str(pos), "real pos",
-        #                                     pos - skipped_pos)
+        #                     print("design:", design_byte)
+        #                     print("halide:", halide_byte)
+        #                     # raise Exception("Error at pos " + str(pos), "real pos",
+        #                                     # pos - skipped_pos)
 
         compare_size = os.path.getsize(self.gold_filename)
         with open(self.output_filename, "rb") as design_f:
             with open(self.gold_filename, "rb") as halide_f:
-                gold = []
-                design = []
-                while True:
-                    design_byte = design_f.read(1)
-                  
-                    if not design_byte:
-                        break
-
-                    design_byte = ord(design_byte)
-
-                    design.append(design_byte)
-                  
-    
-                    halide_byte = halide_f.read(1)
-    
-                    if len(halide_byte) == 0:
-                        break
-                    halide_byte = ord(halide_byte)
-                    gold.append(halide_byte)
+                with open(valid_filename, "rb") as valid_f:
+                    gold = []
+                    design = []
+                    valid = []
+                    while True:
+                        design_byte = design_f.read(1)
+                        if not design_byte:
+                            break
+                        design_byte = ord(design_byte)
+                        design.append(design_byte)
+                    
+                        valid_byte = valid_f.read(1)
+                        if not valid_byte:
+                            break
+                        valid_byte = ord(valid_byte)
+                        valid.append(valid_byte)
+        
+                        halide_byte = halide_f.read(1)
+                        if len(halide_byte) == 0:
+                            break
+                        halide_byte = ord(halide_byte)
+                        gold.append(halide_byte)
          
 
-        end = False
 
         gold_idx = 0
         design_idx = 0
+        valid_idx = 0
         skipped_pos = 0
         compared_pos = 0
+        match_count = 0
+        mismatch_count = 0
         
         while True:
-            if gold_idx == len(gold) or design_idx == len(design):
+            if gold_idx == len(gold) or design_idx == len(design) or valid_idx == len(valid):
                 break
             gold_b = gold[gold_idx]
             design_b = design[design_idx]
+            valid_b = valid[valid_idx]
 
-            if not (design_b == 0 and gold_b != 0):
+            # print("Valid:", valid_b, "Design:", design_b, "Gold:", gold_b)
+
+            if (valid_b == 1):
                 if (gold_b != design_b):
                     print("Mismatch:", gold_b, design_b)
+                    mismatch_count += 1
+                else:
+                    match_count += 1
                 gold_idx += 1
                 compared_pos += 1
             else:
                 skipped_pos += 1
             design_idx += 1
+            valid_idx += 1
 
         if compared_pos == 0:
             print("No design outputs")
         else:
-            print("PASS: compared with", compared_pos, "bytes")
+            if mismatch_count == 0: 
+                print("PASS: compared with", compared_pos, "bytes")
+            else:
+                print(match_count, "matches,", mismatch_count, "mismatches")
         print("Skipped", skipped_pos, "bytes")
 
 

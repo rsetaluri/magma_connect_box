@@ -1,0 +1,60 @@
+{
+    "bit_outputs": [
+        [
+            "26"
+        ]
+    ],
+    "enable_input_regs": false,
+    "enable_output_regs": false,
+    "input_width": 16,
+    "modules": [
+        {
+            "id": "0",
+            "type": "const"
+        },
+        {
+            "id": "1",
+            "in0": [
+                "8"
+            ],
+            "in1": [
+                "0",
+                "23"
+            ],
+            "type": "mul"
+        },
+        {
+            "id": "24",
+            "in0": [
+                "23"
+            ],
+            "in1": [
+                "8"
+            ],
+            "type": "add"
+        },
+        {
+            "id": "25",
+            "in0": [
+                "23"
+            ],
+            "in1": [
+                "8"
+            ],
+            "type": "shr"
+        },
+        {
+            "id": "26",
+            "type": "bitconst"
+        }
+    ],
+    "output_width": 16,
+    "outputs": [
+        [
+            "24",
+            "1",
+            "25",
+            "0"
+        ]
+    ]
+}

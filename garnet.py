@@ -264,11 +264,12 @@ class Garnet(Generator):
                (reset_port_name, valid_port_name, en_port_name)
 
     def metamapper_map(self,app):
+        app_dir = os.path.dirname(app)
         # base = "../MetaMapper"
         if self.pe_fc == lassen_fc:
             pe_header = f"./headers/lassen_header.json"
         else:
-            pe_header = f"./headers/pe_header.json"
+            pe_header = f"{app_dir}/pe_header.json"
         mem_header = f"./headers/mem_header.json"
 
         # app_file = f"{base}/examples/post_mapping/pointwise_to_metamapper.json"

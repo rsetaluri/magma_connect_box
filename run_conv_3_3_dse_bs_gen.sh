@@ -1,0 +1,1 @@
+python garnet.py --no-pd --no-pond --interconnect-only --width 8 --height 8 --input-app conv_3_3_dse/conv_3_3_to_metamapper.json --input-file conv_3_3_dse/input.raw --output-file conv_3_3_dse/conv_3_3.bs --gold-file conv_3_3_dse/gold.raw -v --pe conv_3_3_dse/PE.json
