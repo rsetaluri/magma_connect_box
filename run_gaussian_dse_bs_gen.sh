@@ -1,0 +1,1 @@
+python garnet.py --no-pd --no-pond --interconnect-only --width 12 --height 12 --input-app gaussian_dse/gaussian_to_metamapper.json --input-file gaussian_dse/input.raw --output-file gaussian_dse/gaussian.bs --gold-file gaussian_dse/gold.raw -v --pe gaussian_dse/PE.json
