@@ -444,6 +444,20 @@ def main():
         core_reg = get_core_registers(ic)
 
         with open("config.info", "w+") as f:
+            ic_addr_list = [reg['addr'] for reg in ic_reg]
+            pe_addr_list = [reg['addr'] for reg in core_reg if reg['name'][0:3] == 'PE_']
+            mem_addr_list = [reg['addr'] for reg in core_reg if reg['name'][0:4] == 'MEM_']
+
+            # remove duplicates
+            ic_addr_list = list(dict.fromkeys(ic_addr_list))
+            pe_addr_list = list(dict.fromkeys(pe_addr_list))
+            mem_addr_list = list(dict.fromkeys(mem_addr_list))
+
+            # number of different register addresses
+            f.write(f"interconnect: {len(ic_addr_list)} registers\n")
+            f.write(f"PE: {len(pe_addr_list)} registers\n")
+            f.write(f"MEM: {len(mem_addr_list)} registers\n")
+
             ic_cfg_list = [(reg['hi']-reg['lo']) for reg in ic_reg]
             pe_cfg_list = [(reg['hi']-reg['lo']) for reg in core_reg if reg['name'][0:3] == 'PE_']
             mem_cfg_list = [(reg['hi']-reg['lo']) for reg in core_reg if reg['name'][0:4] == 'MEM_']
