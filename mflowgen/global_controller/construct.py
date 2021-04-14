@@ -34,6 +34,12 @@ def construct():
     'topographical'     : True,
     # RTL Generation
     'interconnect_only' : False,
+    # SRAM macros
+    'num_words'      : 2048,
+    'word_size'      : 64,
+    'mux_size'       : 8,
+    'corner'         : "tt0p8v25c",
+    'partial_write'  : True,
     # Power Domains (leave this false)
     'PWR_AWARE'         : False,
     # hold target slack
@@ -57,6 +63,7 @@ def construct():
 
   rtl                  = Step( this_dir + '/rtl'                                   )
   constraints          = Step( this_dir + '/constraints'                           )
+  gen_sram             = Step( this_dir + '/../common/gen_sram_macro'              )
   custom_init          = Step( this_dir + '/custom-init'                           )
   custom_power         = Step( this_dir + '/../common/custom-power-leaf'           )
 
@@ -90,12 +97,26 @@ def construct():
   init.extend_inputs( custom_init.all_outputs() )
   power.extend_inputs( custom_power.all_outputs() )
 
+  sram_steps = \
+    [synth, iflow, init, power, place, cts, postcts_hold, \
+     route, postroute, postroute_hold, signoff, genlib]
+  for step in sram_steps:
+    step.extend_inputs( ['sram_tt.lib', 'sram.lef'] )
+
+  # Need the sram gds to merge into the final layout
+
+  signoff.extend_inputs( ['sram.gds'] )
+
+  # Need SRAM spice file for LVS
+  lvs.extend_inputs( ['sram.spi'] )
+
   #-----------------------------------------------------------------------
   # Graph -- Add nodes
   #-----------------------------------------------------------------------
 
   g.add_step( info                     )
   g.add_step( rtl                      )
+  g.add_step( gen_sram                 )
   g.add_step( constraints              )
   g.add_step( synth                    )
   g.add_step( iflow                    )
@@ -122,6 +143,7 @@ def construct():
 
   # Connect by name
 
+  g.connect_by_name( adk,      gen_sram        )
   g.connect_by_name( adk,      synth           )
   g.connect_by_name( adk,      iflow        )
   g.connect_by_name( adk,      init         )
@@ -135,6 +157,20 @@ def construct():
   g.connect_by_name( adk,      signoff      )
   g.connect_by_name( adk,      drc          )
   g.connect_by_name( adk,      lvs          )
+
+  g.connect_by_name( gen_sram,      synth           )
+  g.connect_by_name( gen_sram,      iflow        )
+  g.connect_by_name( gen_sram,      init         )
+  g.connect_by_name( gen_sram,      power        )
+  g.connect_by_name( gen_sram,      place        )
+  g.connect_by_name( gen_sram,      cts          )
+  g.connect_by_name( gen_sram,      postcts_hold )
+  g.connect_by_name( gen_sram,      route        )
+  g.connect_by_name( gen_sram,      postroute    )
+  g.connect_by_name( gen_sram,      postroute_hold )
+  g.connect_by_name( gen_sram,      signoff      )
+  g.connect_by_name( gen_sram,      drc          )
+  g.connect_by_name( gen_sram,      lvs          )
 
   g.connect_by_name( rtl,         synth     )
   g.connect_by_name( constraints, synth     )
@@ -200,7 +236,7 @@ def construct():
   floorplan_idx = order.index( 'floorplan.tcl' ) # find floorplan.tcl
   order.insert( floorplan_idx + 1, 'add-endcaps-welltaps.tcl' ) # add here
   init.update_params( { 'order': order } )
-  
+
   # Add density target parameter
   init.update_params( { 'core_density_target': parameters['core_density_target'] }, True )
 
