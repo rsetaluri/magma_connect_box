@@ -14,8 +14,8 @@ if [ $dse_pe !=  "lassen" ]; then
 fi
 
 cd $GARNET_HOME
-python garnet.py ${flags}
-python tbg.py garnet.v garnet_stub.v ${dse_pe}/${app_to_run}.bs.json
+#python garnet.py ${flags}
+python tbg.py ${dse_pe}/garnet.v ${dse_pe}/garnet_stub.v ${dse_pe}/${app_to_run}.bs.json
 
 cd -
 cp $GARNET_HOME/temp/garnet/waveforms.vcd outputs/run.vcd

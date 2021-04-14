@@ -12,17 +12,16 @@ cd mflowgen
 build_dir=build_${DSE_PE}_${APP}_${CLK}
 mkdir ${build_dir}
 cd ${build_dir}
-git clone --branch pe-dse-power https://github.com/StanfordAHA/garnet.git
 
 mkdir Tile_PE
 cd Tile_PE
-mflowgen run --design ../garnet/mflowgen/Tile_PE
+mflowgen run --design ../../Tile_PE
 make post-synth-power
 
 cd ../
 mkdir Tile_MemCore
 cd Tile_MemCore
-mflowgen run --design ../garnet/mflowgen/Tile_MemCore
+mflowgen run --design ../../Tile_MemCore
 mflowgen stash link --path /sim/kzf/pe-dse/stash/2021-0409-mflowgen-stash-1b421f
 mflowgen stash pull --hash cb6216
 cp -r ../Tile_PE/*-application .

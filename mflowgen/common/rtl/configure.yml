@@ -1,7 +1,7 @@
 name: rtl
 
 commands:
-  - bash gen_rtl.sh
+  - bash pe_dse_rtl.sh
 
 outputs:
   - design.v
