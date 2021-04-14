@@ -32,72 +32,84 @@ import global_buffer_param::*;
     output logic                            cgra_cfg_jtag_esto_rd_en_bypass,
     output logic [CGRA_CFG_ADDR_WIDTH-1:0]  cgra_cfg_jtag_esto_addr_bypass
 );
-
-//============================================================================//
-// Simple router
-//============================================================================//
-cgra_cfg_t cgra_cfg_g2f_internal_d1 [CGRA_PER_GLB];
-cgra_cfg_t cgra_cfg_g2f_internal [CGRA_PER_GLB];
-cgra_cfg_t cgra_cfg_pc_switched;
+assign cgra_cfg_pc_esto = 0;
 always_comb begin
-    cgra_cfg_pc_switched = (cfg_pc_dma_mode == 1) ? cgra_cfg_c2sw : cgra_cfg_pc_wsti;
-    cgra_cfg_pc_switched.cfg_addr = (cfg_pc_dma_mode == 1) ? (cgra_cfg_c2sw.cfg_addr + cfg_pc_offset) : cgra_cfg_pc_wsti.cfg_addr;
-end
-
-// just bypass configuration packet
-always_comb begin
+    cgra_cfg_jtag_esto == cgra_cfg_jtag_wsti;
     cgra_cfg_jtag_esto_rd_en_bypass = cgra_cfg_jtag_wsti_rd_en_bypass;
     cgra_cfg_jtag_esto_addr_bypass = cgra_cfg_jtag_wsti_addr_bypass;
 end
 
-//============================================================================//
-// pipeline registers for configuration write
-//============================================================================//
-always_ff @ (posedge clk or posedge reset) begin
-    if (reset) begin
-        cgra_cfg_jtag_esto <= '0;
-        cgra_cfg_pc_esto <= '0;
-    end
-    else begin
-        cgra_cfg_jtag_esto <= cgra_cfg_jtag_wsti;
-        cgra_cfg_pc_esto <= cgra_cfg_pc_switched;
-    end
-end
-
-//============================================================================//
-// output assignment
-//============================================================================//
 always_comb begin
     for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
-        if (cgra_cfg_jtag_esto_rd_en_bypass) begin
-            cgra_cfg_g2f_internal[i].cfg_addr = cgra_cfg_jtag_esto_addr_bypass;
-            cgra_cfg_g2f_internal[i].cfg_rd_en = 1'b1;
-            cgra_cfg_g2f_internal[i].cfg_wr_en = 1'b0;
-            cgra_cfg_g2f_internal[i].cfg_data = '0;
-        end
-        else begin
-            cgra_cfg_g2f_internal[i] = cgra_cfg_jtag_esto | cgra_cfg_pc_esto;
-        end
+        cgra_cfg_g2f[i] = cgra_cfg_jtag_esto;
     end
 end
 
-always_ff @(posedge clk or posedge reset) begin
-    if (reset) begin
-        for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
-            cgra_cfg_g2f_internal_d1[i] <= 0;
-        end
-    end
-    else begin
-        for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
-            cgra_cfg_g2f_internal_d1[i] <= cgra_cfg_g2f_internal[i];
-        end
-    end
-end
-
-always_comb begin
-    for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
-        cgra_cfg_g2f[i] = cgra_cfg_g2f_internal_d1[i];
-    end
-end
-
+// //============================================================================//
+// // Simple router
+// //============================================================================//
+// cgra_cfg_t cgra_cfg_g2f_internal_d1 [CGRA_PER_GLB];
+// cgra_cfg_t cgra_cfg_g2f_internal [CGRA_PER_GLB];
+// cgra_cfg_t cgra_cfg_pc_switched;
+// always_comb begin
+//     cgra_cfg_pc_switched = (cfg_pc_dma_mode == 1) ? cgra_cfg_c2sw : cgra_cfg_pc_wsti;
+//     cgra_cfg_pc_switched.cfg_addr = (cfg_pc_dma_mode == 1) ? (cgra_cfg_c2sw.cfg_addr + cfg_pc_offset) : cgra_cfg_pc_wsti.cfg_addr;
+// end
+// 
+// // just bypass configuration packet
+// always_comb begin
+//     cgra_cfg_jtag_esto_rd_en_bypass = cgra_cfg_jtag_wsti_rd_en_bypass;
+//     cgra_cfg_jtag_esto_addr_bypass = cgra_cfg_jtag_wsti_addr_bypass;
+// end
+// 
+// //============================================================================//
+// // pipeline registers for configuration write
+// //============================================================================//
+// // always_ff @ (posedge clk or posedge reset) begin
+// //     if (reset) begin
+// //         cgra_cfg_jtag_esto <= '0;
+// //         cgra_cfg_pc_esto <= '0;
+// //     end
+// //     else begin
+// //         cgra_cfg_jtag_esto <= cgra_cfg_jtag_wsti;
+// //         cgra_cfg_pc_esto <= cgra_cfg_pc_switched;
+// //     end
+// // end
+// 
+// //============================================================================//
+// // output assignment
+// //============================================================================//
+// always_comb begin
+//     for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
+//         if (cgra_cfg_jtag_esto_rd_en_bypass) begin
+//             cgra_cfg_g2f_internal[i].cfg_addr = cgra_cfg_jtag_esto_addr_bypass;
+//             cgra_cfg_g2f_internal[i].cfg_rd_en = 1'b1;
+//             cgra_cfg_g2f_internal[i].cfg_wr_en = 1'b0;
+//             cgra_cfg_g2f_internal[i].cfg_data = '0;
+//         end
+//         else begin
+//             cgra_cfg_g2f_internal[i] = cgra_cfg_jtag_esto | cgra_cfg_pc_esto;
+//         end
+//     end
+// end
+// 
+// always_ff @(posedge clk or posedge reset) begin
+//     if (reset) begin
+//         for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
+//             cgra_cfg_g2f_internal_d1[i] <= 0;
+//         end
+//     end
+//     else begin
+//         for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
+//             cgra_cfg_g2f_internal_d1[i] <= cgra_cfg_g2f_internal[i];
+//         end
+//     end
+// end
+// 
+// always_comb begin
+//     for (int i=0; i<CGRA_PER_GLB; i=i+1) begin
+//         cgra_cfg_g2f[i] = cgra_cfg_g2f_internal_d1[i];
+//     end
+// end
+// 
 endmodule
