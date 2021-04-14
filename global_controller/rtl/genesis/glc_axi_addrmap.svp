@@ -243,19 +243,26 @@ sram_gen #(
 
 logic cfg_running, cfg_running_d1, cfg_running_d2;
 always_comb begin
-    sram_cen = 1;
-    sram_wen = 1;
-    sram_bit_sel = {64{1'b1}};
+    sram_cen = 0;
+    sram_wen = 0;
+    sram_bit_sel = {64{1'b0}};
     sram_data_in = '0;
     sram_addr = '0;
     if (l2h_cgra_config_wr_cfg_buffer_pulse_r) begin
-        sram_cen = 0;
-        sram_wen = 0;
-        sram_addr = l2h_cgra_config_addr_addr_r;
-        sram_data_in = l2h_cgra_config_wr_data_data_r;
+        sram_cen = 1;
+        sram_wen = 1;
+        sram_addr = l2h_cgra_config_addr_addr_r[17:3];
+        if (l2h_cgra_config_addr_addr_r[2] == 0) begin
+            sram_bit_sel = {{32{1'b0}}, {32{1'b1}}};
+            sram_data_in = l2h_cgra_config_wr_data_data_r;
+        end
+        else begin
+            sram_bit_sel = {{32{1'b1}}, {32{1'b0}}};
+            sram_data_in = (l2h_cgra_config_wr_data_data_r << 32);
+        end
     end
     else if (cfg_running) begin
-        sram_cen = 0;
+        sram_cen = 1;
         sram_addr = cfg_buffer_addr;
     end
 end
@@ -264,6 +271,7 @@ always_comb begin
     axi_cgra_cfg_read = l2h_cgra_config_read_cnt_ored_o;
     axi_cgra_cfg_addr = '0;
     axi_cgra_cfg_wr_data = '0;
+    axi_cgra_cfg_write = 0;
     if (axi_cgra_cfg_read) begin
         axi_cgra_cfg_addr = l2h_cgra_config_addr_addr_r;
     end

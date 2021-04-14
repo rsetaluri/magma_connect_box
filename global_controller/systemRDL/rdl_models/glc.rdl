@@ -297,9 +297,9 @@ addrmap glc {
         desc = "Registers needed to read/write CGRA tile configuration registers";
         addr_r      addr;
         wr_data_r   wr_data;
+        wr_cfg_buffer_r wr_cfg_buffer;
         read_r      read;
         rd_data_r   rd_data;
-        wr_cfg_buffer_r wr_cfg_buffer;
         cfg_start_addr_r cfg_start_addr;
         num_cfg_r num_cfg;
         cfg_start_r cfg_start;

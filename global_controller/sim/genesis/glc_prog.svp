@@ -69,7 +69,7 @@ program automatic `mname`(interface dut_ifc, interface jtag_ifc, interface axi_i
     assert property (@(posedge dut_ifc.Clk) (!((state==cgra_writing) && (top.dut.cgra_cfg_read)))) else $error("read asserted while writing");
     assert property (@(posedge dut_ifc.Clk) (!((state==glb_writing) && (top.dut.glb_cfg_rd_en)))) else $error("glb read asserted while glb writing");
     assert property (@(posedge dut_ifc.Clk) (!((state==sram_writing) && (top.dut.sram_cfg_rd_en)))) else $error("glb sram read asserted while glb sram writing");
-    assert property (@(posedge dut_ifc.Clk) (!((state==other) && (top.dut.cgra_cfg_read | top.dut.cgra_cfg_write)))) else $error("cgra cfg r/w asserted while not doing either");
+    // assert property (@(posedge dut_ifc.Clk) (!((state==other) && (top.dut.cgra_cfg_read | top.dut.cgra_cfg_write)))) else $error("cgra cfg r/w asserted while not doing either");
     assert property (@(posedge dut_ifc.Clk) (!((state==other) && (top.dut.glb_cfg_wr_en | top.dut.glb_cfg_rd_en)))) else $error("glb cfg r/w asserted while not doing either");
     assert property (@(posedge dut_ifc.Clk) (!((state==other) && (top.dut.sram_cfg_wr_en | top.dut.sram_cfg_rd_en)))) else $error("sram cfg r/w asserted while not doing either");
 
@@ -281,43 +281,43 @@ program automatic `mname`(interface dut_ifc, interface jtag_ifc, interface axi_i
     //Add assertions for AXI cgra config write sequence
     //============================================================================//
     // AXI cgra config write
-    sequence begin_axi_cgra_write;
-           ((gc_interface==axi4) && ~(state==axi_cgra_writing)) ##1 (state==axi_cgra_writing);
-    endsequence
-    
-    sequence assert_axi_cgra_write;
-           ##[0:800] (state==axi_cgra_writing) && (top.dut.cgra_cfg_write==1)
-           && (top.dut.cgra_cfg_addr==axi_cgra_cfg_trans.addr) && (top.dut.cgra_cfg_wr_data==axi_cgra_cfg_trans.wr_data);
-    endsequence
-    
-    property correct_axi_cgra_write;
-           @(posedge dut_ifc.Clk)
-           begin_axi_cgra_write |-> assert_axi_cgra_write;
-    endproperty
-       
-    assert property(correct_axi_cgra_write) else $error("incorrect axi cgra write sequence");
-    
-    //============================================================================//
-    //Add assertions for AXI cgra config read sequence
-    //============================================================================//
-    // AXI cgra config read
-    sequence begin_axi_cgra_read;
-           ((gc_interface==axi4) && ~(state==axi_cgra_reading)) ##1 (state==axi_cgra_reading);
-    endsequence
-    
-    sequence assert_axi_cgra_read;
-           ##[0:400] (state==axi_cgra_reading) && (top.dut.cgra_cfg_read==1)
-           && (top.dut.cgra_cfg_addr==axi_cgra_cfg_trans.addr);
-    endsequence
-    
-    property correct_axi_cgra_read;
-           @(posedge dut_ifc.Clk)
-           begin_axi_cgra_read |-> assert_axi_cgra_read;
-    endproperty
-       
-    assert property(correct_axi_cgra_read) else $error("incorrect axi cgra read sequence");
-    
-    
+    // sequence begin_axi_cgra_write;
+    //        ((gc_interface==axi4) && ~(state==axi_cgra_writing)) ##1 (state==axi_cgra_writing);
+    // endsequence
+    // 
+    // sequence assert_axi_cgra_write;
+    //        ##[0:800] (state==axi_cgra_writing) && (top.dut.cgra_cfg_write==1)
+    //        && (top.dut.cgra_cfg_addr==axi_cgra_cfg_trans.addr) && (top.dut.cgra_cfg_wr_data==axi_cgra_cfg_trans.wr_data);
+    // endsequence
+    // 
+    // property correct_axi_cgra_write;
+    //        @(posedge dut_ifc.Clk)
+    //        begin_axi_cgra_write |-> assert_axi_cgra_write;
+    // endproperty
+    //    
+    // assert property(correct_axi_cgra_write) else $error("incorrect axi cgra write sequence");
+    // 
+    // //============================================================================//
+    // //Add assertions for AXI cgra config read sequence
+    // //============================================================================//
+    // // AXI cgra config read
+    // sequence begin_axi_cgra_read;
+    //        ((gc_interface==axi4) && ~(state==axi_cgra_reading)) ##1 (state==axi_cgra_reading);
+    // endsequence
+    // 
+    // sequence assert_axi_cgra_read;
+    //        ##[0:400] (state==axi_cgra_reading) && (top.dut.cgra_cfg_read==1)
+    //        && (top.dut.cgra_cfg_addr==axi_cgra_cfg_trans.addr);
+    // endsequence
+    // 
+    // property correct_axi_cgra_read;
+    //        @(posedge dut_ifc.Clk)
+    //        begin_axi_cgra_read |-> assert_axi_cgra_read;
+    // endproperty
+    //    
+    // assert property(correct_axi_cgra_read) else $error("incorrect axi cgra read sequence");
+    // 
+    // 
     //============================================================================//
     // run_test task
     //============================================================================//
@@ -340,155 +340,155 @@ program automatic `mname`(interface dut_ifc, interface jtag_ifc, interface axi_i
     @(posedge dut_ifc.Clk);
     switch_clk(1); // Switch to fast clk
 
-    // write read delay register
-    @(posedge dut_ifc.Clk);
-    write_gc_reg(wr_rd_delay_reg, 32'd10);
-    repeat(2) jtag_driver.Next_tck();
+    // // write read delay register
+    // @(posedge dut_ifc.Clk);
+    // write_gc_reg(wr_rd_delay_reg, 32'd10);
+    // repeat(2) jtag_driver.Next_tck();
 
-    // write cgra config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        write_config();
-    end
+    // // write cgra config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     write_config();
+    // end
 
-    // read cgra config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        read_config(); 
-    end
-       
-    // stall all
-    @(posedge dut_ifc.Clk);
-    write_gc_reg(write_stall,{`2*$num_glb_tiles`{1'b1}});
-    repeat(2) jtag_driver.Next_tck();
-    check_register(top.dut.glb_stall, {`$num_glb_tiles`{1'b1}});
-    check_register(top.dut.cgra_stall, {`$num_glb_tiles`{1'b1}});
+    // // read cgra config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     read_config(); 
+    // end
+    //    
+    // // stall all
+    // @(posedge dut_ifc.Clk);
+    // write_gc_reg(write_stall,{`2*$num_glb_tiles`{1'b1}});
+    // repeat(2) jtag_driver.Next_tck();
+    // check_register(top.dut.glb_stall, {`$num_glb_tiles`{1'b1}});
+    // check_register(top.dut.cgra_stall, {`$num_glb_tiles`{1'b1}});
 
-    // cgra stall
-    @(posedge dut_ifc.Clk);
-    write_gc_reg(write_stall,32'b11);
-    repeat(2) jtag_driver.Next_tck();
-    check_register(top.dut.glb_stall, 0);
-    check_register(top.dut.cgra_stall, 16'b11);
+    // // cgra stall
+    // @(posedge dut_ifc.Clk);
+    // write_gc_reg(write_stall,32'b11);
+    // repeat(2) jtag_driver.Next_tck();
+    // check_register(top.dut.glb_stall, 0);
+    // check_register(top.dut.cgra_stall, 16'b11);
 
-    // glb stall
-    @(posedge dut_ifc.Clk);
-    write_gc_reg(write_stall,32'b11 << 16);
-    repeat(2) jtag_driver.Next_tck();
-    check_register(top.dut.glb_stall, 16'b11);
-    check_register(top.dut.cgra_stall, 0);
+    // // glb stall
+    // @(posedge dut_ifc.Clk);
+    // write_gc_reg(write_stall,32'b11 << 16);
+    // repeat(2) jtag_driver.Next_tck();
+    // check_register(top.dut.glb_stall, 16'b11);
+    // check_register(top.dut.cgra_stall, 0);
 
-    // unstall
-    @(posedge dut_ifc.Clk);
-    write_gc_reg(write_stall, 32'b0);
-    repeat(2) jtag_driver.Next_tck();
-    check_register(top.dut.glb_stall, 0);
-    check_register(top.dut.cgra_stall, 0);
+    // // unstall
+    // @(posedge dut_ifc.Clk);
+    // write_gc_reg(write_stall, 32'b0);
+    // repeat(2) jtag_driver.Next_tck();
+    // check_register(top.dut.glb_stall, 0);
+    // check_register(top.dut.cgra_stall, 0);
 
-    // global reset
-    @(posedge dut_ifc.Clk);
-    global_reset(32'd50);
+    // // global reset
+    // @(posedge dut_ifc.Clk);
+    // global_reset(32'd50);
 
-    // soft reset
-    @(posedge dut_ifc.Clk);
-    soft_reset(32'd50);
+    // // soft reset
+    // @(posedge dut_ifc.Clk);
+    // soft_reset(32'd50);
 
-    // write glb config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        write_glb_config();
-    end
+    // // write glb config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     write_glb_config();
+    // end
 
-    // read glb config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        read_glb_config();
-    end
+    // // read glb config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     read_glb_config();
+    // end
 
-    // write sram config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        write_sram_config();
-    end
+    // // write sram config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     write_sram_config();
+    // end
 
-    // read sram config
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        read_sram_config();
-    end
+    // // read sram config
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     read_sram_config();
+    // end
 
-    // axi control - glb
-    @(posedge dut_ifc.Clk);
-    axi_glb_cfg_write(0, 0, 1);
-    axi_glb_cfg_read(0, 0, 1);
-    repeat(100) @(posedge dut_ifc.Clk);
+    // // axi control - glb
+    // @(posedge dut_ifc.Clk);
+    // axi_glb_cfg_write(0, 0, 1);
+    // axi_glb_cfg_read(0, 0, 1);
+    // repeat(100) @(posedge dut_ifc.Clk);
 
-    // axi control - global reset
-    @(posedge dut_ifc.Clk);
-    addrmap_write(am_global_reset, 10);
+    // // axi control - global reset
+    // @(posedge dut_ifc.Clk);
+    // addrmap_write(am_global_reset, 10);
 
-    // axi control
-    @(posedge dut_ifc.Clk);
-    addrmap_read(am_global_reset);
+    // // axi control
+    // @(posedge dut_ifc.Clk);
+    // addrmap_read(am_global_reset);
 
-    // axi control - stall all
-    @(posedge dut_ifc.Clk);
-    addrmap_write(am_stall, {`2*$num_glb_tiles`{1'b1}});
+    // // axi control - stall all
+    // @(posedge dut_ifc.Clk);
+    // addrmap_write(am_stall, {`2*$num_glb_tiles`{1'b1}});
 
-    // axi control - stall
-    @(posedge dut_ifc.Clk);
-    addrmap_write(am_stall, 2'b11);
+    // // axi control - stall
+    // @(posedge dut_ifc.Clk);
+    // addrmap_write(am_stall, 2'b11);
 
-    // axi control
-    @(posedge dut_ifc.Clk);
-    addrmap_read(am_stall);
+    // // axi control
+    // @(posedge dut_ifc.Clk);
+    // addrmap_read(am_stall);
 
-    // axi control - unstall
-    @(posedge dut_ifc.Clk);
-    addrmap_write(am_stall, 2'b00);
+    // // axi control - unstall
+    // @(posedge dut_ifc.Clk);
+    // addrmap_write(am_stall, 2'b00);
 
-    // axi control
-    @(posedge dut_ifc.Clk);
-    addrmap_read(am_stall);
+    // // axi control
+    // @(posedge dut_ifc.Clk);
+    // addrmap_read(am_stall);
 
-    // axi control - start_pulse
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        addrmap_write(am_strm_start_pulse, $urandom_range((2 ** `$num_glb_tiles`)-1));
-    end
+    // // axi control - start_pulse
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_write(am_strm_start_pulse, $urandom_range((2 ** `$num_glb_tiles`)-1));
+    // end
 
-    // axi control - pc
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        addrmap_write(am_pc_start_pulse, $urandom_range((2 ** `$num_glb_tiles`)-1));
-    end
+    // // axi control - pc
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_write(am_pc_start_pulse, $urandom_range((2 ** `$num_glb_tiles`)-1));
+    // end
 
-    // strm_f2g_ier
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        addrmap_write(am_strm_f2g_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
-        @(posedge dut_ifc.Clk);
-        addrmap_read(am_strm_f2g_ier);
-    end
+    // // strm_f2g_ier
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_write(am_strm_f2g_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_read(am_strm_f2g_ier);
+    // end
 
-    // strm_g2f_ier
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        addrmap_write(am_strm_g2f_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
-        @(posedge dut_ifc.Clk);
-        addrmap_read(am_strm_g2f_ier);
-    end
+    // // strm_g2f_ier
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_write(am_strm_g2f_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_read(am_strm_g2f_ier);
+    // end
 
-    // par_cfg_g2f_ier
-    repeat(100) begin
-        @(posedge dut_ifc.Clk);
-        addrmap_write(am_par_cfg_g2f_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
-        @(posedge dut_ifc.Clk);
-        addrmap_read(am_par_cfg_g2f_ier);
-    end
+    // // par_cfg_g2f_ier
+    // repeat(100) begin
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_write(am_par_cfg_g2f_ier, $urandom_range((2 ** `$num_glb_tiles`)-1));
+    //     @(posedge dut_ifc.Clk);
+    //     addrmap_read(am_par_cfg_g2f_ier);
+    // end
 
-    // interrupt test
-    interrupt_test();
+    // // interrupt test
+    // interrupt_test();
 
     // axi -> cgra config test
     axi_cgra_cfg_test();
@@ -1264,16 +1264,27 @@ program automatic `mname`(interface dut_ifc, interface jtag_ifc, interface axi_i
 
     task axi_cgra_cfg_test();
     begin
-        repeat (100) begin
-            axi_cgra_cfg_trans.addr = $urandom_range((2 ** `$config_addr_width`)-1);
-            axi_cgra_cfg_trans.wr_data = $urandom_range((2 ** `$config_data_width`)-1);
+        bit [63:0] bs_q [$];
+        int num_cfg = 5;
+        state = axi_cgra_writing;
+        for(int i=0; i<num_cfg*2; i++) begin
+            bs_q.push_back($urandom_range((2 ** 32)-1));
+        end
+        for(int i=0; i<num_cfg*2; i++) begin
+            axi_cgra_cfg_trans.addr = i*4;
+            axi_cgra_cfg_trans.wr_data = bs_q[i];
             axi_cgra_cfg_write_step(axi_cgra_cfg_trans.addr, axi_cgra_cfg_trans.wr_data);
         end
-        repeat (100) begin
-            axi_cgra_cfg_trans.addr = $urandom_range((2 ** `$config_addr_width`)-1);
-            axi_cgra_cfg_trans.rd_data = $urandom_range((2 ** `$config_data_width`)-1);
-            axi_cgra_cfg_read_step(axi_cgra_cfg_trans.addr, axi_cgra_cfg_trans.rd_data);
-        end
+        addrmap_write(am_cgra_config_start_addr, 0);
+        addrmap_write(am_cgra_config_num_cfg, num_cfg);
+        addrmap_write(am_cgra_config_cfg_start, 1);
+        // repeat (100) begin
+        //     axi_cgra_cfg_trans.addr = $urandom_range((2 ** `$config_addr_width`)-1);
+        //     axi_cgra_cfg_trans.rd_data = $urandom_range((2 ** `$config_data_width`)-1);
+        //     axi_cgra_cfg_read_step(axi_cgra_cfg_trans.addr, axi_cgra_cfg_trans.rd_data);
+        // end
+        repeat (100) @(posedge dut_ifc.Clk); 
+        state = other;
     end
     endtask
 
@@ -1404,6 +1415,18 @@ program automatic `mname`(interface dut_ifc, interface jtag_ifc, interface axi_i
                 axi_cgra_config_read(data);
             end
             am_cgra_config_rd_data: begin
+            end
+            am_cgra_config_start_addr: begin
+                axi_driver.axi_write(7'b1001100, data);
+                repeat (100) @(posedge dut_ifc.Clk); 
+            end
+            am_cgra_config_num_cfg: begin
+                axi_driver.axi_write(7'b1010000, data);
+                repeat (100) @(posedge dut_ifc.Clk); 
+            end
+            am_cgra_config_cfg_start: begin
+                axi_driver.axi_write(7'b1010100, data);
+                repeat (100) @(posedge dut_ifc.Clk); 
             end
             default: begin
             end

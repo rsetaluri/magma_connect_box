@@ -14,7 +14,7 @@
 //; my $axi_addr_width = $self->get_top_param('axi_addr_width');
 
 // AXI addrmap
-typedef enum logic [5:0] {
+typedef enum logic [6:0] {
     am_test,
     am_global_reset,
     am_soft_reset,
@@ -31,9 +31,14 @@ typedef enum logic [5:0] {
     am_global_isr,
     am_cgra_config_addr,
     am_cgra_config_wr_data,
-    am_cgra_config_write,
     am_cgra_config_read,
-    am_cgra_config_rd_data
+    am_cgra_config_rd_data,
+    am_cgra_config_write,
+    am_cgra_config_start_addr,
+    am_cgra_config_num_cfg,
+    am_cgra_config_cfg_start,
+    am_cgra_config_use_db_en,
+    am_cgra_config_config_db_en
 } axi_addrmap_t;
 
 typedef struct {
