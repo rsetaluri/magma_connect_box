@@ -1,1 +1,1 @@
-python tbg.py $1_dse/garnet.v $1_dse/garnet_stub.v $1_dse/$1.bs.json 
+python tbg.py $1_$2/garnet.v $1_$2/garnet_stub.v $1_$2/$1.bs.json 

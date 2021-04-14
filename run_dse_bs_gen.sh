@@ -1,3 +1,3 @@
-python garnet.py --no-pd --no-pond --interconnect-only --width $1 --height $1 --input-app $2_dse/$2_to_metamapper.json --input-file $2_dse/input.raw --output-file $2_dse/$2.bs --gold-file $2_dse/gold.raw --pe $2_dse/PE.json $3
-cp garnet.v $2_dse/
-cp garnet_stub.v $2_dse/
+python garnet.py --no-pd --no-pond --interconnect-only --width $1 --height $1 --input-app $2_$3/$2_to_metamapper.json --input-file $2_$3/input.raw --output-file $2_$3/$2.bs --gold-file $2_$3/gold.raw --pe $2_$3/PE.json $4
+cp garnet.v $2_$3/
+cp garnet_stub.v $2_$3/
