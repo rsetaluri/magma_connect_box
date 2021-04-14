@@ -9,7 +9,8 @@
           ["chain_data_in_1",["Array",16,"BitIn"]],
           ["flush","BitIn"],
           ["config_read","BitIn"],
-          ["ren_in",["Array",2,"BitIn"]],
+          ["ren_in_0","BitIn"],
+          ["ren_in_1","BitIn"],
           ["config_en",["Array",2,"BitIn"]],
           ["config_write","BitIn"],
           ["config_data_in",["Array",32,"BitIn"]],
@@ -26,15 +27,16 @@
           ["O3","Bit"],
           ["O4",["Array",16,"Bit"]],
           ["O5","Bit"],
-          ["O6",["Array",2,"Bit"]],
-          ["O7",["Array",32,"Bit"]],
+          ["O6","Bit"],
+          ["O7","Bit"],
+          ["O8",["Array",32,"Bit"]],
           ["CLK",["Named","coreir.clkIn"]],
           ["ASYNCRESET",["Named","coreir.arstIn"]]
         ]]
       },
       "PE":{
         "type":["Record",[
-          ["inst",["Array",23,"BitIn"]],
+          ["inst",["Array",31,"BitIn"]],
           ["inputs0",["Array",16,"BitIn"]],
           ["inputs1",["Array",16,"BitIn"]],
           ["clk_en","BitIn"],
@@ -98,41 +100,41 @@
           ["blur_stencil_op_hcompute_blur_stencil_write",["Array",1,["Array",16,"Bit"]]]
         ]],
         "instances":{
-          "inner_compute$c139774614246288":{
+          "inner_compute$c140630609122448":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h080000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h05000011"]}
           },
-          "inner_compute$c139774614733968":{
+          "inner_compute$c140630609122512":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774614734352":{
+          "inner_compute$c140630609123664":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774614735440":{
+          "inner_compute$c140630609125008":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000010"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000212"]}
           },
-          "inner_compute$i139774601046608_i139774619937936":{
+          "inner_compute$i140630609716880_i140630609130960":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774601809680_i139774617936592":{
+          "inner_compute$i140630666480208_i140630614231248":{
             "modref":"global.PE"
           }
         },
         "connections":[
-          ["inner_compute$i139774601046608_i139774619937936.inst","inner_compute$c139774614246288.out"],
-          ["inner_compute$i139774601809680_i139774617936592.clk_en","inner_compute$c139774614733968.out"],
-          ["inner_compute$i139774601046608_i139774619937936.clk_en","inner_compute$c139774614734352.out"],
-          ["inner_compute$i139774601809680_i139774617936592.inst","inner_compute$c139774614735440.out"],
-          ["self.clk","inner_compute$i139774601046608_i139774619937936.CLK"],
-          ["self.blur_stencil_op_hcompute_blur_stencil_write.0","inner_compute$i139774601046608_i139774619937936.O0"],
-          ["self.blur_unnormalized_stencil_op_hcompute_blur_stencil_read.0","inner_compute$i139774601046608_i139774619937936.inputs0"],
-          ["inner_compute$i139774601809680_i139774617936592.O0","inner_compute$i139774601046608_i139774619937936.inputs1"],
-          ["self.clk","inner_compute$i139774601809680_i139774617936592.CLK"],
+          ["inner_compute$i140630609716880_i140630609130960.inst","inner_compute$c140630609122448.out"],
+          ["inner_compute$i140630666480208_i140630614231248.clk_en","inner_compute$c140630609122512.out"],
+          ["inner_compute$i140630609716880_i140630609130960.clk_en","inner_compute$c140630609123664.out"],
+          ["inner_compute$i140630666480208_i140630614231248.inst","inner_compute$c140630609125008.out"],
+          ["self.clk","inner_compute$i140630609716880_i140630609130960.CLK"],
+          ["self.blur_stencil_op_hcompute_blur_stencil_write.0","inner_compute$i140630609716880_i140630609130960.O0"],
+          ["inner_compute$i140630666480208_i140630614231248.O0","inner_compute$i140630609716880_i140630609130960.inputs0"],
+          ["self.blur_unnormalized_stencil_op_hcompute_blur_stencil_read.0","inner_compute$i140630609716880_i140630609130960.inputs1"],
+          ["self.clk","inner_compute$i140630666480208_i140630614231248.CLK"],
           ["self.valid_pass_out","self.valid_pass_in"]
         ]
       },
@@ -144,24 +146,24 @@
           ["blur_unnormalized_stencil_clkwrk_dsa0_op_hcompute_blur_unnormalized_stencil_write",["Array",1,["Array",16,"Bit"]]]
         ]],
         "instances":{
-          "inner_compute$c139774615036816":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000000"]}
-          },
-          "inner_compute$c139774615038096":{
+          "inner_compute$c140630608984400":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$i139774614598992_i139774617936592":{
+          "inner_compute$c140630608985040":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000012"]}
+          },
+          "inner_compute$i140630609112336_i140630614231248":{
             "modref":"global.PE"
           }
         },
         "connections":[
-          ["inner_compute$i139774614598992_i139774617936592.inst","inner_compute$c139774615036816.out"],
-          ["inner_compute$i139774614598992_i139774617936592.clk_en","inner_compute$c139774615038096.out"],
-          ["self.clk","inner_compute$i139774614598992_i139774617936592.CLK"],
-          ["self.blur_unnormalized_stencil_clkwrk_dsa0_op_hcompute_blur_unnormalized_stencil_write.0","inner_compute$i139774614598992_i139774617936592.O0"],
+          ["inner_compute$i140630609112336_i140630614231248.clk_en","inner_compute$c140630608984400.out"],
+          ["inner_compute$i140630609112336_i140630614231248.inst","inner_compute$c140630608985040.out"],
+          ["self.clk","inner_compute$i140630609112336_i140630614231248.CLK"],
+          ["self.blur_unnormalized_stencil_clkwrk_dsa0_op_hcompute_blur_unnormalized_stencil_write.0","inner_compute$i140630609112336_i140630614231248.O0"],
           ["self.valid_pass_out","self.valid_pass_in"]
         ]
       },
@@ -175,306 +177,178 @@
           ["blur_unnormalized_stencil_op_hcompute_blur_unnormalized_stencil_1_write",["Array",1,["Array",16,"Bit"]]]
         ]],
         "instances":{
-          "inner_compute$c139774615825808":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774615998928":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774615999376":{
+          "inner_compute$c140630609179856":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616000080":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774616000272":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774616000336":{
+          "inner_compute$c140630609181712":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "inner_compute$c139774616000592":{
+          "inner_compute$c140630609181776":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000952"]}
+          },
+          "inner_compute$c140630609290320":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616000784":{
+          "inner_compute$c140630609304464":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616001104":{
+          "inner_compute$c140630609310160":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "inner_compute$c139774616001168":{
+          "inner_compute$c140630609327376":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "inner_compute$c139774616001360":{
+          "inner_compute$c140630609329232":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "inner_compute$c140630609329360":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616001424":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "inner_compute$c139774616002320":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774616002512":{
+          "inner_compute$c140630609329424":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616360400":{
+          "inner_compute$c140630609343248":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "inner_compute$c140630610093840":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
+          },
+          "inner_compute$c140630610094800":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616361296":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774616513680":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774616573968":{
+          "inner_compute$c140630610095056":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774616952656":{
+          "inner_compute$c140630610095120":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "inner_compute$c139774616952784":{
+          "inner_compute$c140630610121872":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774617040720":{
+          "inner_compute$c140630610122576":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774617041168":{
+          "inner_compute$c140630610124368":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h02000780"]}
           },
-          "inner_compute$c139774617041744":{
+          "inner_compute$c140630610139024":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h57bffff2"]}
+          },
+          "inner_compute$c140630610140176":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "inner_compute$c139774617041872":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10004a"]}
-          },
-          "inner_compute$c139774617044368":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "inner_compute$c139774617045584":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618161744":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618163088":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774618163664":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "inner_compute$c139774618222736":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618223696":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$c139774618225168":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618260112":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "inner_compute$c139774618397072":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618397456":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "inner_compute$c139774618398352":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "inner_compute$i139774614651088_i139774600710544":{
+          "inner_compute$i140630608975056_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774614674896_i139774615029584":{
+          "inner_compute$i140630608975312_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774614675088_i139774615029584":{
+          "inner_compute$i140630608975568_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774617917456_i139774600710544":{
+          "inner_compute$i140630608976336_i140630607647056":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774617918928_i139774600710544":{
+          "inner_compute$i140630608976464_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774618084624_i139774600710544":{
+          "inner_compute$i140630608976592_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774618085968_i139774615029584":{
+          "inner_compute$i140630608977360_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774618087248_i139774615029584":{
+          "inner_compute$i140630609376912_i140630613724048":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774618087376_i139774600710544":{
+          "inner_compute$i140630609377040_i140630614113552":{
             "modref":"global.PE"
           },
-          "inner_compute$i139774619742352_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619742608_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619742928_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619743056_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619743824_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619744400_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619968144_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619978576_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "inner_compute$i139774619978640_i139774615029584":{
+          "inner_compute$i140630609377104_i140630614113552":{
             "modref":"global.PE"
           }
         },
         "connections":[
-          ["inner_compute$i139774614674896_i139774615029584.inst","inner_compute$c139774615825808.out"],
-          ["inner_compute$i139774619742928_i139774615029584.inst","inner_compute$c139774615998928.out"],
-          ["inner_compute$i139774619743056_i139774615029584.clk_en","inner_compute$c139774615999376.out"],
-          ["inner_compute$i139774619742608_i139774600710544.clk_en","inner_compute$c139774616000080.out"],
-          ["inner_compute$i139774619744400_i139774600710544.clk_en","inner_compute$c139774616000272.out"],
-          ["inner_compute$i139774619744400_i139774600710544.inst","inner_compute$c139774616000336.out"],
-          ["inner_compute$i139774618087376_i139774600710544.clk_en","inner_compute$c139774616000592.out"],
-          ["inner_compute$i139774619742352_i139774615029584.clk_en","inner_compute$c139774616000784.out"],
-          ["inner_compute$i139774614651088_i139774600710544.inst","inner_compute$c139774616001104.out"],
-          ["inner_compute$i139774619742608_i139774600710544.inst","inner_compute$c139774616001168.out"],
-          ["inner_compute$i139774619742928_i139774615029584.clk_en","inner_compute$c139774616001360.out"],
-          ["inner_compute$i139774618087376_i139774600710544.inst","inner_compute$c139774616001424.out"],
-          ["inner_compute$i139774619743056_i139774615029584.inst","inner_compute$c139774616002320.out"],
-          ["inner_compute$i139774614651088_i139774600710544.clk_en","inner_compute$c139774616002512.out"],
-          ["inner_compute$i139774617918928_i139774600710544.clk_en","inner_compute$c139774616360400.out"],
-          ["inner_compute$i139774618087248_i139774615029584.inst","inner_compute$c139774616361296.out"],
-          ["inner_compute$i139774619742352_i139774615029584.inst","inner_compute$c139774616513680.out"],
-          ["inner_compute$i139774618085968_i139774615029584.clk_en","inner_compute$c139774616573968.out"],
-          ["inner_compute$i139774618084624_i139774600710544.inst","inner_compute$c139774616952656.out"],
-          ["inner_compute$i139774618084624_i139774600710544.clk_en","inner_compute$c139774616952784.out"],
-          ["inner_compute$i139774619968144_i139774600710544.clk_en","inner_compute$c139774617040720.out"],
-          ["inner_compute$i139774619978576_i139774615029584.inst","inner_compute$c139774617041168.out"],
-          ["inner_compute$i139774619978576_i139774615029584.clk_en","inner_compute$c139774617041744.out"],
-          ["inner_compute$i139774619968144_i139774600710544.inst","inner_compute$c139774617041872.out"],
-          ["inner_compute$i139774619743824_i139774600710544.inst","inner_compute$c139774617044368.out"],
-          ["inner_compute$i139774619743824_i139774600710544.clk_en","inner_compute$c139774617045584.out"],
-          ["inner_compute$i139774614675088_i139774615029584.clk_en","inner_compute$c139774618161744.out"],
-          ["inner_compute$i139774618085968_i139774615029584.inst","inner_compute$c139774618163088.out"],
-          ["inner_compute$i139774617918928_i139774600710544.inst","inner_compute$c139774618163664.out"],
-          ["inner_compute$i139774614674896_i139774615029584.clk_en","inner_compute$c139774618222736.out"],
-          ["inner_compute$i139774614675088_i139774615029584.inst","inner_compute$c139774618223696.out"],
-          ["inner_compute$i139774617917456_i139774600710544.clk_en","inner_compute$c139774618225168.out"],
-          ["inner_compute$i139774617917456_i139774600710544.inst","inner_compute$c139774618260112.out"],
-          ["inner_compute$i139774618087248_i139774615029584.clk_en","inner_compute$c139774618397072.out"],
-          ["inner_compute$i139774619978640_i139774615029584.clk_en","inner_compute$c139774618397456.out"],
-          ["inner_compute$i139774619978640_i139774615029584.inst","inner_compute$c139774618398352.out"],
-          ["self.clk","inner_compute$i139774614651088_i139774600710544.CLK"],
-          ["inner_compute$i139774619742352_i139774615029584.inputs0","inner_compute$i139774614651088_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.5","inner_compute$i139774614651088_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774614674896_i139774615029584.CLK"],
-          ["self.blur_unnormalized_stencil_op_hcompute_blur_unnormalized_stencil_1_write.0","inner_compute$i139774614674896_i139774615029584.O0"],
-          ["inner_compute$i139774617917456_i139774600710544.O0","inner_compute$i139774614674896_i139774615029584.inputs0"],
-          ["inner_compute$i139774614675088_i139774615029584.O0","inner_compute$i139774614674896_i139774615029584.inputs1"],
-          ["self.clk","inner_compute$i139774614675088_i139774615029584.CLK"],
-          ["self.blur_unnormalized_stencil_clkwrk_dsa0_op_hcompute_blur_unnormalized_stencil_1_read.0","inner_compute$i139774614675088_i139774615029584.inputs0"],
-          ["inner_compute$i139774618085968_i139774615029584.O0","inner_compute$i139774614675088_i139774615029584.inputs1"],
-          ["self.clk","inner_compute$i139774617917456_i139774600710544.CLK"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.0","inner_compute$i139774617917456_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774617918928_i139774600710544.CLK"],
-          ["inner_compute$i139774618085968_i139774615029584.inputs0","inner_compute$i139774617918928_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.1","inner_compute$i139774617918928_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774618084624_i139774600710544.CLK"],
-          ["inner_compute$i139774618087248_i139774615029584.inputs0","inner_compute$i139774618084624_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.2","inner_compute$i139774618084624_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774618085968_i139774615029584.CLK"],
-          ["inner_compute$i139774618087248_i139774615029584.O0","inner_compute$i139774618085968_i139774615029584.inputs1"],
-          ["self.clk","inner_compute$i139774618087248_i139774615029584.CLK"],
-          ["inner_compute$i139774619978640_i139774615029584.O0","inner_compute$i139774618087248_i139774615029584.inputs1"],
-          ["self.clk","inner_compute$i139774618087376_i139774600710544.CLK"],
-          ["inner_compute$i139774619743056_i139774615029584.inputs0","inner_compute$i139774618087376_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.6","inner_compute$i139774618087376_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774619742352_i139774615029584.CLK"],
-          ["inner_compute$i139774619978576_i139774615029584.inputs1","inner_compute$i139774619742352_i139774615029584.O0"],
-          ["inner_compute$i139774619743056_i139774615029584.O0","inner_compute$i139774619742352_i139774615029584.inputs1"],
-          ["self.clk","inner_compute$i139774619742608_i139774600710544.CLK"],
-          ["inner_compute$i139774619742928_i139774615029584.inputs1","inner_compute$i139774619742608_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.8","inner_compute$i139774619742608_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774619742928_i139774615029584.CLK"],
-          ["inner_compute$i139774619743056_i139774615029584.inputs1","inner_compute$i139774619742928_i139774615029584.O0"],
-          ["inner_compute$i139774619744400_i139774600710544.O0","inner_compute$i139774619742928_i139774615029584.inputs0"],
-          ["self.clk","inner_compute$i139774619743056_i139774615029584.CLK"],
-          ["self.clk","inner_compute$i139774619743824_i139774600710544.CLK"],
-          ["inner_compute$i139774619978640_i139774615029584.inputs0","inner_compute$i139774619743824_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.3","inner_compute$i139774619743824_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774619744400_i139774600710544.CLK"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.7","inner_compute$i139774619744400_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774619968144_i139774600710544.CLK"],
-          ["inner_compute$i139774619978576_i139774615029584.inputs0","inner_compute$i139774619968144_i139774600710544.O0"],
-          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.4","inner_compute$i139774619968144_i139774600710544.inputs1"],
-          ["self.clk","inner_compute$i139774619978576_i139774615029584.CLK"],
-          ["inner_compute$i139774619978640_i139774615029584.inputs1","inner_compute$i139774619978576_i139774615029584.O0"],
-          ["self.clk","inner_compute$i139774619978640_i139774615029584.CLK"],
+          ["inner_compute$i140630608976592_i140630614113552.clk_en","inner_compute$c140630609179856.out"],
+          ["inner_compute$i140630608976592_i140630614113552.inst","inner_compute$c140630609181712.out"],
+          ["inner_compute$i140630608975056_i140630614113552.inst","inner_compute$c140630609181776.out"],
+          ["inner_compute$i140630608975056_i140630614113552.clk_en","inner_compute$c140630609290320.out"],
+          ["inner_compute$i140630608976464_i140630614113552.clk_en","inner_compute$c140630609304464.out"],
+          ["inner_compute$i140630608975312_i140630614113552.inst","inner_compute$c140630609310160.out"],
+          ["inner_compute$i140630609377104_i140630614113552.inst","inner_compute$c140630609327376.out"],
+          ["inner_compute$i140630609377040_i140630614113552.inst","inner_compute$c140630609329232.out"],
+          ["inner_compute$i140630609377104_i140630614113552.clk_en","inner_compute$c140630609329360.out"],
+          ["inner_compute$i140630608975312_i140630614113552.clk_en","inner_compute$c140630609329424.out"],
+          ["inner_compute$i140630608975568_i140630614113552.inst","inner_compute$c140630609343248.out"],
+          ["inner_compute$i140630608977360_i140630614113552.inst","inner_compute$c140630610093840.out"],
+          ["inner_compute$i140630608976336_i140630607647056.clk_en","inner_compute$c140630610094800.out"],
+          ["inner_compute$i140630608977360_i140630614113552.clk_en","inner_compute$c140630610095056.out"],
+          ["inner_compute$i140630608976464_i140630614113552.inst","inner_compute$c140630610095120.out"],
+          ["inner_compute$i140630609377040_i140630614113552.clk_en","inner_compute$c140630610121872.out"],
+          ["inner_compute$i140630609376912_i140630613724048.clk_en","inner_compute$c140630610122576.out"],
+          ["inner_compute$i140630609376912_i140630613724048.inst","inner_compute$c140630610124368.out"],
+          ["inner_compute$i140630608976336_i140630607647056.inst","inner_compute$c140630610139024.out"],
+          ["inner_compute$i140630608975568_i140630614113552.clk_en","inner_compute$c140630610140176.out"],
+          ["self.clk","inner_compute$i140630608975056_i140630614113552.CLK"],
+          ["inner_compute$i140630608976592_i140630614113552.inputs1","inner_compute$i140630608975056_i140630614113552.O0"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.4","inner_compute$i140630608975056_i140630614113552.inputs0"],
+          ["inner_compute$i140630608975312_i140630614113552.O0","inner_compute$i140630608975056_i140630614113552.inputs1"],
+          ["self.clk","inner_compute$i140630608975312_i140630614113552.CLK"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.5","inner_compute$i140630608975312_i140630614113552.inputs0"],
+          ["inner_compute$i140630609377104_i140630614113552.O0","inner_compute$i140630608975312_i140630614113552.inputs1"],
+          ["self.clk","inner_compute$i140630608975568_i140630614113552.CLK"],
+          ["self.blur_unnormalized_stencil_op_hcompute_blur_unnormalized_stencil_1_write.0","inner_compute$i140630608975568_i140630614113552.O0"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.0","inner_compute$i140630608975568_i140630614113552.inputs0"],
+          ["inner_compute$i140630608976336_i140630607647056.O0","inner_compute$i140630608975568_i140630614113552.inputs1"],
+          ["self.clk","inner_compute$i140630608976336_i140630607647056.CLK"],
+          ["self.blur_unnormalized_stencil_clkwrk_dsa0_op_hcompute_blur_unnormalized_stencil_1_read.0","inner_compute$i140630608976336_i140630607647056.inputs0"],
+          ["inner_compute$i140630608977360_i140630614113552.O0","inner_compute$i140630608976336_i140630607647056.inputs1"],
+          ["self.clk","inner_compute$i140630608976464_i140630614113552.CLK"],
+          ["inner_compute$i140630608977360_i140630614113552.inputs1","inner_compute$i140630608976464_i140630614113552.O0"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.2","inner_compute$i140630608976464_i140630614113552.inputs0"],
+          ["inner_compute$i140630608976592_i140630614113552.O0","inner_compute$i140630608976464_i140630614113552.inputs1"],
+          ["self.clk","inner_compute$i140630608976592_i140630614113552.CLK"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.3","inner_compute$i140630608976592_i140630614113552.inputs0"],
+          ["self.clk","inner_compute$i140630608977360_i140630614113552.CLK"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.1","inner_compute$i140630608977360_i140630614113552.inputs0"],
+          ["self.clk","inner_compute$i140630609376912_i140630613724048.CLK"],
+          ["inner_compute$i140630609377040_i140630614113552.inputs1","inner_compute$i140630609376912_i140630613724048.O0"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.8","inner_compute$i140630609376912_i140630613724048.inputs0"],
+          ["self.clk","inner_compute$i140630609377040_i140630614113552.CLK"],
+          ["inner_compute$i140630609377104_i140630614113552.inputs1","inner_compute$i140630609377040_i140630614113552.O0"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.7","inner_compute$i140630609377040_i140630614113552.inputs0"],
+          ["self.clk","inner_compute$i140630609377104_i140630614113552.CLK"],
+          ["self.hw_input_global_wrapper_stencil_op_hcompute_blur_unnormalized_stencil_1_read.6","inner_compute$i140630609377104_i140630614113552.inputs0"],
           ["self.valid_pass_out","self.valid_pass_in"]
         ]
       },
@@ -526,256 +400,160 @@
           "hw_input_global_wrapper_stencil":{
             "modref":"global.hw_input_global_wrapper_stencil_ub"
           },
-          "op_hcompute_blur_stencil$inner_compute$c139774614246288":{
+          "op_hcompute_blur_stencil$inner_compute$c140630609122448":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h080000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h05000011"]}
           },
-          "op_hcompute_blur_stencil$inner_compute$c139774614733968":{
+          "op_hcompute_blur_stencil$inner_compute$c140630609122512":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_stencil$inner_compute$c139774614734352":{
+          "op_hcompute_blur_stencil$inner_compute$c140630609123664":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_stencil$inner_compute$c139774614735440":{
+          "op_hcompute_blur_stencil$inner_compute$c140630609125008":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000010"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000212"]}
           },
-          "op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936":{
+          "op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_stencil$inner_compute$i139774601809680_i139774617936592":{
+          "op_hcompute_blur_stencil$inner_compute$i140630666480208_i140630614231248":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil$inner_compute$c139774615036816":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil$inner_compute$c139774615038096":{
+          "op_hcompute_blur_unnormalized_stencil$inner_compute$c140630608984400":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil$inner_compute$i139774614598992_i139774617936592":{
+          "op_hcompute_blur_unnormalized_stencil$inner_compute$c140630608985040":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000012"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil$inner_compute$i140630609112336_i140630614231248":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615825808":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615998928":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615999376":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609179856":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000080":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000272":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000336":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609181712":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000592":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609181776":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000952"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609290320":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000784":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609304464":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001104":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609310160":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001168":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609327376":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001360":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329232":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329360":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001424":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616002320":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616002512":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329424":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616360400":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609343248":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610093840":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610094800":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616361296":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616513680":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616573968":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610095056":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616952656":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610095120":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616952784":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610121872":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617040720":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610122576":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041168":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610124368":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h02000780"]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041744":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610139024":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h57bffff2"]}
+          },
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610140176":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041872":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10004a"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617044368":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617045584":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618161744":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618163088":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618163664":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618222736":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618223696":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618225168":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618260112":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618397072":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618397456":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618398352":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552":{
             "modref":"global.PE"
           },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584":{
+          "op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552":{
             "modref":"global.PE"
           },
           "op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet":{
@@ -795,110 +573,78 @@
         },
         "connections":[
           ["self.clk","blur_stencil.clk"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.O0","blur_stencil.op_hcompute_blur_stencil_write.0"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.O0","blur_stencil.op_hcompute_blur_stencil_write.0"],
           ["self.hw_output_stencil_op_hcompute_hw_output_stencil_write.0","blur_stencil.op_hcompute_hw_output_stencil_read.0"],
           ["self.reset","blur_stencil.reset"],
           ["self.clk","blur_unnormalized_stencil.clk"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.inputs0","blur_unnormalized_stencil.op_hcompute_blur_stencil_read.0"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.O0","blur_unnormalized_stencil.op_hcompute_blur_unnormalized_stencil_1_write.0"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.inputs1","blur_unnormalized_stencil.op_hcompute_blur_stencil_read.0"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.O0","blur_unnormalized_stencil.op_hcompute_blur_unnormalized_stencil_1_write.0"],
           ["self.reset","blur_unnormalized_stencil.reset"],
           ["self.clk","blur_unnormalized_stencil_clkwrk_dsa0.clk"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.inputs0","blur_unnormalized_stencil_clkwrk_dsa0.op_hcompute_blur_unnormalized_stencil_1_read.0"],
-          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i139774614598992_i139774617936592.O0","blur_unnormalized_stencil_clkwrk_dsa0.op_hcompute_blur_unnormalized_stencil_write.0"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.inputs0","blur_unnormalized_stencil_clkwrk_dsa0.op_hcompute_blur_unnormalized_stencil_1_read.0"],
+          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i140630609112336_i140630614231248.O0","blur_unnormalized_stencil_clkwrk_dsa0.op_hcompute_blur_unnormalized_stencil_write.0"],
           ["self.reset","blur_unnormalized_stencil_clkwrk_dsa0.reset"],
           ["self.clk","hw_input_global_wrapper_stencil.clk"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.0"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.1"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.2"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.3"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.4"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.5"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.6"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.7"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544.inputs1","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.8"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.0"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.1"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.2"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.3"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.4"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.5"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.6"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.7"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048.inputs0","hw_input_global_wrapper_stencil.op_hcompute_blur_unnormalized_stencil_1_read.8"],
           ["self.hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read.0","hw_input_global_wrapper_stencil.op_hcompute_hw_input_global_wrapper_stencil_write.0"],
           ["self.reset","hw_input_global_wrapper_stencil.reset"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.inst","op_hcompute_blur_stencil$inner_compute$c139774614246288.out"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601809680_i139774617936592.clk_en","op_hcompute_blur_stencil$inner_compute$c139774614733968.out"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.clk_en","op_hcompute_blur_stencil$inner_compute$c139774614734352.out"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601809680_i139774617936592.inst","op_hcompute_blur_stencil$inner_compute$c139774614735440.out"],
-          ["self.clk","op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.CLK"],
-          ["op_hcompute_blur_stencil$inner_compute$i139774601809680_i139774617936592.O0","op_hcompute_blur_stencil$inner_compute$i139774601046608_i139774619937936.inputs1"],
-          ["self.clk","op_hcompute_blur_stencil$inner_compute$i139774601809680_i139774617936592.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i139774614598992_i139774617936592.inst","op_hcompute_blur_unnormalized_stencil$inner_compute$c139774615036816.out"],
-          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i139774614598992_i139774617936592.clk_en","op_hcompute_blur_unnormalized_stencil$inner_compute$c139774615038096.out"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil$inner_compute$i139774614598992_i139774617936592.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615825808.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615998928.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774615999376.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000080.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000272.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000336.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000592.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616000784.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001104.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001168.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001360.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616001424.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616002320.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616002512.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616360400.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616361296.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616513680.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616573968.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616952656.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774616952784.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617040720.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041168.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041744.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617041872.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617044368.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774617045584.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618161744.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618163088.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618163664.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618222736.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618223696.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618225168.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618260112.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618397072.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618397456.out"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c139774618398352.out"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614651088_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.inputs0"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614674896_i139774615029584.inputs1"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774614675088_i139774615029584.inputs1"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617917456_i139774600710544.CLK"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774617918928_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618084624_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618085968_i139774615029584.inputs1"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087248_i139774615029584.inputs1"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774618087376_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.O0"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742352_i139774615029584.inputs1"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742608_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.O0"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619742928_i139774615029584.inputs0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743056_i139774615029584.CLK"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619743824_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619744400_i139774600710544.CLK"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.inputs0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619968144_i139774600710544.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.CLK"],
-          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978576_i139774615029584.O0"],
-          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139774619978640_i139774615029584.CLK"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.inst","op_hcompute_blur_stencil$inner_compute$c140630609122448.out"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630666480208_i140630614231248.clk_en","op_hcompute_blur_stencil$inner_compute$c140630609122512.out"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.clk_en","op_hcompute_blur_stencil$inner_compute$c140630609123664.out"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630666480208_i140630614231248.inst","op_hcompute_blur_stencil$inner_compute$c140630609125008.out"],
+          ["self.clk","op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.CLK"],
+          ["op_hcompute_blur_stencil$inner_compute$i140630666480208_i140630614231248.O0","op_hcompute_blur_stencil$inner_compute$i140630609716880_i140630609130960.inputs0"],
+          ["self.clk","op_hcompute_blur_stencil$inner_compute$i140630666480208_i140630614231248.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i140630609112336_i140630614231248.clk_en","op_hcompute_blur_unnormalized_stencil$inner_compute$c140630608984400.out"],
+          ["op_hcompute_blur_unnormalized_stencil$inner_compute$i140630609112336_i140630614231248.inst","op_hcompute_blur_unnormalized_stencil$inner_compute$c140630608985040.out"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil$inner_compute$i140630609112336_i140630614231248.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609179856.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609181712.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609181776.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609290320.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609304464.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609310160.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609327376.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329232.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329360.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609329424.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630609343248.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610093840.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610094800.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610095056.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610095120.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610121872.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610122576.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610124368.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.inst","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610139024.out"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.clk_en","op_hcompute_blur_unnormalized_stencil_1$inner_compute$c140630610140176.out"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.O0"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975056_i140630614113552.inputs1"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975312_i140630614113552.inputs1"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608975568_i140630614113552.inputs1"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976336_i140630607647056.inputs1"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.O0"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.O0","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976464_i140630614113552.inputs1"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608976592_i140630614113552.CLK"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630608977360_i140630614113552.CLK"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609376912_i140630613724048.O0"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.CLK"],
+          ["op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.inputs1","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377040_i140630614113552.O0"],
+          ["self.clk","op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140630609377104_i140630614113552.CLK"],
           ["op_hcompute_hw_input_global_wrapper_stencil_read_start.in","op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet.O2"],
           ["self.reset","op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet.flush"],
           ["self.hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_en","op_hcompute_hw_input_global_wrapper_stencil_read_start.out"],
@@ -907,51 +653,77 @@
           ["self.hw_output_stencil_op_hcompute_hw_output_stencil_write_valid","op_hcompute_hw_output_stencil_write_start.out"]
         ]
       },
-      "hcompute_blur_stencil_mapped":{
+      "hcompute_blur_stencil":{
         "type":["Record",[
           ["clk",["Named","coreir.clkIn"]],
           ["in0_blur_unnormalized_stencil",["Array",1,["Array",16,"BitIn"]]],
           ["out_blur_stencil",["Array",16,"Bit"]]
         ]],
         "instances":{
-          "c139774614246288":{
+          "c140630609122448":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h080000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h05000011"]}
           },
-          "c139774614733968":{
+          "c140630609122512":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774614734352":{
+          "c140630609123664":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774614735440":{
+          "c140630609125008":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000010"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000212"]}
           },
-          "i139774601046608_i139774619937936":{
+          "i140630609716880_i140630609130960":{
             "modref":"global.PE"
           },
-          "i139774601809680_i139774617936592":{
+          "i140630666480208_i140630614231248":{
             "modref":"global.PE"
           }
         },
         "connections":[
-          ["i139774601046608_i139774619937936.inst","c139774614246288.out"],
-          ["i139774601809680_i139774617936592.clk_en","c139774614733968.out"],
-          ["i139774601046608_i139774619937936.clk_en","c139774614734352.out"],
-          ["i139774601809680_i139774617936592.inst","c139774614735440.out"],
-          ["self.clk","i139774601046608_i139774619937936.CLK"],
-          ["self.out_blur_stencil","i139774601046608_i139774619937936.O0"],
-          ["self.in0_blur_unnormalized_stencil.0","i139774601046608_i139774619937936.inputs0"],
-          ["i139774601809680_i139774617936592.O0","i139774601046608_i139774619937936.inputs1"],
-          ["self.clk","i139774601809680_i139774617936592.CLK"]
+          ["i140630609716880_i140630609130960.inst","c140630609122448.out"],
+          ["i140630666480208_i140630614231248.clk_en","c140630609122512.out"],
+          ["i140630609716880_i140630609130960.clk_en","c140630609123664.out"],
+          ["i140630666480208_i140630614231248.inst","c140630609125008.out"],
+          ["self.clk","i140630609716880_i140630609130960.CLK"],
+          ["self.out_blur_stencil","i140630609716880_i140630609130960.O0"],
+          ["i140630666480208_i140630614231248.O0","i140630609716880_i140630609130960.inputs0"],
+          ["self.in0_blur_unnormalized_stencil.0","i140630609716880_i140630609130960.inputs1"],
+          ["self.clk","i140630666480208_i140630614231248.CLK"]
         ]
       },
-      "hcompute_blur_unnormalized_stencil_1_mapped":{
+      "hcompute_blur_unnormalized_stencil":{
+        "type":["Record",[
+          ["clk",["Named","coreir.clkIn"]],
+          ["out_blur_unnormalized_stencil",["Array",16,"Bit"]]
+        ]],
+        "instances":{
+          "c140630608984400":{
+            "modref":"corebit.const",
+            "modargs":{"value":["Bool",true]}
+          },
+          "c140630608985040":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h00000012"]}
+          },
+          "i140630609112336_i140630614231248":{
+            "modref":"global.PE"
+          }
+        },
+        "connections":[
+          ["i140630609112336_i140630614231248.clk_en","c140630608984400.out"],
+          ["i140630609112336_i140630614231248.inst","c140630608985040.out"],
+          ["self.clk","i140630609112336_i140630614231248.CLK"],
+          ["self.out_blur_unnormalized_stencil","i140630609112336_i140630614231248.O0"]
+        ]
+      },
+      "hcompute_blur_unnormalized_stencil_1":{
         "type":["Record",[
           ["clk",["Named","coreir.clkIn"]],
           ["in0_blur_unnormalized_stencil",["Array",1,["Array",16,"BitIn"]]],
@@ -959,335 +731,181 @@
           ["out_blur_unnormalized_stencil",["Array",16,"Bit"]]
         ]],
         "instances":{
-          "c139774615825808":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774615998928":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774615999376":{
+          "c140630609179856":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616000080":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774616000272":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774616000336":{
+          "c140630609181712":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "c139774616000592":{
+          "c140630609181776":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000952"]}
+          },
+          "c140630609290320":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616000784":{
+          "c140630609304464":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616001104":{
+          "c140630609310160":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
           },
-          "c139774616001168":{
+          "c140630609327376":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "c139774616001360":{
+          "c140630609329232":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "c140630609329360":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616001424":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "c139774616002320":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774616002512":{
+          "c140630609329424":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616360400":{
+          "c140630609343248":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
+          },
+          "c140630610093840":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000792"]}
+          },
+          "c140630610094800":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616361296":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774616513680":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774616573968":{
+          "c140630610095056":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774616952656":{
+          "c140630610095120":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h56000612"]}
           },
-          "c139774616952784":{
+          "c140630610121872":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774617040720":{
+          "c140630610122576":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774617041168":{
+          "c140630610124368":{
             "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h02000780"]}
           },
-          "c139774617041744":{
+          "c140630610139024":{
+            "genref":"coreir.const",
+            "genargs":{"width":["Int",31]},
+            "modargs":{"value":[["BitVector",31],"31'h57bffff2"]}
+          },
+          "c140630610140176":{
             "modref":"corebit.const",
             "modargs":{"value":["Bool",true]}
           },
-          "c139774617041872":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10004a"]}
-          },
-          "c139774617044368":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "c139774617045584":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618161744":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618163088":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774618163664":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h10003c"]}
-          },
-          "c139774618222736":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618223696":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "c139774618225168":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618260112":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h100030"]}
-          },
-          "c139774618397072":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618397456":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "c139774618398352":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h190000"]}
-          },
-          "i139774614651088_i139774600710544":{
+          "i140630608975056_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774614674896_i139774615029584":{
+          "i140630608975312_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774614675088_i139774615029584":{
+          "i140630608975568_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774617917456_i139774600710544":{
+          "i140630608976336_i140630607647056":{
             "modref":"global.PE"
           },
-          "i139774617918928_i139774600710544":{
+          "i140630608976464_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774618084624_i139774600710544":{
+          "i140630608976592_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774618085968_i139774615029584":{
+          "i140630608977360_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774618087248_i139774615029584":{
+          "i140630609376912_i140630613724048":{
             "modref":"global.PE"
           },
-          "i139774618087376_i139774600710544":{
+          "i140630609377040_i140630614113552":{
             "modref":"global.PE"
           },
-          "i139774619742352_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "i139774619742608_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "i139774619742928_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "i139774619743056_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "i139774619743824_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "i139774619744400_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "i139774619968144_i139774600710544":{
-            "modref":"global.PE"
-          },
-          "i139774619978576_i139774615029584":{
-            "modref":"global.PE"
-          },
-          "i139774619978640_i139774615029584":{
+          "i140630609377104_i140630614113552":{
             "modref":"global.PE"
           }
         },
         "connections":[
-          ["i139774614674896_i139774615029584.inst","c139774615825808.out"],
-          ["i139774619742928_i139774615029584.inst","c139774615998928.out"],
-          ["i139774619743056_i139774615029584.clk_en","c139774615999376.out"],
-          ["i139774619742608_i139774600710544.clk_en","c139774616000080.out"],
-          ["i139774619744400_i139774600710544.clk_en","c139774616000272.out"],
-          ["i139774619744400_i139774600710544.inst","c139774616000336.out"],
-          ["i139774618087376_i139774600710544.clk_en","c139774616000592.out"],
-          ["i139774619742352_i139774615029584.clk_en","c139774616000784.out"],
-          ["i139774614651088_i139774600710544.inst","c139774616001104.out"],
-          ["i139774619742608_i139774600710544.inst","c139774616001168.out"],
-          ["i139774619742928_i139774615029584.clk_en","c139774616001360.out"],
-          ["i139774618087376_i139774600710544.inst","c139774616001424.out"],
-          ["i139774619743056_i139774615029584.inst","c139774616002320.out"],
-          ["i139774614651088_i139774600710544.clk_en","c139774616002512.out"],
-          ["i139774617918928_i139774600710544.clk_en","c139774616360400.out"],
-          ["i139774618087248_i139774615029584.inst","c139774616361296.out"],
-          ["i139774619742352_i139774615029584.inst","c139774616513680.out"],
-          ["i139774618085968_i139774615029584.clk_en","c139774616573968.out"],
-          ["i139774618084624_i139774600710544.inst","c139774616952656.out"],
-          ["i139774618084624_i139774600710544.clk_en","c139774616952784.out"],
-          ["i139774619968144_i139774600710544.clk_en","c139774617040720.out"],
-          ["i139774619978576_i139774615029584.inst","c139774617041168.out"],
-          ["i139774619978576_i139774615029584.clk_en","c139774617041744.out"],
-          ["i139774619968144_i139774600710544.inst","c139774617041872.out"],
-          ["i139774619743824_i139774600710544.inst","c139774617044368.out"],
-          ["i139774619743824_i139774600710544.clk_en","c139774617045584.out"],
-          ["i139774614675088_i139774615029584.clk_en","c139774618161744.out"],
-          ["i139774618085968_i139774615029584.inst","c139774618163088.out"],
-          ["i139774617918928_i139774600710544.inst","c139774618163664.out"],
-          ["i139774614674896_i139774615029584.clk_en","c139774618222736.out"],
-          ["i139774614675088_i139774615029584.inst","c139774618223696.out"],
-          ["i139774617917456_i139774600710544.clk_en","c139774618225168.out"],
-          ["i139774617917456_i139774600710544.inst","c139774618260112.out"],
-          ["i139774618087248_i139774615029584.clk_en","c139774618397072.out"],
-          ["i139774619978640_i139774615029584.clk_en","c139774618397456.out"],
-          ["i139774619978640_i139774615029584.inst","c139774618398352.out"],
-          ["self.clk","i139774614651088_i139774600710544.CLK"],
-          ["i139774619742352_i139774615029584.inputs0","i139774614651088_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.5","i139774614651088_i139774600710544.inputs1"],
-          ["self.clk","i139774614674896_i139774615029584.CLK"],
-          ["self.out_blur_unnormalized_stencil","i139774614674896_i139774615029584.O0"],
-          ["i139774617917456_i139774600710544.O0","i139774614674896_i139774615029584.inputs0"],
-          ["i139774614675088_i139774615029584.O0","i139774614674896_i139774615029584.inputs1"],
-          ["self.clk","i139774614675088_i139774615029584.CLK"],
-          ["self.in0_blur_unnormalized_stencil.0","i139774614675088_i139774615029584.inputs0"],
-          ["i139774618085968_i139774615029584.O0","i139774614675088_i139774615029584.inputs1"],
-          ["self.clk","i139774617917456_i139774600710544.CLK"],
-          ["self.in1_hw_input_global_wrapper_stencil.0","i139774617917456_i139774600710544.inputs1"],
-          ["self.clk","i139774617918928_i139774600710544.CLK"],
-          ["i139774618085968_i139774615029584.inputs0","i139774617918928_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.1","i139774617918928_i139774600710544.inputs1"],
-          ["self.clk","i139774618084624_i139774600710544.CLK"],
-          ["i139774618087248_i139774615029584.inputs0","i139774618084624_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.2","i139774618084624_i139774600710544.inputs1"],
-          ["self.clk","i139774618085968_i139774615029584.CLK"],
-          ["i139774618087248_i139774615029584.O0","i139774618085968_i139774615029584.inputs1"],
-          ["self.clk","i139774618087248_i139774615029584.CLK"],
-          ["i139774619978640_i139774615029584.O0","i139774618087248_i139774615029584.inputs1"],
-          ["self.clk","i139774618087376_i139774600710544.CLK"],
-          ["i139774619743056_i139774615029584.inputs0","i139774618087376_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.6","i139774618087376_i139774600710544.inputs1"],
-          ["self.clk","i139774619742352_i139774615029584.CLK"],
-          ["i139774619978576_i139774615029584.inputs1","i139774619742352_i139774615029584.O0"],
-          ["i139774619743056_i139774615029584.O0","i139774619742352_i139774615029584.inputs1"],
-          ["self.clk","i139774619742608_i139774600710544.CLK"],
-          ["i139774619742928_i139774615029584.inputs1","i139774619742608_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.8","i139774619742608_i139774600710544.inputs1"],
-          ["self.clk","i139774619742928_i139774615029584.CLK"],
-          ["i139774619743056_i139774615029584.inputs1","i139774619742928_i139774615029584.O0"],
-          ["i139774619744400_i139774600710544.O0","i139774619742928_i139774615029584.inputs0"],
-          ["self.clk","i139774619743056_i139774615029584.CLK"],
-          ["self.clk","i139774619743824_i139774600710544.CLK"],
-          ["i139774619978640_i139774615029584.inputs0","i139774619743824_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.3","i139774619743824_i139774600710544.inputs1"],
-          ["self.clk","i139774619744400_i139774600710544.CLK"],
-          ["self.in1_hw_input_global_wrapper_stencil.7","i139774619744400_i139774600710544.inputs1"],
-          ["self.clk","i139774619968144_i139774600710544.CLK"],
-          ["i139774619978576_i139774615029584.inputs0","i139774619968144_i139774600710544.O0"],
-          ["self.in1_hw_input_global_wrapper_stencil.4","i139774619968144_i139774600710544.inputs1"],
-          ["self.clk","i139774619978576_i139774615029584.CLK"],
-          ["i139774619978640_i139774615029584.inputs1","i139774619978576_i139774615029584.O0"],
-          ["self.clk","i139774619978640_i139774615029584.CLK"]
+          ["i140630608976592_i140630614113552.clk_en","c140630609179856.out"],
+          ["i140630608976592_i140630614113552.inst","c140630609181712.out"],
+          ["i140630608975056_i140630614113552.inst","c140630609181776.out"],
+          ["i140630608975056_i140630614113552.clk_en","c140630609290320.out"],
+          ["i140630608976464_i140630614113552.clk_en","c140630609304464.out"],
+          ["i140630608975312_i140630614113552.inst","c140630609310160.out"],
+          ["i140630609377104_i140630614113552.inst","c140630609327376.out"],
+          ["i140630609377040_i140630614113552.inst","c140630609329232.out"],
+          ["i140630609377104_i140630614113552.clk_en","c140630609329360.out"],
+          ["i140630608975312_i140630614113552.clk_en","c140630609329424.out"],
+          ["i140630608975568_i140630614113552.inst","c140630609343248.out"],
+          ["i140630608977360_i140630614113552.inst","c140630610093840.out"],
+          ["i140630608976336_i140630607647056.clk_en","c140630610094800.out"],
+          ["i140630608977360_i140630614113552.clk_en","c140630610095056.out"],
+          ["i140630608976464_i140630614113552.inst","c140630610095120.out"],
+          ["i140630609377040_i140630614113552.clk_en","c140630610121872.out"],
+          ["i140630609376912_i140630613724048.clk_en","c140630610122576.out"],
+          ["i140630609376912_i140630613724048.inst","c140630610124368.out"],
+          ["i140630608976336_i140630607647056.inst","c140630610139024.out"],
+          ["i140630608975568_i140630614113552.clk_en","c140630610140176.out"],
+          ["self.clk","i140630608975056_i140630614113552.CLK"],
+          ["i140630608976592_i140630614113552.inputs1","i140630608975056_i140630614113552.O0"],
+          ["self.in1_hw_input_global_wrapper_stencil.4","i140630608975056_i140630614113552.inputs0"],
+          ["i140630608975312_i140630614113552.O0","i140630608975056_i140630614113552.inputs1"],
+          ["self.clk","i140630608975312_i140630614113552.CLK"],
+          ["self.in1_hw_input_global_wrapper_stencil.5","i140630608975312_i140630614113552.inputs0"],
+          ["i140630609377104_i140630614113552.O0","i140630608975312_i140630614113552.inputs1"],
+          ["self.clk","i140630608975568_i140630614113552.CLK"],
+          ["self.out_blur_unnormalized_stencil","i140630608975568_i140630614113552.O0"],
+          ["self.in1_hw_input_global_wrapper_stencil.0","i140630608975568_i140630614113552.inputs0"],
+          ["i140630608976336_i140630607647056.O0","i140630608975568_i140630614113552.inputs1"],
+          ["self.clk","i140630608976336_i140630607647056.CLK"],
+          ["self.in0_blur_unnormalized_stencil.0","i140630608976336_i140630607647056.inputs0"],
+          ["i140630608977360_i140630614113552.O0","i140630608976336_i140630607647056.inputs1"],
+          ["self.clk","i140630608976464_i140630614113552.CLK"],
+          ["i140630608977360_i140630614113552.inputs1","i140630608976464_i140630614113552.O0"],
+          ["self.in1_hw_input_global_wrapper_stencil.2","i140630608976464_i140630614113552.inputs0"],
+          ["i140630608976592_i140630614113552.O0","i140630608976464_i140630614113552.inputs1"],
+          ["self.clk","i140630608976592_i140630614113552.CLK"],
+          ["self.in1_hw_input_global_wrapper_stencil.3","i140630608976592_i140630614113552.inputs0"],
+          ["self.clk","i140630608977360_i140630614113552.CLK"],
+          ["self.in1_hw_input_global_wrapper_stencil.1","i140630608977360_i140630614113552.inputs0"],
+          ["self.clk","i140630609376912_i140630613724048.CLK"],
+          ["i140630609377040_i140630614113552.inputs1","i140630609376912_i140630613724048.O0"],
+          ["self.in1_hw_input_global_wrapper_stencil.8","i140630609376912_i140630613724048.inputs0"],
+          ["self.clk","i140630609377040_i140630614113552.CLK"],
+          ["i140630609377104_i140630614113552.inputs1","i140630609377040_i140630614113552.O0"],
+          ["self.in1_hw_input_global_wrapper_stencil.7","i140630609377040_i140630614113552.inputs0"],
+          ["self.clk","i140630609377104_i140630614113552.CLK"],
+          ["self.in1_hw_input_global_wrapper_stencil.6","i140630609377104_i140630614113552.inputs0"]
         ]
       },
-      "hcompute_blur_unnormalized_stencil_mapped":{
-        "type":["Record",[
-          ["clk",["Named","coreir.clkIn"]],
-          ["out_blur_unnormalized_stencil",["Array",16,"Bit"]]
-        ]],
-        "instances":{
-          "c139774615036816":{
-            "genref":"coreir.const",
-            "genargs":{"width":["Int",23]},
-            "modargs":{"value":[["BitVector",23],"23'h000000"]}
-          },
-          "c139774615038096":{
-            "modref":"corebit.const",
-            "modargs":{"value":["Bool",true]}
-          },
-          "i139774614598992_i139774617936592":{
-            "modref":"global.PE"
-          }
-        },
-        "connections":[
-          ["i139774614598992_i139774617936592.inst","c139774615036816.out"],
-          ["i139774614598992_i139774617936592.clk_en","c139774615038096.out"],
-          ["self.clk","i139774614598992_i139774617936592.CLK"],
-          ["self.out_blur_unnormalized_stencil","i139774614598992_i139774617936592.O0"]
-        ]
-      },
-      "hcompute_hw_input_global_wrapper_stencil_mapped":{
+      "hcompute_hw_input_global_wrapper_stencil":{
         "type":["Record",[
           ["in0_hw_input_stencil",["Array",1,["Array",16,"BitIn"]]],
           ["out_hw_input_global_wrapper_stencil",["Array",16,"Bit"]]
@@ -1296,7 +914,7 @@
           ["self.out_hw_input_global_wrapper_stencil","self.in0_hw_input_stencil.0"]
         ]
       },
-      "hcompute_hw_output_stencil_mapped":{
+      "hcompute_hw_output_stencil":{
         "type":["Record",[
           ["in0_blur_stencil",["Array",1,["Array",16,"BitIn"]]],
           ["out_hw_output_stencil",["Array",16,"Bit"]]
