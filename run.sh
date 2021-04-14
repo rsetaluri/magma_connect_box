@@ -31,6 +31,7 @@ make post-synth-power
 
 cd ${home}
 results_dir=../micro-2021/pe-dse-power/micro2021/results/${DSE_PE}/${APP}/${CLK}
+mkdir -p ${results_dir}
 cp mflowgen/${build_dir}/Tile_PE/*-application/outputs/*.list ${results_dir}
 for t in Tile_PE Tile_MemCore; do
     mkdir -p ${results_dir}/${t}
