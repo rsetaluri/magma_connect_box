@@ -60,11 +60,14 @@ FIX_SYSTEMRDL = \
 GEN_RTL_FILELIST = \
 	find $(RTL_DIR) -type f -name '*.sv' | xargs realpath  > $(TOP_MODULE).filelist; \
 	find ./systemRDL/output -type f -name '*.sv' | xargs realpath  >> $(TOP_MODULE).filelist; \
-	echo "/cad/cadence/GENUS_19.10.000_lnx86/share/synth/lib/chipware/sim/verilog/CW/CW_tap.v" >> $(TOP_MODULE).filelist
+	echo "/cad/cadence/GENUS_19.10.000_lnx86/share/synth/lib/chipware/sim/verilog/CW/CW_tap.v" >> $(TOP_MODULE).filelist; \
+	echo "$(RTL)/sram_gen.sv" >> $(TOP_MODULE).filelist
 
 GEN_TB_FILELIST = \
 	find $(TB_RTL_DIR) -type f -name '*.sv' | xargs realpath  > tb_$(TOP_MODULE).filelist; \
 	find ./systemRDL/output -type f -name '*.sv' | xargs realpath  >> tb_$(TOP_MODULE).filelist; \
+	echo "$(RTL)/sram_gen.sv" >> tb_$(TOP_MODULE).filelist; \
+	echo "$(RTL)/TS1N16FFCLLSBLVTC2048X64M8SW.sv" >> tb_$(TOP_MODULE).filelist; \
 	echo "/cad/cadence/GENUS_19.10.000_lnx86/share/synth/lib/chipware/sim/verilog/CW/CW_tap.v" >> tb_$(TOP_MODULE).filelist
 
 

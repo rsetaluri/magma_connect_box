@@ -241,6 +241,12 @@ addrmap glc {
 		} data[31:0] = 0x0;
     };
 
+    reg wr_cfg_buffer_r {
+        name = "cfg buffer write";
+        desc = "write to cfg buffer";
+        field {singlepulse;} pulse = 0x0;
+    };
+
     reg rd_data_r {
         name = "CGRA Configuration Data Register";
         desc = "CGRA configuration data register used to write CGRA tile
@@ -252,16 +258,30 @@ addrmap glc {
 		} data[31:0] = 0x0;
     };
 
-    reg write_r {
+    reg cfg_start_addr_r {
         name = "CGRA Configuration Write Enable Register";
         desc = "The number of cycles CGRA configuration write enable is asserted.
                 This register is used to write CGRA tile configuration registers";
         field { 
-            hw = rw; we; ored;
+			desc = "Write register";
+		} addr[31:0] = 0x0;
+    };
+
+    reg num_cfg_r {
+        name = "CGRA Configuration Write Enable Register";
+        desc = "The number of cycles CGRA configuration write enable is asserted.
+                This register is used to write CGRA tile configuration registers";
+        field { 
 			desc = "Write register";
 		} cnt[31:0] = 0x0;
     };
 
+    reg cfg_start_r {
+        name = "Stream cfg";
+        desc = "start configuration controller";
+        field {singlepulse;} pulse = 0x0;
+    };
+    
     reg read_r {
         name = "CGRA Configuration Read Enable Register";
         desc = "The number of cycles CGRA configuration read enable is asserted.
@@ -277,9 +297,12 @@ addrmap glc {
         desc = "Registers needed to read/write CGRA tile configuration registers";
         addr_r      addr;
         wr_data_r   wr_data;
-        write_r     write;
         read_r      read;
         rd_data_r   rd_data;
+        wr_cfg_buffer_r wr_cfg_buffer;
+        cfg_start_addr_r cfg_start_addr;
+        num_cfg_r num_cfg;
+        cfg_start_r cfg_start;
     };
 
     reg use_db_en_r {
@@ -289,6 +312,7 @@ addrmap glc {
 			desc = "use double buffered registers";
 		} use_db_en[<%=NUM_GLB_TILES*2%>] = 0x0;
     };
+
     reg config_db_en_r {
         name = "Double Buffering Control Register";
         desc = "Control double buffering of configuration";

@@ -127,8 +127,6 @@ module `mname` (
     logic    h2l_par_cfg_g2f_isr_tile_13_intr;
     logic    h2l_par_cfg_g2f_isr_tile_14_intr;
     logic    h2l_par_cfg_g2f_isr_tile_15_intr;
-    logic     [31:0] h2l_cgra_config_write_cnt_w;
-    logic    h2l_cgra_config_write_cnt_we;
     logic     [31:0] h2l_cgra_config_read_cnt_w;
     logic    h2l_cgra_config_read_cnt_we;
     logic     [31:0] h2l_cgra_config_rd_data_data_w;
@@ -179,16 +177,22 @@ module `mname` (
     logic    l2h_strm_g2f_isr_intr_o;
     logic    l2h_par_cfg_g2f_isr_intr_o;
     logic    l2h_global_isr_intr_o;
-    logic     [31:0] l2h_cgra_config_addr_addr_r;
-    logic     [31:0] l2h_cgra_config_wr_data_data_r;
-    logic     [31:0] l2h_cgra_config_write_cnt_r;
-    logic    l2h_cgra_config_write_cnt_ored_o;
-    logic     [31:0] l2h_cgra_config_read_cnt_r;
-    logic    l2h_cgra_config_read_cnt_ored_o;
-    logic     [31:0] l2h_cgra_config_rd_data_data_r;
-    logic     [31:0] d2h_dec_pio_read_data;
-    logic    d2h_dec_pio_ack;
-    logic    d2h_dec_pio_nack;
+
+  logic    [31:0] l2h_cgra_config_addr_addr_r;
+  logic    [31:0] l2h_cgra_config_wr_data_data_r;
+  logic    [31:0] l2h_cgra_config_read_cnt_r;
+  logic   l2h_cgra_config_read_cnt_ored_o;
+  logic    [31:0] l2h_cgra_config_rd_data_data_r;
+  logic   l2h_cgra_config_wr_cfg_buffer_pulse_r;
+  logic    [31:0] l2h_cgra_config_cfg_start_addr_addr_r;
+  logic    [31:0] l2h_cgra_config_num_cfg_cnt_r;
+  logic   l2h_cgra_config_cfg_start_pulse_r;
+  logic    [31:0] l2h_use_db_en_use_db_en_r;
+  logic    [31:0] l2h_config_db_en_config_db_en_r;
+  logic    [31:0] d2h_dec_pio_read_data;
+  logic   d2h_dec_pio_ack;
+  logic   d2h_dec_pio_nack;
+    
 
 //; if ($cfg_double_buffer > 0) {
     logic [`$num_glb_tiles*2-1`:0] l2h_use_db_en_use_db_en_r;
@@ -209,6 +213,108 @@ module `mname` (
     logic axi_wr_id_match, axi_rd_id_match;
     logic jtag_wr_id_match, jtag_rd_id_match;
     logic interrupt_internal;
+
+
+//===========================================================================//
+// configuration buffer
+//===========================================================================//
+logic sram_cen;
+logic sram_wen;
+logic [14:0] sram_addr;
+logic [63:0] sram_data_in;
+logic [63:0] sram_bit_sel;
+logic [63:0] sram_data_out;
+logic [14:0] cfg_buffer_addr;
+
+sram_gen #(
+    .DATA_WIDTH(64),
+    .ADDR_WIDTH(15),
+    .NUM_INST(12)
+) config_buffer_sram_gen (
+    .reset(reset),
+    .CLK(clk),
+    .CEB(~sram_cen),
+    .WEB(~sram_wen),
+    .A(sram_addr),
+    .D(sram_data_in),
+    .BWEB(~sram_bit_sel),
+    .Q(sram_data_out)
+);
+
+logic cfg_running, cfg_running_d1, cfg_running_d2;
+always_comb begin
+    sram_cen = 1;
+    sram_wen = 1;
+    sram_bit_sel = {64{1'b1}};
+    sram_data_in = '0;
+    sram_addr = '0;
+    if (l2h_cgra_config_wr_cfg_buffer_pulse_r) begin
+        sram_cen = 0;
+        sram_wen = 0;
+        sram_addr = l2h_cgra_config_addr_addr_r;
+        sram_data_in = l2h_cgra_config_wr_data_data_r;
+    end
+    else if (cfg_running) begin
+        sram_cen = 0;
+        sram_addr = cfg_buffer_addr;
+    end
+end
+
+always_comb begin
+    axi_cgra_cfg_read = l2h_cgra_config_read_cnt_ored_o;
+    axi_cgra_cfg_addr = '0;
+    axi_cgra_cfg_wr_data = '0;
+    if (axi_cgra_cfg_read) begin
+        axi_cgra_cfg_addr = l2h_cgra_config_addr_addr_r;
+    end
+    else if (cfg_running_d2) begin
+        axi_cgra_cfg_write = 1;
+        axi_cgra_cfg_addr = sram_data_out[63:32];
+        axi_cgra_cfg_wr_data = sram_data_out[31:0];
+    end
+end
+
+logic cfg_buffer_done_pulse;
+logic [31:0] cnt;
+
+always_ff @(posedge clk or posedge reset) begin
+    if (reset) begin
+        cfg_running_d1 <= 0;
+        cfg_running_d2 <= 0;
+    end
+    else begin
+        cfg_running_d1 <= cfg_running;
+        cfg_running_d2 <= cfg_running_d1;
+    end
+end
+
+always_ff @(posedge clk or posedge reset) begin
+    if (reset) begin
+        cnt <= 0;
+        cfg_buffer_done_pulse <= 0;
+        cfg_buffer_addr <= 0;
+    end
+    else begin
+        if (l2h_cgra_config_cfg_start_pulse_r) begin
+            cnt <= l2h_cgra_config_num_cfg_cnt_r;
+            cfg_buffer_addr <= (l2h_cgra_config_cfg_start_addr_addr_r >> 3);
+            cfg_running <= 1;
+        end
+        else if (cnt > 1) begin
+            cnt <= cnt - 1;
+            cfg_buffer_addr <= cfg_buffer_addr + 1;
+        end
+        else if (cnt == 1) begin
+            cnt <= cnt - 1;
+            cfg_running <= 0;
+            cfg_buffer_done_pulse <= 1;
+        end
+        else begin
+            cfg_buffer_done_pulse <= 0;
+        end
+    end
+end
+
 
 //============================================================================//
 // assigns
@@ -233,7 +339,8 @@ assign h2l_strm_f2g_isr_tile_`$i`_intr = strm_f2g_interrupt_pulse[`$i`];
 assign h2l_strm_g2f_isr_tile_`$i`_intr = strm_g2f_interrupt_pulse[`$i`];
 //; }
 
-//; for (my $i = 0; $i < $num_glb_tiles; $i += 1) {
+assign h2l_par_cfg_g2f_isr_tile_0_intr = cfg_buffer_done_pulse;
+//; for (my $i = 1; $i < $num_glb_tiles; $i += 1) {
 assign h2l_par_cfg_g2f_isr_tile_`$i`_intr = pcfg_g2f_interrupt_pulse[`$i`];
 //; }
 
@@ -275,24 +382,8 @@ end
 // cgra config control logic
 //============================================================================//
 always_comb begin
-    h2l_cgra_config_write_cnt_w = l2h_cgra_config_write_cnt_r - 1;
-    h2l_cgra_config_write_cnt_we = (l2h_cgra_config_write_cnt_r > 0);
     h2l_cgra_config_read_cnt_w = l2h_cgra_config_read_cnt_r - 1;
     h2l_cgra_config_read_cnt_we = (l2h_cgra_config_read_cnt_r > 0);
-end
-
-always_comb begin
-    axi_cgra_cfg_read = l2h_cgra_config_read_cnt_ored_o;
-    axi_cgra_cfg_write = l2h_cgra_config_write_cnt_ored_o;
-    axi_cgra_cfg_addr = '0;
-    axi_cgra_cfg_wr_data = '0;
-    if (axi_cgra_cfg_read) begin
-        axi_cgra_cfg_addr = l2h_cgra_config_addr_addr_r;
-    end
-    else if (axi_cgra_cfg_write) begin
-        axi_cgra_cfg_addr = l2h_cgra_config_addr_addr_r;
-        axi_cgra_cfg_wr_data = l2h_cgra_config_wr_data_data_r;
-    end
 end
 
 always_comb begin
