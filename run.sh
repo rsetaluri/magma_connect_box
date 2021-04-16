@@ -13,15 +13,15 @@ cd ${build_dir}
 
 mkdir Tile_PE
 cd Tile_PE
-mflowgen run --design ../../Tile_PE
+mflowgen run --design ../../DC_Tile_PE
 make post-synth-power
 
 cd ../
 mkdir Tile_MemCore
 cd Tile_MemCore
-mflowgen run --design ../../Tile_MemCore
+mflowgen run --design ../../DC_Tile_MemCore
 mflowgen stash link --path /sim/kzf/pe-dse/stash/2021-0409-mflowgen-stash-1b421f
-mflowgen stash pull --hash cb6216
+mflowgen stash pull --hash 37ca57
 cp -r ../Tile_PE/*-application .
 make -t 0
 make post-synth-power

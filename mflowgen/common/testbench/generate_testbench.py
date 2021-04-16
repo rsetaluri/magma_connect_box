@@ -12,7 +12,7 @@ import subprocess
 def generate_raw(tile):
     sv = open('waveform_to_csv.sh', 'w')
 
-    waveform = 'run'
+    waveform = 'waves'
     clock_period = float(os.environ.get("clock_period"))
 
     input_signals = ' '.join([f'-signal {scope}.{tile}.{i}' for i in inputs])
@@ -30,9 +30,8 @@ def generate_raw(tile):
 
     sv.write('#!/bin/bash\n')
     sv.write(f'mkdir -p outputs/tile_tbs/{tile}\n')
-    sv.write(f'if [ ! -f {waveform}.trn ]; then\nsimvisdbutil inputs/{waveform}.vcd -sst2\nfi\n')
-    sv.write(f'simvisdbutil {waveform}.trn {input_signals} -output raw_input.csv {flag_string}\n')
-    sv.write(f'simvisdbutil {waveform}.trn {output_signals} -output raw_output.csv {flag_string}\n')
+    sv.write(f'simvisdbutil inputs/{waveform}.shm {input_signals} -output raw_input.csv {flag_string}\n')
+    sv.write(f'simvisdbutil inputs/{waveform}.shm {output_signals} -output raw_output.csv {flag_string}\n')
     sv.close()
 
     subprocess.run(['chmod', '+x', 'waveform_to_csv.sh'])
