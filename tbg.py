@@ -276,12 +276,12 @@ class TestBenchGenerator:
         # now load the file up
 
         # file in
-        file_in = tester.file_open("../../"+self.input_filename, "r",
+        file_in = tester.file_open("../../../"+self.input_filename, "r",
                                    chunk_size=self._input_size)
-        file_out = tester.file_open("../../"+self.output_filename, "w",
+        file_out = tester.file_open("../../../"+self.output_filename, "w",
                                     chunk_size=self._output_size)
         if len(self.valid_port_name) > 0:
-            valid_out = tester.file_open(f"../../{self.output_filename}.valid", "w")
+            valid_out = tester.file_open(f"../../../{self.output_filename}.valid", "w")
         else:
             valid_out = None
 
@@ -350,7 +350,7 @@ class TestBenchGenerator:
             tester.file_close(valid_out)
 
         # skip the compile and directly to run
-        tempdir = "temp/garnet"
+        tempdir = f"{os.environ.get('dse_pe')}/temp/garnet"
         if not os.path.isdir(tempdir):
             os.makedirs(tempdir, exist_ok=True)
         # copy files over

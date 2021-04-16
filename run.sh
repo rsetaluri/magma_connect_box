@@ -1,15 +1,13 @@
 #!/bin/bash
 
 export APP=$1
-export DSE_PE=$2
-export HEIGHT=$3
-export WIDTH=$4
+export DSE_PE=${APP}_$2
 export CLK=1c1
 
 home=$PWD
 
 cd mflowgen
-build_dir=build_${DSE_PE}_${APP}_${CLK}
+build_dir=build_${2}_${APP}_${CLK}
 mkdir ${build_dir}
 cd ${build_dir}
 
@@ -29,7 +27,7 @@ make -t 0
 make post-synth-power
 
 cd ${home}
-results_dir=../micro-2021/pe-dse-power/micro2021/results/${DSE_PE}/${APP}/${CLK}
+results_dir=../micro-2021/pe-dse-power/micro2021/results/${2}/${APP}/${CLK}
 mkdir -p ${results_dir}
 cp mflowgen/${build_dir}/Tile_PE/*-application/outputs/*.list ${results_dir}
 for t in Tile_PE Tile_MemCore; do

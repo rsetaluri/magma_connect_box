@@ -18,7 +18,7 @@ cd $GARNET_HOME
 python tbg.py ${dse_pe}/garnet.v ${dse_pe}/garnet_stub.v ${dse_pe}/${app_to_run}.bs.json
 
 cd -
-cp $GARNET_HOME/temp/garnet/waveforms.vcd outputs/run.vcd
+mv $GARNET_HOME/${dse_pe}/temp/garnet/waveforms.vcd outputs/run.vcd
 
 grep '#m' $GARNET_HOME/${dse_pe}/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_MemCore.list
 grep '#p' $GARNET_HOME/${dse_pe}/design.place | awk '{printf "%s,%02X,%02X\n",$1,$2,$3}' > outputs/tiles_Tile_PE.list
