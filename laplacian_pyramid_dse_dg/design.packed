@@ -1,0 +1,340 @@
+Netlists:
+e1: (i0, io2f_1)	(m1, flush)	(m3, flush)	(m14, flush)	(m27, flush)	(m40, flush)	(m41, flush)	(m55, flush)	(m57, flush)	(m58, flush)	(m72, flush)
+e4: (m1, stencil_valid)	(i2, f2io_1)
+e12: (m3, stencil_valid)	(i4, f2io_1)
+e18: (p5, pe_outputs_0)	(p70, inputs0)
+e20: (r98, reg)	(p69, inputs0)
+e21: (p6, pe_outputs_0)	(p68, inputs0)
+e23: (r97, reg)	(p67, inputs0)	(r98, reg)
+e24: (p7, pe_outputs_0)	(p53, inputs0)
+e26: (r92, reg)	(p52, inputs0)
+e27: (p8, pe_outputs_0)	(p51, inputs0)
+e29: (r90, reg)	(p50, inputs0)	(r91, reg)
+e30: (p9, pe_outputs_0)	(p39, inputs0)
+e32: (r102, reg)	(p38, inputs0)
+e33: (p10, pe_outputs_0)	(p37, inputs0)
+e35: (r100, reg)	(p36, inputs0)	(r101, reg)
+e36: (p11, pe_outputs_0)	(p26, inputs0)
+e38: (r80, reg)	(p25, inputs0)
+e39: (p12, pe_outputs_0)	(p24, inputs0)
+e41: (r79, reg)	(p23, inputs0)	(r80, reg)
+e42: (I13, io2f_16)	(m14, data_in_0)	(p16, inputs0)	(r75, reg)
+e44: (m14, data_out_1)	(p18, inputs0)	(r77, reg)
+e48: (m14, data_out_0)	(p22, inputs0)	(r79, reg)
+e52: (r78, reg)	(p21, inputs0)
+e53: (r76, reg)	(p17, inputs0)
+e54: (r75, reg)	(p15, inputs0)	(r76, reg)
+e55: (p15, pe_outputs_0)	(p16, inputs1)
+e57: (p16, pe_outputs_0)	(p17, inputs1)
+e59: (p17, pe_outputs_0)	(p18, inputs1)
+e61: (p18, pe_outputs_0)	(p20, inputs0)
+e63: (r77, reg)	(p19, inputs0)	(p71, inputs1)	(r78, reg)
+e64: (p19, pe_outputs_0)	(p20, inputs1)
+e66: (p20, pe_outputs_0)	(p21, inputs1)
+e68: (p21, pe_outputs_0)	(p22, inputs1)
+e70: (p22, pe_outputs_0)	(p23, inputs1)
+e72: (p23, pe_outputs_0)	(p24, inputs1)
+e74: (p24, pe_outputs_0)	(p25, inputs1)
+e76: (p25, pe_outputs_0)	(p26, inputs1)
+e78: (p26, pe_outputs_0)	(m27, data_in_0)	(p29, inputs0)	(p71, inputs0)	(r103, reg)
+e80: (m27, data_out_1)	(p31, inputs0)	(r107, reg)
+e84: (m27, data_out_0)	(p35, inputs0)	(r99, reg)
+e88: (r110, reg)	(p34, inputs0)
+e89: (r106, reg)	(p30, inputs0)
+e90: (r104, reg)	(p28, inputs0)	(r105, reg)
+e91: (p28, pe_outputs_0)	(p29, inputs1)
+e93: (p29, pe_outputs_0)	(p30, inputs1)
+e95: (p30, pe_outputs_0)	(p31, inputs1)
+e97: (p31, pe_outputs_0)	(p33, inputs0)
+e99: (r108, reg)	(p32, inputs0)	(p54, inputs1)	(r109, reg)
+e100: (p32, pe_outputs_0)	(p33, inputs1)
+e102: (p33, pe_outputs_0)	(p34, inputs1)
+e104: (p34, pe_outputs_0)	(p35, inputs1)
+e106: (p35, pe_outputs_0)	(p36, inputs1)
+e108: (p36, pe_outputs_0)	(p37, inputs1)
+e110: (p37, pe_outputs_0)	(p38, inputs1)
+e112: (p38, pe_outputs_0)	(p39, inputs1)
+e114: (p39, pe_outputs_0)	(m40, data_in_0)	(p54, inputs0)
+e120: (m40, data_out_0)	(m41, data_in_0)	(p43, inputs0)	(r81, reg)
+e124: (m41, data_out_1)	(p45, inputs0)	(r85, reg)
+e128: (m41, data_out_0)	(p49, inputs0)	(r89, reg)
+e132: (r88, reg)	(p48, inputs0)
+e133: (r84, reg)	(p44, inputs0)
+e134: (r82, reg)	(p42, inputs0)	(r83, reg)
+e135: (p42, pe_outputs_0)	(p43, inputs1)
+e137: (p43, pe_outputs_0)	(p44, inputs1)
+e139: (p44, pe_outputs_0)	(p45, inputs1)
+e141: (p45, pe_outputs_0)	(p47, inputs0)
+e143: (r86, reg)	(p46, inputs0)	(r87, reg)
+e144: (p46, pe_outputs_0)	(p47, inputs1)
+e146: (p47, pe_outputs_0)	(p48, inputs1)
+e148: (p48, pe_outputs_0)	(p49, inputs1)
+e150: (p49, pe_outputs_0)	(p50, inputs1)
+e152: (p50, pe_outputs_0)	(p51, inputs1)
+e154: (p51, pe_outputs_0)	(p52, inputs1)
+e156: (p52, pe_outputs_0)	(p53, inputs1)
+e158: (p53, pe_outputs_0)	(p56, inputs0)
+e160: (p54, pe_outputs_0)	(m55, data_in_0)
+e166: (m55, data_out_0)	(p56, inputs1)
+e170: (p56, pe_outputs_0)	(m57, data_in_0)
+e176: (m57, data_out_0)	(m58, data_in_0)	(p60, inputs0)	(r93, reg)
+e180: (m58, data_out_1)	(p62, inputs0)	(r95, reg)
+e184: (m58, data_out_0)	(p66, inputs0)	(r97, reg)
+e188: (r96, reg)	(p65, inputs0)
+e189: (r94, reg)	(p61, inputs0)
+e190: (r93, reg)	(p59, inputs0)	(r94, reg)
+e191: (p59, pe_outputs_0)	(p60, inputs1)
+e193: (p60, pe_outputs_0)	(p61, inputs1)
+e195: (p61, pe_outputs_0)	(p62, inputs1)
+e197: (p62, pe_outputs_0)	(p64, inputs0)
+e199: (r95, reg)	(p63, inputs0)	(r96, reg)
+e200: (p63, pe_outputs_0)	(p64, inputs1)
+e202: (p64, pe_outputs_0)	(p65, inputs1)
+e204: (p65, pe_outputs_0)	(p66, inputs1)
+e206: (p66, pe_outputs_0)	(p67, inputs1)
+e208: (p67, pe_outputs_0)	(p68, inputs1)
+e210: (p68, pe_outputs_0)	(p69, inputs1)
+e212: (p69, pe_outputs_0)	(p70, inputs1)
+e214: (p70, pe_outputs_0)	(p73, inputs0)
+e216: (p71, pe_outputs_0)	(m72, data_in_0)
+e222: (m72, data_out_0)	(p73, inputs1)
+e226: (p73, pe_outputs_0)	(I74, f2io_16)
+e228: (r81, reg)	(r82, reg)
+e229: (r83, reg)	(r84, reg)
+e230: (r85, reg)	(r86, reg)
+e231: (r87, reg)	(r88, reg)
+e232: (r89, reg)	(r90, reg)
+e233: (r91, reg)	(r92, reg)
+e234: (r99, reg)	(r100, reg)
+e235: (r101, reg)	(r102, reg)
+e236: (r103, reg)	(r104, reg)
+e237: (r105, reg)	(r106, reg)
+e238: (r107, reg)	(r108, reg)
+e239: (r109, reg)	(r110, reg)
+
+ID to Names:
+i0: reset
+m1: op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet
+i2: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_en
+m3: op_hcompute_hw_output_stencil_port_controller_garnet
+i4: hw_output_stencil_op_hcompute_hw_output_stencil_write_valid
+p5: op_hcompute_l0_up_stencil$inner_compute$i140556980958864_i140556999296272
+p6: op_hcompute_f1_temp_blur_unnormalized_stencil$inner_compute$i140556984962128_i140556999296272
+p7: op_hcompute_l1_up_stencil$inner_compute$i140556980057104_i140556999296272
+p8: op_hcompute_f2_temp_blur_unnormalized_stencil$inner_compute$i140556983724624_i140556999296272
+p9: op_hcompute_l1_0_stencil$inner_compute$i140556980264208_i140556999296272
+p10: op_hcompute_f1_blur_unnormalized_stencil$inner_compute$i140557004641232_i140556999296272
+p11: op_hcompute_l0_0_stencil$inner_compute$i140556981179984_i140556999296272
+p12: op_hcompute_blur_unnormalized_stencil$inner_compute$i140556996244432_i140556999296272
+I13: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_0
+m14: hw_input_global_wrapper_stencil$ub_hw_input_global_wrapper_stencil_BANK_0_garnet
+p15: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994541904_i140556999361936
+p16: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994542288_i140556995177232
+p17: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994540112_i140556995177232
+p18: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994539920_i140557001374928
+p19: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994541008_i140556999361936
+p20: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994540880_i140557001374928
+p21: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994543248_i140557001374928
+p22: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994541072_i140557001374928
+p23: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994543440_i140557001374928
+p24: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994633808_i140556995177232
+p25: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i140556994637392_i140557001374928
+p26: op_hcompute_l0_0_stencil$inner_compute$i140556981180176_i140556983561232
+m27: f1_0_stencil$ub_f1_0_stencil_BANK_0_garnet
+p28: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997447504_i140556999361936
+p29: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997444176_i140556995177232
+p30: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997446480_i140556995177232
+p31: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997446800_i140557001374928
+p32: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997444944_i140556999361936
+p33: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997447248_i140557001374928
+p34: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997444304_i140557001374928
+p35: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997478800_i140557001374928
+p36: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997476816_i140557001374928
+p37: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997480400_i140556995177232
+p38: op_hcompute_f1_blur_unnormalized_stencil_1$inner_compute$i140556997454480_i140557001374928
+p39: op_hcompute_l1_0_stencil$inner_compute$i140556980262736_i140556983561232
+m40: f2_0_stencil$ub_f2_0_stencil_BANK_0_garnet
+m41: f2_temp_stencil$ub_f2_temp_stencil_BANK_0_garnet
+p42: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987655568_i140556999361936
+p43: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987656848_i140556995177232
+p44: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987656976_i140556995177232
+p45: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987654352_i140557001374928
+p46: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987658064_i140556999361936
+p47: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987657872_i140557001374928
+p48: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987657808_i140557001374928
+p49: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987695312_i140557001374928
+p50: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987695184_i140557001374928
+p51: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987695632_i140556995177232
+p52: op_hcompute_f2_temp_blur_unnormalized_stencil_1$inner_compute$i140556987695376_i140557001374928
+p53: op_hcompute_l1_up_stencil$inner_compute$i140556980026960_i140556983561232
+p54: op_hcompute_h1_0_stencil$inner_compute$i140556981916304_i140556996584912
+m55: h1_0_stencil$ub_h1_0_stencil_BANK_0_garnet
+p56: op_hcompute_f1_up_stencil_1$inner_compute$i140556985839952_i140556995177232
+m57: f1_up_stencil$ub_f1_up_stencil_BANK_0_garnet
+m58: f1_temp_stencil$ub_f1_temp_stencil_BANK_0_garnet
+p59: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556985326992_i140556999361936
+p60: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556985324240_i140556995177232
+p61: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556985327504_i140556995177232
+p62: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984591632_i140557001374928
+p63: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984591952_i140556999361936
+p64: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984593616_i140557001374928
+p65: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984593680_i140557001374928
+p66: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984594000_i140557001374928
+p67: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984592528_i140557001374928
+p68: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984593936_i140556995177232
+p69: op_hcompute_f1_temp_blur_unnormalized_stencil_1$inner_compute$i140556984591888_i140557001374928
+p70: op_hcompute_l0_up_stencil$inner_compute$i140556980978896_i140556983561232
+p71: op_hcompute_h0_0_stencil$inner_compute$i140556987380816_i140556996584912
+m72: h0_0_stencil$ub_h0_0_stencil_BANK_0_garnet
+p73: op_hcompute_f0_up_stencil$inner_compute$i140557002912272_i140556995177232
+I74: hw_output_stencil_op_hcompute_hw_output_stencil_write_0
+r75: hw_input_global_wrapper_stencil$d_reg__U46
+r76: hw_input_global_wrapper_stencil$d_reg__U47
+r77: hw_input_global_wrapper_stencil$d_reg__U48
+r78: hw_input_global_wrapper_stencil$d_reg__U49
+r79: hw_input_global_wrapper_stencil$d_reg__U50
+r80: hw_input_global_wrapper_stencil$d_reg__U51
+r81: f2_temp_stencil$d_reg__U28
+r82: f2_temp_stencil$d_reg__U29
+r83: f2_temp_stencil$d_reg__U30
+r84: f2_temp_stencil$d_reg__U31
+r85: f2_temp_stencil$d_reg__U32
+r86: f2_temp_stencil$d_reg__U33
+r87: f2_temp_stencil$d_reg__U34
+r88: f2_temp_stencil$d_reg__U35
+r89: f2_temp_stencil$d_reg__U36
+r90: f2_temp_stencil$d_reg__U37
+r91: f2_temp_stencil$d_reg__U38
+r92: f2_temp_stencil$d_reg__U39
+r93: f1_temp_stencil$d_reg__U16
+r94: f1_temp_stencil$d_reg__U17
+r95: f1_temp_stencil$d_reg__U18
+r96: f1_temp_stencil$d_reg__U19
+r97: f1_temp_stencil$d_reg__U20
+r98: f1_temp_stencil$d_reg__U21
+r99: f1_0_stencil$d_reg__U10
+r100: f1_0_stencil$d_reg__U11
+r101: f1_0_stencil$d_reg__U12
+r102: f1_0_stencil$d_reg__U13
+r103: f1_0_stencil$d_reg__U2
+r104: f1_0_stencil$d_reg__U3
+r105: f1_0_stencil$d_reg__U4
+r106: f1_0_stencil$d_reg__U5
+r107: f1_0_stencil$d_reg__U6
+r108: f1_0_stencil$d_reg__U7
+r109: f1_0_stencil$d_reg__U8
+r110: f1_0_stencil$d_reg__U9
+
+Netlist Bus:
+e1: 1
+e4: 1
+e12: 1
+e18: 16
+e20: 16
+e21: 16
+e23: 16
+e24: 16
+e26: 16
+e27: 16
+e29: 16
+e30: 16
+e32: 16
+e33: 16
+e35: 16
+e36: 16
+e38: 16
+e39: 16
+e41: 16
+e42: 16
+e44: 16
+e48: 16
+e52: 16
+e53: 16
+e54: 16
+e55: 16
+e57: 16
+e59: 16
+e61: 16
+e63: 16
+e64: 16
+e66: 16
+e68: 16
+e70: 16
+e72: 16
+e74: 16
+e76: 16
+e78: 16
+e80: 16
+e84: 16
+e88: 16
+e89: 16
+e90: 16
+e91: 16
+e93: 16
+e95: 16
+e97: 16
+e99: 16
+e100: 16
+e102: 16
+e104: 16
+e106: 16
+e108: 16
+e110: 16
+e112: 16
+e114: 16
+e120: 16
+e124: 16
+e128: 16
+e132: 16
+e133: 16
+e134: 16
+e135: 16
+e137: 16
+e139: 16
+e141: 16
+e143: 16
+e144: 16
+e146: 16
+e148: 16
+e150: 16
+e152: 16
+e154: 16
+e156: 16
+e158: 16
+e160: 16
+e166: 16
+e170: 16
+e176: 16
+e180: 16
+e184: 16
+e188: 16
+e189: 16
+e190: 16
+e191: 16
+e193: 16
+e195: 16
+e197: 16
+e199: 16
+e200: 16
+e202: 16
+e204: 16
+e206: 16
+e208: 16
+e210: 16
+e212: 16
+e214: 16
+e216: 16
+e222: 16
+e226: 16
+e228: 16
+e229: 16
+e230: 16
+e231: 16
+e232: 16
+e233: 16
+e234: 16
+e235: 16
+e236: 16
+e237: 16
+e238: 16
+e239: 16
