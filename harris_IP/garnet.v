@@ -1810,13 +1810,6 @@ assign io2f_16 = glb2io_16;
 assign io2f_1 = glb2io_1;
 endmodule
 
-module inst_2 (
-    input [31:0] I,
-    output [31:0] O
-);
-assign O = I;
-endmodule
-
 module inst_1 (
     input [31:0] I,
     output [31:0] O
@@ -2519,6 +2512,68 @@ corebit_term term_sel (
     .in(in_sel[0])
 );
 assign out = in_data_0;
+endmodule
+
+module commonlib_muxn__N9__width32 (
+    input [31:0] in_data_0,
+    input [31:0] in_data_1,
+    input [31:0] in_data_2,
+    input [31:0] in_data_3,
+    input [31:0] in_data_4,
+    input [31:0] in_data_5,
+    input [31:0] in_data_6,
+    input [31:0] in_data_7,
+    input [31:0] in_data_8,
+    input [3:0] in_sel,
+    output [31:0] out
+);
+wire [31:0] _join_out;
+wire [31:0] muxN_0_out;
+wire [31:0] muxN_1_out;
+wire [2:0] sel_slice0_out;
+wire [0:0] sel_slice1_out;
+coreir_mux #(
+    .width(32)
+) _join (
+    .in0(muxN_0_out),
+    .in1(muxN_1_out),
+    .sel(in_sel[3]),
+    .out(_join_out)
+);
+commonlib_muxn__N8__width32 muxN_0 (
+    .in_data_0(in_data_0),
+    .in_data_1(in_data_1),
+    .in_data_2(in_data_2),
+    .in_data_3(in_data_3),
+    .in_data_4(in_data_4),
+    .in_data_5(in_data_5),
+    .in_data_6(in_data_6),
+    .in_data_7(in_data_7),
+    .in_sel(sel_slice0_out),
+    .out(muxN_0_out)
+);
+commonlib_muxn__N1__width32 muxN_1 (
+    .in_data_0(in_data_8),
+    .in_sel(sel_slice1_out),
+    .out(muxN_1_out)
+);
+coreir_slice #(
+    .hi(3),
+    .lo(0),
+    .width(4)
+) sel_slice0 (
+    .in(in_sel),
+    .out(sel_slice0_out)
+);
+coreir_slice #(
+    .hi(1),
+    .lo(0),
+    .width(4)
+) sel_slice1 (
+    .in(in_sel),
+    .out(sel_slice1_out)
+);
+assign out = _join_out;
 endmodule
 
 module commonlib_muxn__N3__width32 (
@@ -3674,70 +3729,6 @@ coreir_slice #(
     .hi(2),
     .lo(0),
     .width(5)
-) sel_slice1 (
-    .in(in_sel),
-    .out(sel_slice1_out)
-);
-assign out = _join_out;
-endmodule
-
-module commonlib_muxn__N10__width32 (
-    input [31:0] in_data_0,
-    input [31:0] in_data_1,
-    input [31:0] in_data_2,
-    input [31:0] in_data_3,
-    input [31:0] in_data_4,
-    input [31:0] in_data_5,
-    input [31:0] in_data_6,
-    input [31:0] in_data_7,
-    input [31:0] in_data_8,
-    input [31:0] in_data_9,
-    input [3:0] in_sel,
-    output [31:0] out
-);
-wire [31:0] _join_out;
-wire [31:0] muxN_0_out;
-wire [31:0] muxN_1_out;
-wire [2:0] sel_slice0_out;
-wire [0:0] sel_slice1_out;
-coreir_mux #(
-    .width(32)
-) _join (
-    .in0(muxN_0_out),
-    .in1(muxN_1_out),
-    .sel(in_sel[3]),
-    .out(_join_out)
-);
-commonlib_muxn__N8__width32 muxN_0 (
-    .in_data_0(in_data_0),
-    .in_data_1(in_data_1),
-    .in_data_2(in_data_2),
-    .in_data_3(in_data_3),
-    .in_data_4(in_data_4),
-    .in_data_5(in_data_5),
-    .in_data_6(in_data_6),
-    .in_data_7(in_data_7),
-    .in_sel(sel_slice0_out),
-    .out(muxN_0_out)
-);
-commonlib_muxn__N2__width32 muxN_1 (
-    .in_data_0(in_data_8),
-    .in_data_1(in_data_9),
-    .in_sel(sel_slice1_out),
-    .out(muxN_1_out)
-);
-coreir_slice #(
-    .hi(3),
-    .lo(0),
-    .width(4)
-) sel_slice0 (
-    .in(in_sel),
-    .out(sel_slice0_out)
-);
-coreir_slice #(
-    .hi(1),
-    .lo(0),
-    .width(4)
 ) sel_slice1 (
     .in(in_sel),
     .out(sel_slice1_out)
@@ -5864,6 +5855,84 @@ assign hi = const_511_9_out;
 assign lo = const_0_8_out;
 endmodule
 
+module MuxWithDefaultWrapper_9_32_8_0 (
+    input [0:0] EN,
+    input [31:0] I_0,
+    input [31:0] I_1,
+    input [31:0] I_2,
+    input [31:0] I_3,
+    input [31:0] I_4,
+    input [31:0] I_5,
+    input [31:0] I_6,
+    input [31:0] I_7,
+    input [31:0] I_8,
+    output [31:0] O,
+    input [7:0] S
+);
+wire [31:0] MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
+wire [31:0] MuxWrapper_9_32_inst0$Mux9x32_inst0$coreir_commonlib_mux9x32_inst0_out;
+wire [3:0] MuxWrapper_9_32_inst0_S_in;
+wire and_inst0_out;
+wire [31:0] const_0_32_out;
+wire [7:0] const_9_8_out;
+wire coreir_ult8_inst0_out;
+wire [7:0] self_S_out;
+coreir_mux #(
+    .width(32)
+) MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join (
+    .in0(const_0_32_out),
+    .in1(MuxWrapper_9_32_inst0$Mux9x32_inst0$coreir_commonlib_mux9x32_inst0_out),
+    .sel(and_inst0_out),
+    .out(MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out)
+);
+commonlib_muxn__N9__width32 MuxWrapper_9_32_inst0$Mux9x32_inst0$coreir_commonlib_mux9x32_inst0 (
+    .in_data_0(I_0),
+    .in_data_1(I_1),
+    .in_data_2(I_2),
+    .in_data_3(I_3),
+    .in_data_4(I_4),
+    .in_data_5(I_5),
+    .in_data_6(I_6),
+    .in_data_7(I_7),
+    .in_data_8(I_8),
+    .in_sel(MuxWrapper_9_32_inst0_S_in),
+    .out(MuxWrapper_9_32_inst0$Mux9x32_inst0$coreir_commonlib_mux9x32_inst0_out)
+);
+mantle_wire__typeBitIn4 MuxWrapper_9_32_inst0_S (
+    .in(MuxWrapper_9_32_inst0_S_in),
+    .out(self_S_out[3:0])
+);
+corebit_and and_inst0 (
+    .in0(coreir_ult8_inst0_out),
+    .in1(EN[0]),
+    .out(and_inst0_out)
+);
+coreir_const #(
+    .value(32'h00000000),
+    .width(32)
+) const_0_32 (
+    .out(const_0_32_out)
+);
+coreir_const #(
+    .value(8'h09),
+    .width(8)
+) const_9_8 (
+    .out(const_9_8_out)
+);
+coreir_ult #(
+    .width(8)
+) coreir_ult8_inst0 (
+    .in0(S),
+    .in1(const_9_8_out),
+    .out(coreir_ult8_inst0_out)
+);
+mantle_wire__typeBit8 self_S (
+    .in(S),
+    .out(self_S_out)
+);
+assign O = MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
+endmodule
+
 module MuxWithDefaultWrapper_16_32_8_0 (
     input [0:0] EN,
     input [31:0] I_0,
@@ -5947,86 +6016,6 @@ coreir_ult #(
 ) coreir_ult8_inst0 (
     .in0(S),
     .in1(const_16_8_out),
-    .out(coreir_ult8_inst0_out)
-);
-mantle_wire__typeBit8 self_S (
-    .in(S),
-    .out(self_S_out)
-);
-assign O = MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
-endmodule
-
-module MuxWithDefaultWrapper_10_32_8_0 (
-    input [0:0] EN,
-    input [31:0] I_0,
-    input [31:0] I_1,
-    input [31:0] I_2,
-    input [31:0] I_3,
-    input [31:0] I_4,
-    input [31:0] I_5,
-    input [31:0] I_6,
-    input [31:0] I_7,
-    input [31:0] I_8,
-    input [31:0] I_9,
-    output [31:0] O,
-    input [7:0] S
-);
-wire [31:0] MuxWrapper_10_32_inst0$Mux10x32_inst0$coreir_commonlib_mux10x32_inst0_out;
-wire [3:0] MuxWrapper_10_32_inst0_S_in;
-wire [31:0] MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
-wire and_inst0_out;
-wire [31:0] const_0_32_out;
-wire [7:0] const_10_8_out;
-wire coreir_ult8_inst0_out;
-wire [7:0] self_S_out;
-commonlib_muxn__N10__width32 MuxWrapper_10_32_inst0$Mux10x32_inst0$coreir_commonlib_mux10x32_inst0 (
-    .in_data_0(I_0),
-    .in_data_1(I_1),
-    .in_data_2(I_2),
-    .in_data_3(I_3),
-    .in_data_4(I_4),
-    .in_data_5(I_5),
-    .in_data_6(I_6),
-    .in_data_7(I_7),
-    .in_data_8(I_8),
-    .in_data_9(I_9),
-    .in_sel(MuxWrapper_10_32_inst0_S_in),
-    .out(MuxWrapper_10_32_inst0$Mux10x32_inst0$coreir_commonlib_mux10x32_inst0_out)
-);
-mantle_wire__typeBitIn4 MuxWrapper_10_32_inst0_S (
-    .in(MuxWrapper_10_32_inst0_S_in),
-    .out(self_S_out[3:0])
-);
-coreir_mux #(
-    .width(32)
-) MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join (
-    .in0(const_0_32_out),
-    .in1(MuxWrapper_10_32_inst0$Mux10x32_inst0$coreir_commonlib_mux10x32_inst0_out),
-    .sel(and_inst0_out),
-    .out(MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out)
-);
-corebit_and and_inst0 (
-    .in0(coreir_ult8_inst0_out),
-    .in1(EN[0]),
-    .out(and_inst0_out)
-);
-coreir_const #(
-    .value(32'h00000000),
-    .width(32)
-) const_0_32 (
-    .out(const_0_32_out)
-);
-coreir_const #(
-    .value(8'h0a),
-    .width(8)
-) const_10_8 (
-    .out(const_10_8_out)
-);
-coreir_ult #(
-    .width(8)
-) coreir_ult8_inst0 (
-    .in0(S),
-    .in1(const_10_8_out),
     .out(coreir_ult8_inst0_out)
 );
 mantle_wire__typeBit8 self_S (
@@ -19148,15 +19137,15 @@ wire [0:0] AND_CONFIG_EN_SRAM_0_out;
 wire [0:0] AND_CONFIG_EN_SRAM_1_out;
 wire [0:0] Invert1_inst0_out;
 wire [0:0] Invert1_inst1_out;
-wire [15:0] LakeTop_W_inst0_data_out_1;
 wire [31:0] LakeTop_W_inst0_config_data_out_1;
-wire [0:0] LakeTop_W_inst0_full;
 wire [0:0] LakeTop_W_inst0_sram_ready_out;
-wire [31:0] LakeTop_W_inst0_config_data_out_0;
 wire [0:0] LakeTop_W_inst0_stencil_valid;
+wire [0:0] LakeTop_W_inst0_full;
+wire [1:0] LakeTop_W_inst0_valid_out;
+wire [15:0] LakeTop_W_inst0_data_out_1;
 wire [15:0] LakeTop_W_inst0_data_out_0;
 wire [0:0] LakeTop_W_inst0_empty;
-wire [1:0] LakeTop_W_inst0_valid_out;
+wire [31:0] LakeTop_W_inst0_config_data_out_0;
 wire [31:0] MuxWrapper_84_32_inst0$Mux84x32_inst0$coreir_commonlib_mux84x32_inst0_out;
 wire [6:0] MuxWrapper_84_32_inst0_S_in;
 wire [0:0] OR_CONFIG_EN_SRAM_0_out;
@@ -19602,260 +19591,260 @@ coreir_not #(
 );
 wire [1:0] LakeTop_W_inst0_ren_in;
 assign LakeTop_W_inst0_ren_in = {ren_in_1_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out[0],ren_in_0_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out[0]};
-wire [1:0] LakeTop_W_inst0_config_en;
-assign LakeTop_W_inst0_config_en = {AND_CONFIG_EN_SRAM_1_out[0],AND_CONFIG_EN_SRAM_0_out[0]};
 wire [1:0] LakeTop_W_inst0_wen_in;
 assign LakeTop_W_inst0_wen_in = {wen_in_1_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out[0],wen_in_0_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out[0]};
+wire [1:0] LakeTop_W_inst0_config_en;
+assign LakeTop_W_inst0_config_en = {AND_CONFIG_EN_SRAM_1_out[0],AND_CONFIG_EN_SRAM_0_out[0]};
 LakeTop_W LakeTop_W_inst0 (
-    .strg_ub_agg_only_loops_in2buf_0_dimensionality(strg_ub_agg_only_loops_in2buf_0_dimensionality_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_starting_addr(strg_ub_sram_only_input_addr_gen_0_starting_addr_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_1(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_1_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_0_starting_addr(strg_ub_tb_only_tb_write_addr_gen_0_starting_addr_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_1_dimensionality(strg_ub_agg_only_loops_in2buf_1_dimensionality_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_1(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_1_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_1(strg_ub_tb_only_tb_read_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_4(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
-    .loops_stencil_valid_ranges_3(loops_stencil_valid_ranges_3_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_2(strg_ub_agg_only_loops_in2buf_0_ranges_2_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_3(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_2(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_strides_0(strg_ub_agg_only_agg_read_addr_gen_1_strides_0_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_4(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_4_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_1(stencil_valid_sched_gen_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_0(strg_ub_tb_only_tb_write_addr_gen_0_strides_0_inst0_O),
-    .ren_in(LakeTop_W_inst0_ren_in),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_enable(strg_ub_agg_sram_shared_agg_read_sched_gen_0_enable_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_3(strg_ub_tb_only_tb_read_addr_gen_1_strides_3_inst0_O),
-    .rst_n(coreir_wrapOutAsyncReset_inst0_out),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_enable(strg_ub_sram_tb_shared_output_sched_gen_1_enable_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_5(strg_ub_agg_only_agg_write_addr_gen_1_strides_5_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_2(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_2_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_4(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_1(strg_ub_sram_only_output_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_3(strg_ub_tb_only_tb_read_addr_gen_0_strides_3_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_0(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_0(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_0_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_5(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_1(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_0(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_4(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_4_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_1(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_3(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_3_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_dimensionality(strg_ub_tb_only_loops_buf2out_read_1_dimensionality_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_4(strg_ub_sram_only_input_addr_gen_0_strides_4_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_0(strg_ub_tb_only_tb_read_addr_gen_1_strides_0_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
-    .config_en(LakeTop_W_inst0_config_en),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_5(strg_ub_agg_only_loops_in2buf_0_ranges_5_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_2(strg_ub_agg_only_agg_read_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_0(strg_ub_agg_only_agg_write_addr_gen_0_strides_0_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
-    .data_out_1(LakeTop_W_inst0_data_out_1),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_2(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_5(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_starting_addr(strg_ub_sram_only_input_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_2(strg_ub_sram_only_output_addr_gen_1_strides_2_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_0(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_0_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_5(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_1(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_0(strg_ub_tb_only_tb_read_addr_gen_0_strides_0_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_2(strg_ub_agg_only_agg_write_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_2(strg_ub_tb_only_loops_buf2out_read_1_ranges_2_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_4(strg_ub_agg_only_agg_read_addr_gen_0_strides_4_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_ranges_2(strg_ub_tb_only_loops_buf2out_read_0_ranges_2_inst0_O),
-    .addr_in_0(addr_in_0),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_1(strg_ub_agg_only_agg_read_addr_gen_0_strides_1_inst0_O),
-    .config_addr_in(OR_config_addr_FEATURE_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_starting_addr(strg_ub_agg_only_agg_write_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_1_ranges_1(strg_ub_agg_only_loops_in2buf_1_ranges_1_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_strides_1(strg_ub_sram_only_output_addr_gen_0_strides_1_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_3(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_5(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_5_inst0_O),
-    .wen_in(LakeTop_W_inst0_wen_in),
-    .chain_data_in_1(chain_data_in_1),
-    .config_data_out_1(LakeTop_W_inst0_config_data_out_1),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_3(strg_ub_agg_only_agg_write_addr_gen_1_strides_3_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_4(strg_ub_tb_only_tb_write_addr_gen_1_strides_4_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_starting_addr(stencil_valid_sched_gen_sched_addr_gen_starting_addr_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_4(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_3(strg_ub_agg_only_loops_in2buf_0_ranges_3_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_strides_4(strg_ub_sram_only_output_addr_gen_0_strides_4_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_3(strg_ub_sram_only_output_addr_gen_1_strides_3_inst0_O),
-    .full(LakeTop_W_inst0_full),
-    .stencil_valid_sched_gen_enable(stencil_valid_sched_gen_enable_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_1(strg_ub_tb_only_tb_read_addr_gen_0_strides_1_inst0_O),
-    .sram_ready_out(LakeTop_W_inst0_sram_ready_out),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_1(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_0(strg_ub_sram_only_input_addr_gen_0_strides_0_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_5(strg_ub_sram_only_output_addr_gen_1_strides_5_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_1(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_5(strg_ub_agg_only_agg_read_addr_gen_0_strides_5_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_4(strg_ub_tb_only_loops_buf2out_read_1_ranges_4_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_5(strg_ub_sram_only_input_addr_gen_1_strides_5_inst0_O),
-    .loops_stencil_valid_ranges_4(loops_stencil_valid_ranges_4_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_starting_addr(strg_ub_agg_only_agg_read_addr_gen_0_starting_addr_inst0_O),
-    .loops_stencil_valid_ranges_0(loops_stencil_valid_ranges_0_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_4(strg_ub_tb_only_tb_read_addr_gen_1_strides_4_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_starting_addr(strg_ub_tb_only_tb_read_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_enable(strg_ub_tb_only_tb_read_sched_gen_0_enable_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_3(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_0(strg_ub_agg_only_agg_write_addr_gen_1_strides_0_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_3(stencil_valid_sched_gen_sched_addr_gen_strides_3_inst0_O),
-    .clk_en(Invert1_inst1_out),
-    .chain_chain_en(chain_chain_en_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_starting_addr(strg_ub_agg_only_agg_read_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_1(strg_ub_agg_only_loops_in2buf_0_ranges_1_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_3(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_3_inst0_O),
-    .fifo_ctrl_fifo_depth(fifo_ctrl_fifo_depth_inst0_O),
     .strg_ub_agg_only_loops_in2buf_1_ranges_5(strg_ub_agg_only_loops_in2buf_1_ranges_5_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_enable(strg_ub_agg_sram_shared_agg_read_sched_gen_1_enable_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_0(strg_ub_sram_only_input_addr_gen_1_strides_0_inst0_O),
-    .addr_in_1(addr_in_1),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_4(strg_ub_tb_only_tb_write_addr_gen_0_strides_4_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_1(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_strides_0(strg_ub_sram_only_output_addr_gen_0_strides_0_inst0_O),
-    .config_read(OR_CONFIG_WR_SRAM_out),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_0(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_ranges_4(strg_ub_tb_only_loops_buf2out_read_0_ranges_4_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_4(strg_ub_agg_only_loops_in2buf_0_ranges_4_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_3(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_dimensionality(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_dimensionality_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_1(strg_ub_sram_only_input_addr_gen_0_strides_1_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_ranges_0(strg_ub_tb_only_loops_buf2out_read_0_ranges_0_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_starting_addr(strg_ub_tb_only_tb_write_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_1(strg_ub_tb_only_tb_write_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_0_ranges_0(strg_ub_agg_only_loops_in2buf_0_ranges_0_inst0_O),
-    .config_data_out_0(LakeTop_W_inst0_config_data_out_0),
     .strg_ub_sram_only_output_addr_gen_0_strides_5(strg_ub_sram_only_output_addr_gen_0_strides_5_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_4(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_4_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_3(strg_ub_tb_only_tb_write_addr_gen_1_strides_3_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_5(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_enable(strg_ub_tb_only_tb_read_sched_gen_1_enable_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_5(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_5(stencil_valid_sched_gen_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_2(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_2_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_5(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_5_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_5(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_5_inst0_O),
-    .loops_stencil_valid_dimensionality(loops_stencil_valid_dimensionality_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_5(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_5_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_5(strg_ub_sram_only_input_addr_gen_0_strides_5_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_1(strg_ub_tb_only_loops_buf2out_read_1_ranges_1_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_4(strg_ub_sram_only_input_addr_gen_1_strides_4_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_starting_addr(strg_ub_sram_only_output_addr_gen_0_starting_addr_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_0(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_0_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_2(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
-    .stencil_valid(LakeTop_W_inst0_stencil_valid),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_enable(strg_ub_sram_tb_shared_output_sched_gen_0_enable_inst0_O),
-    .data_in_0(data_in_0),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_3(strg_ub_agg_only_agg_write_addr_gen_0_strides_3_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_4(strg_ub_agg_only_agg_write_addr_gen_1_strides_4_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_3(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
-    .data_out_0(LakeTop_W_inst0_data_out_0),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_3(strg_ub_tb_only_tb_write_addr_gen_0_strides_3_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_0(stencil_valid_sched_gen_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_0(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_0_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_4(stencil_valid_sched_gen_sched_addr_gen_strides_4_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_1(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_2(strg_ub_agg_only_agg_write_addr_gen_1_strides_2_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_dimensionality(strg_ub_tb_only_loops_buf2out_read_0_dimensionality_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_0(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_5(strg_ub_tb_only_tb_write_addr_gen_0_strides_5_inst0_O),
-    .config_write(OR_CONFIG_RD_SRAM_out),
-    .empty(LakeTop_W_inst0_empty),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_1(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_1_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_dimensionality(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_dimensionality_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_4(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
-    .chain_data_in_0(chain_data_in_0),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_5(strg_ub_tb_only_tb_write_addr_gen_1_strides_5_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_0(strg_ub_sram_only_output_addr_gen_1_strides_0_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_3(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_3_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_0(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_3(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_5(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_strides_3(strg_ub_agg_only_agg_read_addr_gen_1_strides_3_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_1(strg_ub_agg_only_agg_write_addr_gen_0_strides_1_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_3(strg_ub_sram_only_input_addr_gen_1_strides_3_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_strides_2(strg_ub_sram_only_output_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_0(strg_ub_agg_only_agg_read_addr_gen_0_strides_0_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_1(strg_ub_sram_only_input_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_0(strg_ub_tb_only_loops_buf2out_read_1_ranges_0_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_enable(strg_ub_agg_only_agg_write_sched_gen_1_enable_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_enable(strg_ub_agg_only_agg_write_sched_gen_0_enable_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_1_ranges_3(strg_ub_agg_only_loops_in2buf_1_ranges_3_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_2(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_2_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_5(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
-    .loops_stencil_valid_ranges_1(loops_stencil_valid_ranges_1_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_0(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_ranges_5(strg_ub_tb_only_loops_buf2out_read_0_ranges_5_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_starting_addr(strg_ub_tb_only_tb_read_addr_gen_0_starting_addr_inst0_O),
-    .flush(flush_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_5(strg_ub_agg_only_agg_write_addr_gen_0_strides_5_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_strides_2(strg_ub_agg_only_agg_read_addr_gen_1_strides_2_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_2(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_4(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_1(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_1_inst0_O),
-    .config_data_in(OR_config_data_FEATURE_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_strides_5(strg_ub_agg_only_agg_read_addr_gen_1_strides_5_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_1_strides_2(strg_ub_sram_only_input_addr_gen_1_strides_2_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_1(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_5(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_1(strg_ub_tb_only_tb_write_addr_gen_0_strides_1_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_2(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
-    .valid_out(LakeTop_W_inst0_valid_out),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_0(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_2(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_5(strg_ub_tb_only_tb_read_addr_gen_0_strides_5_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_0_starting_addr(strg_ub_agg_only_agg_write_addr_gen_0_starting_addr_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_4(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_1_ranges_2(strg_ub_agg_only_loops_in2buf_1_ranges_2_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_3(strg_ub_tb_only_loops_buf2out_read_1_ranges_3_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_1_ranges_5(strg_ub_tb_only_loops_buf2out_read_1_ranges_5_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_dimensionality(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_dimensionality_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_0(strg_ub_tb_only_tb_write_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_starting_addr(strg_ub_sram_only_output_addr_gen_1_starting_addr_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_0_ranges_0(strg_ub_tb_only_loops_buf2out_read_0_ranges_0_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_0(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_0_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_0(strg_ub_tb_only_tb_read_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_5(strg_ub_agg_only_loops_in2buf_0_ranges_5_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_2(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
     .strg_ub_agg_only_loops_in2buf_1_ranges_0(strg_ub_agg_only_loops_in2buf_1_ranges_0_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_2(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_tb_only_loops_buf2out_read_0_ranges_1(strg_ub_tb_only_loops_buf2out_read_0_ranges_1_inst0_O),
-    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_3(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_3(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_4(strg_ub_agg_only_agg_read_addr_gen_0_strides_4_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_2(strg_ub_agg_only_loops_in2buf_0_ranges_2_inst0_O),
     .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_0(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_dimensionality(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_dimensionality_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_1_strides_2(strg_ub_tb_only_tb_write_addr_gen_1_strides_2_inst0_O),
-    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_3(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_3_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_5(strg_ub_tb_only_tb_write_addr_gen_1_strides_5_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_strides_4(stencil_valid_sched_gen_sched_addr_gen_strides_4_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_4(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
     .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
     .clk(clk),
-    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_4(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
-    .loops_stencil_valid_ranges_5(loops_stencil_valid_ranges_5_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_4(strg_ub_tb_only_tb_read_addr_gen_0_strides_4_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_2(strg_ub_sram_only_input_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_tb_only_tb_write_addr_gen_0_strides_2(strg_ub_tb_only_tb_write_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_2(strg_ub_tb_only_tb_read_addr_gen_1_strides_2_inst0_O),
-    .stencil_valid_sched_gen_sched_addr_gen_strides_2(stencil_valid_sched_gen_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_0_strides_4(strg_ub_agg_only_agg_write_addr_gen_0_strides_4_inst0_O),
-    .tile_en(tile_en_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_3(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_3_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_0(strg_ub_sram_only_input_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_3(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_0(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
+    .config_data_out_1(LakeTop_W_inst0_config_data_out_1),
+    .fifo_ctrl_fifo_depth(fifo_ctrl_fifo_depth_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_3(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
+    .config_addr_in(OR_config_addr_FEATURE_O),
     .strg_ub_tb_only_loops_buf2out_read_0_ranges_3(strg_ub_tb_only_loops_buf2out_read_0_ranges_3_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_0_strides_3(strg_ub_agg_only_agg_read_addr_gen_0_strides_3_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_strides_4(strg_ub_sram_only_output_addr_gen_1_strides_4_inst0_O),
-    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_3(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
-    .strg_ub_agg_only_agg_write_addr_gen_1_strides_1(strg_ub_agg_only_agg_write_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_2(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_2_inst0_O),
-    .strg_ub_sram_only_input_addr_gen_0_strides_3(strg_ub_sram_only_input_addr_gen_0_strides_3_inst0_O),
-    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_4(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_4_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_0_strides_2(strg_ub_tb_only_tb_read_addr_gen_0_strides_2_inst0_O),
-    .strg_ub_tb_only_tb_read_addr_gen_1_strides_5(strg_ub_tb_only_tb_read_addr_gen_1_strides_5_inst0_O),
-    .loops_stencil_valid_ranges_2(loops_stencil_valid_ranges_2_inst0_O),
-    .strg_ub_agg_only_agg_read_addr_gen_1_strides_1(strg_ub_agg_only_agg_read_addr_gen_1_strides_1_inst0_O),
-    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_2(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
-    .strg_ub_agg_only_loops_in2buf_1_ranges_4(strg_ub_agg_only_loops_in2buf_1_ranges_4_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_1_starting_addr(strg_ub_sram_only_output_addr_gen_1_starting_addr_inst0_O),
-    .strg_ub_sram_only_output_addr_gen_0_strides_3(strg_ub_sram_only_output_addr_gen_0_strides_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_3(strg_ub_sram_only_output_addr_gen_1_strides_3_inst0_O),
+    .loops_stencil_valid_ranges_4(loops_stencil_valid_ranges_4_inst0_O),
     .strg_ub_agg_only_agg_read_addr_gen_1_strides_4(strg_ub_agg_only_agg_read_addr_gen_1_strides_4_inst0_O),
-    .mode(mode_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_2(strg_ub_tb_only_tb_read_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_0(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
+    .ren_in(LakeTop_W_inst0_ren_in),
+    .addr_in_0(addr_in_0),
+    .sram_ready_out(LakeTop_W_inst0_sram_ready_out),
+    .strg_ub_sram_only_input_addr_gen_1_starting_addr(strg_ub_sram_only_input_addr_gen_1_starting_addr_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_0_dimensionality(strg_ub_tb_only_loops_buf2out_read_0_dimensionality_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_starting_addr(strg_ub_agg_only_agg_read_addr_gen_0_starting_addr_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_1_strides_2(strg_ub_sram_only_input_addr_gen_1_strides_2_inst0_O),
+    .addr_in_1(addr_in_1),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_0(strg_ub_agg_only_loops_in2buf_0_ranges_0_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_1(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_4(strg_ub_tb_only_tb_write_addr_gen_1_strides_4_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_1_ranges_4(strg_ub_agg_only_loops_in2buf_1_ranges_4_inst0_O),
+    .loops_stencil_valid_ranges_0(loops_stencil_valid_ranges_0_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_dimensionality(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_dimensionality_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_1(strg_ub_tb_only_tb_write_addr_gen_1_strides_1_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_1(strg_ub_tb_only_tb_write_addr_gen_0_strides_1_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_4(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
+    .loops_stencil_valid_ranges_5(loops_stencil_valid_ranges_5_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_strides_2(stencil_valid_sched_gen_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_1_ranges_3(strg_ub_agg_only_loops_in2buf_1_ranges_3_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_1(strg_ub_tb_only_loops_buf2out_read_1_ranges_1_inst0_O),
+    .flush(flush_sel$Mux2x1_inst0$coreir_commonlib_mux2x1_inst0$_join_out),
+    .strg_ub_agg_only_loops_in2buf_1_ranges_1(strg_ub_agg_only_loops_in2buf_1_ranges_1_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_3(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_3_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_4(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_5(strg_ub_tb_only_tb_read_addr_gen_0_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_1_strides_5(strg_ub_agg_only_agg_read_addr_gen_1_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_2(strg_ub_agg_only_agg_read_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_5(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_5_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_5(strg_ub_tb_only_loops_buf2out_read_1_ranges_5_inst0_O),
+    .data_in_1(data_in_1),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_2(strg_ub_tb_only_tb_read_addr_gen_1_strides_2_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_dimensionality(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_dimensionality_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_0(strg_ub_tb_only_tb_read_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_1_strides_5(strg_ub_sram_only_input_addr_gen_1_strides_5_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_3(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_3_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_4(strg_ub_sram_only_input_addr_gen_0_strides_4_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_1(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_1_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_3(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_strides_0(stencil_valid_sched_gen_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_4(strg_ub_sram_only_output_addr_gen_1_strides_4_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_dimensionality(strg_ub_agg_only_loops_in2buf_0_dimensionality_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_0(strg_ub_tb_only_loops_buf2out_read_1_ranges_0_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_1_strides_2(strg_ub_agg_only_agg_read_addr_gen_1_strides_2_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_0(strg_ub_agg_only_agg_read_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_3(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_0(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_0(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_1(strg_ub_agg_only_agg_write_addr_gen_1_strides_1_inst0_O),
+    .data_in_0(data_in_0),
+    .chain_data_in_0(chain_data_in_0),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_0(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_3(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_1(strg_ub_agg_only_agg_write_addr_gen_0_strides_1_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_2(strg_ub_agg_only_agg_write_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_4(strg_ub_agg_only_agg_write_addr_gen_0_strides_4_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_3(strg_ub_tb_only_tb_read_addr_gen_0_strides_3_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_1(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_1_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_2(strg_ub_tb_only_loops_buf2out_read_1_ranges_2_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_1(strg_ub_tb_only_tb_read_addr_gen_1_strides_1_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_starting_addr(strg_ub_tb_only_tb_read_addr_gen_0_starting_addr_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_starting_addr(strg_ub_sram_only_input_addr_gen_0_starting_addr_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_0_ranges_2(strg_ub_tb_only_loops_buf2out_read_0_ranges_2_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_5(strg_ub_tb_only_tb_write_addr_gen_0_strides_5_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_1(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_1_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_0_ranges_4(strg_ub_tb_only_loops_buf2out_read_0_ranges_4_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_enable(strg_ub_tb_only_tb_read_sched_gen_1_enable_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_4(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
+    .stencil_valid(LakeTop_W_inst0_stencil_valid),
+    .strg_ub_agg_only_agg_read_addr_gen_1_strides_3(strg_ub_agg_only_agg_read_addr_gen_1_strides_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_0(strg_ub_sram_only_output_addr_gen_1_strides_0_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_strides_3(stencil_valid_sched_gen_sched_addr_gen_strides_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_2(strg_ub_sram_only_output_addr_gen_1_strides_2_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_0(strg_ub_agg_only_agg_write_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_2(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_2(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_5(strg_ub_agg_only_agg_write_addr_gen_0_strides_5_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_0(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_0_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_3(strg_ub_agg_only_loops_in2buf_0_ranges_3_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_enable(strg_ub_sram_tb_shared_output_sched_gen_1_enable_inst0_O),
+    .full(LakeTop_W_inst0_full),
+    .loops_stencil_valid_ranges_3(loops_stencil_valid_ranges_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_strides_3(strg_ub_sram_only_output_addr_gen_0_strides_3_inst0_O),
+    .valid_out(LakeTop_W_inst0_valid_out),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_3(strg_ub_tb_only_tb_write_addr_gen_0_strides_3_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_0_ranges_1(strg_ub_tb_only_loops_buf2out_read_0_ranges_1_inst0_O),
+    .chain_chain_en(chain_chain_en_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_1_strides_1(strg_ub_sram_only_input_addr_gen_1_strides_1_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_5(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_5(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_5_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_2(strg_ub_tb_only_tb_write_addr_gen_1_strides_2_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_1(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
+    .config_data_in(OR_config_data_FEATURE_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_4(strg_ub_tb_only_tb_write_addr_gen_0_strides_4_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_starting_addr(strg_ub_agg_only_agg_write_addr_gen_1_starting_addr_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_1_dimensionality(strg_ub_agg_only_loops_in2buf_1_dimensionality_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_5(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_3(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
+    .loops_stencil_valid_dimensionality(loops_stencil_valid_dimensionality_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_3(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_3_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_1(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_1_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_2(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_2_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_4(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_4_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_starting_addr(strg_ub_sram_only_output_addr_gen_0_starting_addr_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_4(strg_ub_agg_only_loops_in2buf_0_ranges_4_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_2(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_2_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_enable(strg_ub_tb_only_tb_read_sched_gen_0_enable_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_1(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_2(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_2(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_2(strg_ub_sram_only_input_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_starting_addr(strg_ub_tb_only_tb_write_addr_gen_1_starting_addr_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_4(strg_ub_tb_only_tb_read_addr_gen_0_strides_4_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_sram_tb_shared_output_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_starting_addr(stencil_valid_sched_gen_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_1(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_1_strides_1(strg_ub_agg_only_agg_read_addr_gen_1_strides_1_inst0_O),
     .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_4(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
-    .data_in_1(data_in_1)
+    .stencil_valid_sched_gen_sched_addr_gen_strides_5(stencil_valid_sched_gen_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_5(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_1(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_5(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
+    .stencil_valid_sched_gen_sched_addr_gen_strides_1(stencil_valid_sched_gen_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_4(strg_ub_tb_only_loops_buf2out_read_1_ranges_4_inst0_O),
+    .clk_en(Invert1_inst1_out),
+    .strg_ub_agg_only_agg_read_addr_gen_1_starting_addr(strg_ub_agg_only_agg_read_addr_gen_1_starting_addr_inst0_O),
+    .data_out_1(LakeTop_W_inst0_data_out_1),
+    .strg_ub_sram_only_input_addr_gen_1_strides_0(strg_ub_sram_only_input_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_0(strg_ub_agg_only_agg_write_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_starting_addr(strg_ub_tb_only_tb_read_addr_gen_1_starting_addr_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_1(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_dimensionality(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_dimensionality_inst0_O),
+    .wen_in(LakeTop_W_inst0_wen_in),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_5(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_dimensionality(strg_ub_tb_only_loops_buf2out_read_1_dimensionality_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_1(strg_ub_sram_only_input_addr_gen_0_strides_1_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_1_ranges_2(strg_ub_agg_only_loops_in2buf_1_ranges_2_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_2(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_5(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_5(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_enable(strg_ub_agg_only_agg_write_sched_gen_1_enable_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_4(strg_ub_agg_only_agg_write_addr_gen_1_strides_4_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_2(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_1_strides_3(strg_ub_sram_only_input_addr_gen_1_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_2(strg_ub_agg_only_agg_write_addr_gen_1_strides_2_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_5(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_5_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_5(strg_ub_tb_only_tb_read_addr_gen_1_strides_5_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_5(strg_ub_sram_only_output_addr_gen_1_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_5(strg_ub_agg_only_agg_write_addr_gen_1_strides_5_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_starting_addr(strg_ub_tb_only_tb_write_addr_gen_0_starting_addr_inst0_O),
+    .config_write(OR_CONFIG_RD_SRAM_out),
+    .strg_ub_tb_only_loops_buf2out_read_0_ranges_5(strg_ub_tb_only_loops_buf2out_read_0_ranges_5_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_3(strg_ub_tb_only_tb_read_addr_gen_1_strides_3_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_5(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_5_inst0_O),
+    .strg_ub_tb_only_loops_buf2out_read_1_ranges_3(strg_ub_tb_only_loops_buf2out_read_1_ranges_3_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_1_strides_4(strg_ub_tb_only_tb_read_addr_gen_1_strides_4_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_2(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_2_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_strides_4(strg_ub_sram_only_output_addr_gen_0_strides_4_inst0_O),
+    .mode(mode_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_4(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_4_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_4(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_0_ranges_4_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_enable(strg_ub_sram_tb_shared_output_sched_gen_0_enable_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_enable(strg_ub_agg_only_agg_write_sched_gen_0_enable_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_1_strides_4(strg_ub_sram_only_input_addr_gen_1_strides_4_inst0_O),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_2(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_2_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_5(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_5_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_3(strg_ub_sram_only_input_addr_gen_0_strides_3_inst0_O),
+    .data_out_0(LakeTop_W_inst0_data_out_0),
+    .loops_stencil_valid_ranges_2(loops_stencil_valid_ranges_2_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_5(strg_ub_agg_only_agg_read_addr_gen_0_strides_5_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_starting_addr(strg_ub_agg_only_agg_write_addr_gen_0_starting_addr_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_strides_1(strg_ub_sram_only_output_addr_gen_0_strides_1_inst0_O),
+    .tile_en(tile_en_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_2(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_strides_2_inst0_O),
+    .config_en(LakeTop_W_inst0_config_en),
+    .strg_ub_agg_only_agg_read_addr_gen_1_strides_0(strg_ub_agg_only_agg_read_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_3(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_3_inst0_O),
+    .empty(LakeTop_W_inst0_empty),
+    .chain_data_in_1(chain_data_in_1),
+    .strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_4(strg_ub_sram_tb_shared_loops_buf2out_autovec_read_1_ranges_4_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_3(strg_ub_agg_only_agg_read_addr_gen_0_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_0(strg_ub_agg_only_agg_write_sched_gen_0_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_sram_only_input_addr_gen_0_strides_5(strg_ub_sram_only_input_addr_gen_0_strides_5_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_3(strg_ub_tb_only_tb_write_addr_gen_1_strides_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_1_strides_1(strg_ub_sram_only_output_addr_gen_1_strides_1_inst0_O),
+    .loops_stencil_valid_ranges_1(loops_stencil_valid_ranges_1_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_0(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_0_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_0(strg_ub_tb_only_tb_write_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_0_strides_3(strg_ub_agg_only_agg_write_addr_gen_0_strides_3_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_1(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_4(strg_ub_tb_only_tb_read_sched_gen_1_sched_addr_gen_strides_4_inst0_O),
+    .strg_ub_agg_only_agg_write_addr_gen_1_strides_3(strg_ub_agg_only_agg_write_addr_gen_1_strides_3_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_strides_0(strg_ub_sram_only_output_addr_gen_0_strides_0_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_enable(strg_ub_agg_sram_shared_agg_read_sched_gen_0_enable_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_enable(strg_ub_agg_sram_shared_agg_read_sched_gen_1_enable_inst0_O),
+    .strg_ub_agg_only_agg_read_addr_gen_0_strides_1(strg_ub_agg_only_agg_read_addr_gen_0_strides_1_inst0_O),
+    .strg_ub_sram_only_output_addr_gen_0_strides_2(strg_ub_sram_only_output_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_0(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_0_ranges_0_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_0_strides_2(strg_ub_tb_only_tb_write_addr_gen_0_strides_2_inst0_O),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_4(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
+    .strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_agg_only_agg_write_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_agg_only_loops_in2buf_0_ranges_1(strg_ub_agg_only_loops_in2buf_0_ranges_1_inst0_O),
+    .strg_ub_tb_only_tb_write_addr_gen_1_strides_0(strg_ub_tb_only_tb_write_addr_gen_1_strides_0_inst0_O),
+    .strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_sram_tb_shared_output_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
+    .rst_n(coreir_wrapOutAsyncReset_inst0_out),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_starting_addr(strg_ub_agg_sram_shared_agg_read_sched_gen_1_sched_addr_gen_starting_addr_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_dimensionality(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_dimensionality_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_1(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_1_inst0_O),
+    .strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_0(strg_ub_agg_sram_shared_loops_in2buf_autovec_write_1_ranges_0_inst0_O),
+    .strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_4(strg_ub_tb_only_tb_read_sched_gen_0_sched_addr_gen_strides_4_inst0_O),
+    .strg_ub_tb_only_tb_read_addr_gen_0_strides_1(strg_ub_tb_only_tb_read_addr_gen_0_strides_1_inst0_O),
+    .config_data_out_0(LakeTop_W_inst0_config_data_out_0),
+    .strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_starting_addr(strg_ub_agg_sram_shared_agg_read_sched_gen_0_sched_addr_gen_starting_addr_inst0_O),
+    .stencil_valid_sched_gen_enable(stencil_valid_sched_gen_enable_inst0_O),
+    .config_read(OR_CONFIG_WR_SRAM_out)
 );
 commonlib_muxn__N84__width32 MuxWrapper_84_32_inst0$Mux84x32_inst0$coreir_commonlib_mux84x32_inst0 (
     .in_data_0(ZextWrapper_23_32_inst0$self_O_in),
@@ -23138,104 +23127,6 @@ assign O = MUX_CB_ren_in_0$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out;
 assign read_config_data = ZextWrapper_5_32_inst0$self_O_in;
 endmodule
 
-module CB_inputs6_sel (
-    input [4:0] I,
-    output [4:0] O
-);
-assign O = I;
-endmodule
-
-module CB_inputs6 (
-    input [0:0] I_0,
-    input [0:0] I_1,
-    input [0:0] I_10,
-    input [0:0] I_11,
-    input [0:0] I_12,
-    input [0:0] I_13,
-    input [0:0] I_14,
-    input [0:0] I_15,
-    input [0:0] I_16,
-    input [0:0] I_17,
-    input [0:0] I_18,
-    input [0:0] I_19,
-    input [0:0] I_2,
-    input [0:0] I_3,
-    input [0:0] I_4,
-    input [0:0] I_5,
-    input [0:0] I_6,
-    input [0:0] I_7,
-    input [0:0] I_8,
-    input [0:0] I_9,
-    output [0:0] O,
-    input clk,
-    input [7:0] config_config_addr,
-    input [31:0] config_config_data,
-    input [0:0] config_read,
-    input [0:0] config_write,
-    output [31:0] read_config_data,
-    input reset
-);
-wire [4:0] CB_inputs6_sel_inst0_O;
-wire [0:0] MUX_CB_inputs6$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out;
-wire ZextWrapper_5_32_inst0$bit_const_0_None_out;
-wire [4:0] ZextWrapper_5_32_inst0$self_I_out;
-wire [31:0] ZextWrapper_5_32_inst0$self_O_in;
-wire [4:0] config_reg_0_O;
-CB_inputs6_sel CB_inputs6_sel_inst0 (
-    .I(config_reg_0_O),
-    .O(CB_inputs6_sel_inst0_O)
-);
-commonlib_muxn__N20__width1 MUX_CB_inputs6$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0 (
-    .in_data_0(I_0),
-    .in_data_1(I_1),
-    .in_data_10(I_10),
-    .in_data_11(I_11),
-    .in_data_12(I_12),
-    .in_data_13(I_13),
-    .in_data_14(I_14),
-    .in_data_15(I_15),
-    .in_data_16(I_16),
-    .in_data_17(I_17),
-    .in_data_18(I_18),
-    .in_data_19(I_19),
-    .in_data_2(I_2),
-    .in_data_3(I_3),
-    .in_data_4(I_4),
-    .in_data_5(I_5),
-    .in_data_6(I_6),
-    .in_data_7(I_7),
-    .in_data_8(I_8),
-    .in_data_9(I_9),
-    .in_sel(CB_inputs6_sel_inst0_O),
-    .out(MUX_CB_inputs6$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out)
-);
-corebit_const #(
-    .value(1'b0)
-) ZextWrapper_5_32_inst0$bit_const_0_None (
-    .out(ZextWrapper_5_32_inst0$bit_const_0_None_out)
-);
-mantle_wire__typeBit5 ZextWrapper_5_32_inst0$self_I (
-    .in(config_reg_0_O),
-    .out(ZextWrapper_5_32_inst0$self_I_out)
-);
-wire [31:0] ZextWrapper_5_32_inst0$self_O_out;
-assign ZextWrapper_5_32_inst0$self_O_out = {ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$bit_const_0_None_out,ZextWrapper_5_32_inst0$self_I_out[4:0]};
-mantle_wire__typeBitIn32 ZextWrapper_5_32_inst0$self_O (
-    .in(ZextWrapper_5_32_inst0$self_O_in),
-    .out(ZextWrapper_5_32_inst0$self_O_out)
-);
-ConfigRegister_5_8_32_0 config_reg_0 (
-    .clk(clk),
-    .reset(reset),
-    .O(config_reg_0_O),
-    .config_addr(config_config_addr),
-    .config_data(config_config_data),
-    .config_en(config_write[0])
-);
-assign O = MUX_CB_inputs6$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out;
-assign read_config_data = ZextWrapper_5_32_inst0$self_O_in;
-endmodule
-
 module CB_inputs5_sel (
     input [4:0] I,
     output [4:0] O
@@ -23440,27 +23331,27 @@ assign O = I;
 endmodule
 
 module CB_inputs3 (
-    input [15:0] I_0,
-    input [15:0] I_1,
-    input [15:0] I_10,
-    input [15:0] I_11,
-    input [15:0] I_12,
-    input [15:0] I_13,
-    input [15:0] I_14,
-    input [15:0] I_15,
-    input [15:0] I_16,
-    input [15:0] I_17,
-    input [15:0] I_18,
-    input [15:0] I_19,
-    input [15:0] I_2,
-    input [15:0] I_3,
-    input [15:0] I_4,
-    input [15:0] I_5,
-    input [15:0] I_6,
-    input [15:0] I_7,
-    input [15:0] I_8,
-    input [15:0] I_9,
-    output [15:0] O,
+    input [0:0] I_0,
+    input [0:0] I_1,
+    input [0:0] I_10,
+    input [0:0] I_11,
+    input [0:0] I_12,
+    input [0:0] I_13,
+    input [0:0] I_14,
+    input [0:0] I_15,
+    input [0:0] I_16,
+    input [0:0] I_17,
+    input [0:0] I_18,
+    input [0:0] I_19,
+    input [0:0] I_2,
+    input [0:0] I_3,
+    input [0:0] I_4,
+    input [0:0] I_5,
+    input [0:0] I_6,
+    input [0:0] I_7,
+    input [0:0] I_8,
+    input [0:0] I_9,
+    output [0:0] O,
     input clk,
     input [7:0] config_config_addr,
     input [31:0] config_config_data,
@@ -23470,7 +23361,7 @@ module CB_inputs3 (
     input reset
 );
 wire [4:0] CB_inputs3_sel_inst0_O;
-wire [15:0] MUX_CB_inputs3$Mux20x16_inst0$coreir_commonlib_mux20x16_inst0_out;
+wire [0:0] MUX_CB_inputs3$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out;
 wire ZextWrapper_5_32_inst0$bit_const_0_None_out;
 wire [4:0] ZextWrapper_5_32_inst0$self_I_out;
 wire [31:0] ZextWrapper_5_32_inst0$self_O_in;
@@ -23479,7 +23370,7 @@ CB_inputs3_sel CB_inputs3_sel_inst0 (
     .I(config_reg_0_O),
     .O(CB_inputs3_sel_inst0_O)
 );
-commonlib_muxn__N20__width16 MUX_CB_inputs3$Mux20x16_inst0$coreir_commonlib_mux20x16_inst0 (
+commonlib_muxn__N20__width1 MUX_CB_inputs3$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0 (
     .in_data_0(I_0),
     .in_data_1(I_1),
     .in_data_10(I_10),
@@ -23501,7 +23392,7 @@ commonlib_muxn__N20__width16 MUX_CB_inputs3$Mux20x16_inst0$coreir_commonlib_mux2
     .in_data_8(I_8),
     .in_data_9(I_9),
     .in_sel(CB_inputs3_sel_inst0_O),
-    .out(MUX_CB_inputs3$Mux20x16_inst0$coreir_commonlib_mux20x16_inst0_out)
+    .out(MUX_CB_inputs3$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out)
 );
 corebit_const #(
     .value(1'b0)
@@ -23526,7 +23417,7 @@ ConfigRegister_5_8_32_0 config_reg_0 (
     .config_data(config_config_data),
     .config_en(config_write[0])
 );
-assign O = MUX_CB_inputs3$Mux20x16_inst0$coreir_commonlib_mux20x16_inst0_out;
+assign O = MUX_CB_inputs3$Mux20x1_inst0$coreir_commonlib_mux20x1_inst0_out;
 assign read_config_data = ZextWrapper_5_32_inst0$self_O_in;
 endmodule
 
@@ -26097,8 +25988,8 @@ assign O5 = bit_const_0_None_out;
 endmodule
 
 module PE_gen (
-    input [75:0] inst,
-    input [66:0] inputs,
+    input [55:0] inst,
+    input [50:0] inputs,
     input clk_en,
     output [16:0] O,
     input CLK,
@@ -26122,12 +26013,6 @@ wire ADD_inst1_O2;
 wire ADD_inst1_O3;
 wire ADD_inst1_O4;
 wire ADD_inst1_O5;
-wire [15:0] ADD_inst2_O0;
-wire ADD_inst2_O1;
-wire ADD_inst2_O2;
-wire ADD_inst2_O3;
-wire ADD_inst2_O4;
-wire ADD_inst2_O5;
 wire [15:0] BIT_ALU_inst0_O0;
 wire BIT_ALU_inst0_O1;
 wire BIT_ALU_inst0_O2;
@@ -26161,39 +26046,23 @@ wire [15:0] Mux2xBits16_inst0_I0_in;
 wire [15:0] Mux2xBits16_inst0_I1_in;
 wire [15:0] Mux2xBits16_inst1$coreir_commonlib_mux2x16_inst0$_join_out;
 wire [15:0] Mux2xBits16_inst10$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst10_I1_in;
 wire [15:0] Mux2xBits16_inst11$coreir_commonlib_mux2x16_inst0$_join_out;
+wire [15:0] Mux2xBits16_inst11_I1_in;
 wire [15:0] Mux2xBits16_inst12$coreir_commonlib_mux2x16_inst0$_join_out;
 wire [15:0] Mux2xBits16_inst13$coreir_commonlib_mux2x16_inst0$_join_out;
 wire [15:0] Mux2xBits16_inst14$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst14_I1_in;
-wire [15:0] Mux2xBits16_inst15$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst16$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst17$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst18$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst19$coreir_commonlib_mux2x16_inst0$_join_out;
+wire [15:0] Mux2xBits16_inst14_O_out;
 wire [15:0] Mux2xBits16_inst1_I1_in;
 wire [15:0] Mux2xBits16_inst2$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst20$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst21$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst22$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst22_O_out;
+wire [15:0] Mux2xBits16_inst2_I0_in;
+wire [15:0] Mux2xBits16_inst2_I1_in;
 wire [15:0] Mux2xBits16_inst3$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst3_I1_in;
 wire [15:0] Mux2xBits16_inst4$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst4_I1_in;
 wire [15:0] Mux2xBits16_inst5$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst5_I0_in;
-wire [15:0] Mux2xBits16_inst5_I1_in;
 wire [15:0] Mux2xBits16_inst6$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst6_I1_in;
 wire [15:0] Mux2xBits16_inst7$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst7_I0_in;
-wire [15:0] Mux2xBits16_inst7_I1_in;
 wire [15:0] Mux2xBits16_inst8$coreir_commonlib_mux2x16_inst0$_join_out;
 wire [15:0] Mux2xBits16_inst9$coreir_commonlib_mux2x16_inst0$_join_out;
-wire [15:0] Mux2xBits16_inst9_I0_in;
-wire [15:0] Mux2xBits16_inst9_I1_in;
 wire [15:0] Mux_inst0$Mux2xBits16_inst0$coreir_commonlib_mux2x16_inst0$_join_out;
 wire [15:0] Mux_inst0_a_in;
 wire [15:0] Mux_inst0_b_in;
@@ -26210,16 +26079,12 @@ wire SUB_inst0_O3;
 wire SUB_inst0_O4;
 wire SUB_inst0_O5;
 wire [0:0] const_0_1_out;
-wire [1:0] const_0_2_out;
 wire [2:0] const_0_3_out;
 wire [3:0] const_0_4_out;
 wire [3:0] const_10_4_out;
-wire [3:0] const_11_4_out;
 wire [0:0] const_1_1_out;
-wire [1:0] const_1_2_out;
 wire [2:0] const_1_3_out;
 wire [3:0] const_1_4_out;
-wire [1:0] const_2_2_out;
 wire [2:0] const_2_3_out;
 wire [3:0] const_2_4_out;
 wire [2:0] const_3_3_out;
@@ -26235,13 +26100,6 @@ wire magma_Bits_1_eq_inst0_out;
 wire magma_Bits_1_eq_inst1_out;
 wire magma_Bits_1_eq_inst2_out;
 wire magma_Bits_1_eq_inst3_out;
-wire magma_Bits_1_eq_inst4_out;
-wire magma_Bits_1_eq_inst5_out;
-wire magma_Bits_1_eq_inst6_out;
-wire magma_Bits_1_eq_inst7_out;
-wire magma_Bits_2_eq_inst0_out;
-wire magma_Bits_2_eq_inst1_out;
-wire magma_Bits_2_eq_inst2_out;
 wire magma_Bits_3_eq_inst0_out;
 wire magma_Bits_3_eq_inst1_out;
 wire magma_Bits_3_eq_inst2_out;
@@ -26250,7 +26108,6 @@ wire magma_Bits_3_eq_inst4_out;
 wire magma_Bits_4_eq_inst0_out;
 wire magma_Bits_4_eq_inst1_out;
 wire magma_Bits_4_eq_inst10_out;
-wire magma_Bits_4_eq_inst11_out;
 wire magma_Bits_4_eq_inst2_out;
 wire magma_Bits_4_eq_inst3_out;
 wire magma_Bits_4_eq_inst4_out;
@@ -26261,7 +26118,7 @@ wire magma_Bits_4_eq_inst8_out;
 wire magma_Bits_4_eq_inst9_out;
 ABSD ABSD_inst0 (
     .a(inputs[47:32]),
-    .b(inputs[63:48]),
+    .b(inputs[15:0]),
     .O0(ABSD_inst0_O0),
     .O1(ABSD_inst0_O1),
     .O2(ABSD_inst0_O2),
@@ -26272,8 +26129,8 @@ ABSD ABSD_inst0 (
     .ASYNCRESET(ASYNCRESET)
 );
 ADD ADD_inst0 (
-    .a(Mux2xBits16_inst4$coreir_commonlib_mux2x16_inst0$_join_out),
-    .b(inputs[63:48]),
+    .a(inputs[15:0]),
+    .b(inputs[31:16]),
     .O0(ADD_inst0_O0),
     .O1(ADD_inst0_O1),
     .O2(ADD_inst0_O2),
@@ -26284,8 +26141,8 @@ ADD ADD_inst0 (
     .ASYNCRESET(ASYNCRESET)
 );
 ADD ADD_inst1 (
-    .a(ADD_inst0_O0),
-    .b(Mux2xBits16_inst6$coreir_commonlib_mux2x16_inst0$_join_out),
+    .a(inputs[47:32]),
+    .b(Mux2xBits16_inst3$coreir_commonlib_mux2x16_inst0$_join_out),
     .O0(ADD_inst1_O0),
     .O1(ADD_inst1_O1),
     .O2(ADD_inst1_O2),
@@ -26295,22 +26152,10 @@ ADD ADD_inst1 (
     .CLK(CLK),
     .ASYNCRESET(ASYNCRESET)
 );
-ADD ADD_inst2 (
-    .a(inputs[31:16]),
-    .b(ADD_inst1_O0),
-    .O0(ADD_inst2_O0),
-    .O1(ADD_inst2_O1),
-    .O2(ADD_inst2_O2),
-    .O3(ADD_inst2_O3),
-    .O4(ADD_inst2_O4),
-    .O5(ADD_inst2_O5),
-    .CLK(CLK),
-    .ASYNCRESET(ASYNCRESET)
-);
 BIT_ALU BIT_ALU_inst0 (
     .alu(inst[1:0]),
     .a(inputs[47:32]),
-    .b(inputs[63:48]),
+    .b(inputs[15:0]),
     .O0(BIT_ALU_inst0_O0),
     .O1(BIT_ALU_inst0_O1),
     .O2(BIT_ALU_inst0_O2),
@@ -26354,9 +26199,9 @@ Cond Cond_inst2 (
     .ASYNCRESET(ASYNCRESET)
 );
 GTE GTE_inst0 (
-    .signed_(inst[66]),
+    .signed_(inst[46]),
     .a(inputs[47:32]),
-    .b(inputs[63:48]),
+    .b(inputs[15:0]),
     .O0(GTE_inst0_O0),
     .O1(GTE_inst0_O1),
     .O2(GTE_inst0_O2),
@@ -26367,9 +26212,9 @@ GTE GTE_inst0 (
     .ASYNCRESET(ASYNCRESET)
 );
 LTE LTE_inst0 (
-    .signed_(inst[65]),
+    .signed_(inst[45]),
     .a(inputs[47:32]),
-    .b(inputs[63:48]),
+    .b(inputs[15:0]),
     .O0(LTE_inst0_O0),
     .O1(LTE_inst0_O1),
     .O2(LTE_inst0_O2),
@@ -26380,17 +26225,17 @@ LTE LTE_inst0 (
     .ASYNCRESET(ASYNCRESET)
 );
 LUT LUT_inst0 (
-    .lut(inst[75:68]),
-    .bit0(inputs[64]),
-    .bit1(inputs[65]),
-    .bit2(inputs[66]),
+    .lut(inst[55:48]),
+    .bit0(inputs[48]),
+    .bit1(inputs[49]),
+    .bit2(inputs[50]),
     .O(LUT_inst0_O),
     .CLK(CLK),
     .ASYNCRESET(ASYNCRESET)
 );
 MUL MUL_inst0 (
     .instr(inst[17]),
-    .signed_(inst[64]),
+    .signed_(inst[44]),
     .a(inputs[47:32]),
     .b(Mux2xBits16_inst1$coreir_commonlib_mux2x16_inst0$_join_out),
     .O(MUL_inst0_O),
@@ -26400,8 +26245,8 @@ MUL MUL_inst0 (
 coreir_mux #(
     .width(1)
 ) Mux2xBit_inst0$coreir_commonlib_mux2x1_inst0$_join (
-    .in0(LUT_inst0_O),
-    .in1(LUT_inst0_O),
+    .in0(inst[34]),
+    .in1(inst[34]),
     .sel(magma_Bits_3_eq_inst0_out),
     .out(Mux2xBit_inst0$coreir_commonlib_mux2x1_inst0$_join_out)
 );
@@ -26409,7 +26254,7 @@ coreir_mux #(
     .width(1)
 ) Mux2xBit_inst1$coreir_commonlib_mux2x1_inst0$_join (
     .in0(Mux2xBit_inst0$coreir_commonlib_mux2x1_inst0$_join_out[0]),
-    .in1(inst[50]),
+    .in1(Cond_inst0_O),
     .sel(magma_Bits_3_eq_inst1_out),
     .out(Mux2xBit_inst1$coreir_commonlib_mux2x1_inst0$_join_out)
 );
@@ -26417,7 +26262,7 @@ coreir_mux #(
     .width(1)
 ) Mux2xBit_inst2$coreir_commonlib_mux2x1_inst0$_join (
     .in0(Mux2xBit_inst1$coreir_commonlib_mux2x1_inst0$_join_out[0]),
-    .in1(Cond_inst0_O),
+    .in1(Cond_inst1_O),
     .sel(magma_Bits_3_eq_inst2_out),
     .out(Mux2xBit_inst2$coreir_commonlib_mux2x1_inst0$_join_out)
 );
@@ -26425,7 +26270,7 @@ coreir_mux #(
     .width(1)
 ) Mux2xBit_inst3$coreir_commonlib_mux2x1_inst0$_join (
     .in0(Mux2xBit_inst2$coreir_commonlib_mux2x1_inst0$_join_out[0]),
-    .in1(Cond_inst1_O),
+    .in1(Cond_inst2_O),
     .sel(magma_Bits_3_eq_inst3_out),
     .out(Mux2xBit_inst3$coreir_commonlib_mux2x1_inst0$_join_out)
 );
@@ -26433,7 +26278,7 @@ coreir_mux #(
     .width(1)
 ) Mux2xBit_inst4$coreir_commonlib_mux2x1_inst0$_join (
     .in0(Mux2xBit_inst3$coreir_commonlib_mux2x1_inst0$_join_out[0]),
-    .in1(Cond_inst2_O),
+    .in1(LUT_inst0_O),
     .sel(magma_Bits_3_eq_inst4_out),
     .out(Mux2xBit_inst4$coreir_commonlib_mux2x1_inst0$_join_out)
 );
@@ -26465,89 +26310,49 @@ coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst10$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst9$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux2xBits16_inst10_I1_in),
-    .sel(magma_Bits_1_eq_inst7_out),
+    .in1(SHR_inst0_O0),
+    .sel(magma_Bits_4_eq_inst6_out),
     .out(Mux2xBits16_inst10$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst10_I1 (
-    .in(Mux2xBits16_inst10_I1_in),
-    .out(inputs[63:48])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst11$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(SUB_inst0_O0),
-    .in1(SUB_inst0_O0),
-    .sel(magma_Bits_4_eq_inst0_out),
+    .in0(Mux2xBits16_inst10$coreir_commonlib_mux2x16_inst0$_join_out),
+    .in1(Mux2xBits16_inst11_I1_in),
+    .sel(magma_Bits_4_eq_inst7_out),
     .out(Mux2xBits16_inst11$coreir_commonlib_mux2x16_inst0$_join_out)
+);
+mantle_wire__typeBitIn16 Mux2xBits16_inst11_I1 (
+    .in(Mux2xBits16_inst11_I1_in),
+    .out(inst[33:18])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst12$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst11$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(LTE_inst0_O0),
-    .sel(magma_Bits_4_eq_inst1_out),
+    .in1(SUB_inst0_O0),
+    .sel(magma_Bits_4_eq_inst8_out),
     .out(Mux2xBits16_inst12$coreir_commonlib_mux2x16_inst0$_join_out)
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst13$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst12$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(MUL_inst0_O),
-    .sel(magma_Bits_4_eq_inst2_out),
+    .in1(Mux_inst0$Mux2xBits16_inst0$coreir_commonlib_mux2x16_inst0$_join_out),
+    .sel(magma_Bits_4_eq_inst9_out),
     .out(Mux2xBits16_inst13$coreir_commonlib_mux2x16_inst0$_join_out)
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst14$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst13$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux2xBits16_inst14_I1_in),
-    .sel(magma_Bits_4_eq_inst3_out),
+    .in1(BIT_ALU_inst0_O0),
+    .sel(magma_Bits_4_eq_inst10_out),
     .out(Mux2xBits16_inst14$coreir_commonlib_mux2x16_inst0$_join_out)
 );
-mantle_wire__typeBitIn16 Mux2xBits16_inst14_I1 (
-    .in(Mux2xBits16_inst14_I1_in),
-    .out(inst[49:34])
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst15$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst14$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(ABSD_inst0_O0),
-    .sel(magma_Bits_4_eq_inst4_out),
-    .out(Mux2xBits16_inst15$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst16$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst15$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(GTE_inst0_O0),
-    .sel(magma_Bits_4_eq_inst5_out),
-    .out(Mux2xBits16_inst16$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst17$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst16$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(BIT_ALU_inst0_O0),
-    .sel(magma_Bits_4_eq_inst6_out),
-    .out(Mux2xBits16_inst17$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst18$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst17$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(ADD_inst1_O0),
-    .sel(magma_Bits_4_eq_inst7_out),
-    .out(Mux2xBits16_inst18$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst19$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst18$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(ADD_inst0_O0),
-    .sel(magma_Bits_4_eq_inst8_out),
-    .out(Mux2xBits16_inst19$coreir_commonlib_mux2x16_inst0$_join_out)
+mantle_wire__typeBit16 Mux2xBits16_inst14_O (
+    .in(Mux2xBits16_inst14$coreir_commonlib_mux2x16_inst0$_join_out),
+    .out(Mux2xBits16_inst14_O_out)
 );
 mantle_wire__typeBitIn16 Mux2xBits16_inst1_I1 (
     .in(Mux2xBits16_inst1_I1_in),
@@ -26556,151 +26361,95 @@ mantle_wire__typeBitIn16 Mux2xBits16_inst1_I1 (
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst2$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(MUL_inst0_O),
-    .in1(MUL_inst0_O),
-    .sel(magma_Bits_2_eq_inst0_out),
+    .in0(Mux2xBits16_inst2_I0_in),
+    .in1(Mux2xBits16_inst2_I1_in),
+    .sel(magma_Bits_1_eq_inst2_out),
     .out(Mux2xBits16_inst2$coreir_commonlib_mux2x16_inst0$_join_out)
 );
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst20$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst19$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(ADD_inst2_O0),
-    .sel(magma_Bits_4_eq_inst9_out),
-    .out(Mux2xBits16_inst20$coreir_commonlib_mux2x16_inst0$_join_out)
+mantle_wire__typeBitIn16 Mux2xBits16_inst2_I0 (
+    .in(Mux2xBits16_inst2_I0_in),
+    .out(inst[33:18])
 );
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst21$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst20$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(SHR_inst0_O0),
-    .sel(magma_Bits_4_eq_inst10_out),
-    .out(Mux2xBits16_inst21$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-coreir_mux #(
-    .width(16)
-) Mux2xBits16_inst22$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst21$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux_inst0$Mux2xBits16_inst0$coreir_commonlib_mux2x16_inst0$_join_out),
-    .sel(magma_Bits_4_eq_inst11_out),
-    .out(Mux2xBits16_inst22$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBit16 Mux2xBits16_inst22_O (
-    .in(Mux2xBits16_inst22$coreir_commonlib_mux2x16_inst0$_join_out),
-    .out(Mux2xBits16_inst22_O_out)
+mantle_wire__typeBitIn16 Mux2xBits16_inst2_I1 (
+    .in(Mux2xBits16_inst2_I1_in),
+    .out(inst[33:18])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst3$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst2$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux2xBits16_inst3_I1_in),
-    .sel(magma_Bits_2_eq_inst1_out),
+    .in1(ADD_inst0_O0),
+    .sel(magma_Bits_1_eq_inst3_out),
     .out(Mux2xBits16_inst3$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst3_I1 (
-    .in(Mux2xBits16_inst3_I1_in),
-    .out(inputs[47:32])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst4$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst3$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux2xBits16_inst4_I1_in),
-    .sel(magma_Bits_2_eq_inst2_out),
+    .in0(ADD_inst1_O0),
+    .in1(ADD_inst1_O0),
+    .sel(magma_Bits_4_eq_inst0_out),
     .out(Mux2xBits16_inst4$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst4_I1 (
-    .in(Mux2xBits16_inst4_I1_in),
-    .out(inst[49:34])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst5$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst5_I0_in),
-    .in1(Mux2xBits16_inst5_I1_in),
-    .sel(magma_Bits_1_eq_inst2_out),
+    .in0(Mux2xBits16_inst4$coreir_commonlib_mux2x16_inst0$_join_out),
+    .in1(LTE_inst0_O0),
+    .sel(magma_Bits_4_eq_inst1_out),
     .out(Mux2xBits16_inst5$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst5_I0 (
-    .in(Mux2xBits16_inst5_I0_in),
-    .out(inst[49:34])
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst5_I1 (
-    .in(Mux2xBits16_inst5_I1_in),
-    .out(inst[49:34])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst6$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst5$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(Mux2xBits16_inst6_I1_in),
-    .sel(magma_Bits_1_eq_inst3_out),
+    .in1(ADD_inst0_O0),
+    .sel(magma_Bits_4_eq_inst2_out),
     .out(Mux2xBits16_inst6$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst6_I1 (
-    .in(Mux2xBits16_inst6_I1_in),
-    .out(inputs[15:0])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst7$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst7_I0_in),
-    .in1(Mux2xBits16_inst7_I1_in),
-    .sel(magma_Bits_1_eq_inst4_out),
+    .in0(Mux2xBits16_inst6$coreir_commonlib_mux2x16_inst0$_join_out),
+    .in1(MUL_inst0_O),
+    .sel(magma_Bits_4_eq_inst3_out),
     .out(Mux2xBits16_inst7$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst7_I0 (
-    .in(Mux2xBits16_inst7_I0_in),
-    .out(inputs[47:32])
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst7_I1 (
-    .in(Mux2xBits16_inst7_I1_in),
-    .out(inputs[47:32])
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst8$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux2xBits16_inst7$coreir_commonlib_mux2x16_inst0$_join_out),
-    .in1(ADD_inst1_O0),
-    .sel(magma_Bits_1_eq_inst5_out),
+    .in1(ABSD_inst0_O0),
+    .sel(magma_Bits_4_eq_inst4_out),
     .out(Mux2xBits16_inst8$coreir_commonlib_mux2x16_inst0$_join_out)
 );
 coreir_mux #(
     .width(16)
 ) Mux2xBits16_inst9$coreir_commonlib_mux2x16_inst0$_join (
-    .in0(Mux2xBits16_inst9_I0_in),
-    .in1(Mux2xBits16_inst9_I1_in),
-    .sel(magma_Bits_1_eq_inst6_out),
+    .in0(Mux2xBits16_inst8$coreir_commonlib_mux2x16_inst0$_join_out),
+    .in1(GTE_inst0_O0),
+    .sel(magma_Bits_4_eq_inst5_out),
     .out(Mux2xBits16_inst9$coreir_commonlib_mux2x16_inst0$_join_out)
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst9_I0 (
-    .in(Mux2xBits16_inst9_I0_in),
-    .out(inst[33:18])
-);
-mantle_wire__typeBitIn16 Mux2xBits16_inst9_I1 (
-    .in(Mux2xBits16_inst9_I1_in),
-    .out(inst[33:18])
 );
 coreir_mux #(
     .width(16)
 ) Mux_inst0$Mux2xBits16_inst0$coreir_commonlib_mux2x16_inst0$_join (
     .in0(Mux_inst0_a_in),
     .in1(Mux_inst0_b_in),
-    .sel(inputs[64]),
+    .sel(inputs[48]),
     .out(Mux_inst0$Mux2xBits16_inst0$coreir_commonlib_mux2x16_inst0$_join_out)
 );
 mantle_wire__typeBitIn16 Mux_inst0_a (
     .in(Mux_inst0_a_in),
-    .out(inputs[47:32])
+    .out(inputs[31:16])
 );
 mantle_wire__typeBitIn16 Mux_inst0_b (
     .in(Mux_inst0_b_in),
-    .out(inputs[63:48])
+    .out(inputs[47:32])
 );
 SHR SHR_inst0 (
-    .signed_(inst[67]),
-    .a(Mux2xBits16_inst8$coreir_commonlib_mux2x16_inst0$_join_out),
-    .b(Mux2xBits16_inst10$coreir_commonlib_mux2x16_inst0$_join_out),
+    .signed_(inst[47]),
+    .a(inputs[47:32]),
+    .b(inputs[15:0]),
     .O0(SHR_inst0_O0),
     .O1(SHR_inst0_O1),
     .O2(SHR_inst0_O2),
@@ -26712,7 +26461,7 @@ SHR SHR_inst0 (
 );
 SUB SUB_inst0 (
     .a(inputs[47:32]),
-    .b(inputs[63:48]),
+    .b(inputs[15:0]),
     .O0(SUB_inst0_O0),
     .O1(SUB_inst0_O1),
     .O2(SUB_inst0_O2),
@@ -26727,12 +26476,6 @@ coreir_const #(
     .width(1)
 ) const_0_1 (
     .out(const_0_1_out)
-);
-coreir_const #(
-    .value(2'h0),
-    .width(2)
-) const_0_2 (
-    .out(const_0_2_out)
 );
 coreir_const #(
     .value(3'h0),
@@ -26753,22 +26496,10 @@ coreir_const #(
     .out(const_10_4_out)
 );
 coreir_const #(
-    .value(4'hb),
-    .width(4)
-) const_11_4 (
-    .out(const_11_4_out)
-);
-coreir_const #(
     .value(1'h1),
     .width(1)
 ) const_1_1 (
     .out(const_1_1_out)
-);
-coreir_const #(
-    .value(2'h1),
-    .width(2)
-) const_1_2 (
-    .out(const_1_2_out)
 );
 coreir_const #(
     .value(3'h1),
@@ -26781,12 +26512,6 @@ coreir_const #(
     .width(4)
 ) const_1_4 (
     .out(const_1_4_out)
-);
-coreir_const #(
-    .value(2'h2),
-    .width(2)
-) const_2_2 (
-    .out(const_2_2_out)
 );
 coreir_const #(
     .value(3'h2),
@@ -26857,211 +26582,154 @@ coreir_const #(
 coreir_eq #(
     .width(1)
 ) magma_Bits_1_eq_inst0 (
-    .in0(inst[54]),
+    .in0(inst[35]),
     .in1(const_0_1_out),
     .out(magma_Bits_1_eq_inst0_out)
 );
 coreir_eq #(
     .width(1)
 ) magma_Bits_1_eq_inst1 (
-    .in0(inst[54]),
+    .in0(inst[35]),
     .in1(const_1_1_out),
     .out(magma_Bits_1_eq_inst1_out)
 );
 coreir_eq #(
     .width(1)
 ) magma_Bits_1_eq_inst2 (
-    .in0(inst[55]),
+    .in0(inst[36]),
     .in1(const_0_1_out),
     .out(magma_Bits_1_eq_inst2_out)
 );
 coreir_eq #(
     .width(1)
 ) magma_Bits_1_eq_inst3 (
-    .in0(inst[55]),
+    .in0(inst[36]),
     .in1(const_1_1_out),
     .out(magma_Bits_1_eq_inst3_out)
 );
 coreir_eq #(
-    .width(1)
-) magma_Bits_1_eq_inst4 (
-    .in0(inst[53]),
-    .in1(const_0_1_out),
-    .out(magma_Bits_1_eq_inst4_out)
-);
-coreir_eq #(
-    .width(1)
-) magma_Bits_1_eq_inst5 (
-    .in0(inst[53]),
-    .in1(const_1_1_out),
-    .out(magma_Bits_1_eq_inst5_out)
-);
-coreir_eq #(
-    .width(1)
-) magma_Bits_1_eq_inst6 (
-    .in0(inst[56]),
-    .in1(const_0_1_out),
-    .out(magma_Bits_1_eq_inst6_out)
-);
-coreir_eq #(
-    .width(1)
-) magma_Bits_1_eq_inst7 (
-    .in0(inst[56]),
-    .in1(const_1_1_out),
-    .out(magma_Bits_1_eq_inst7_out)
-);
-coreir_eq #(
-    .width(2)
-) magma_Bits_2_eq_inst0 (
-    .in0(inst[52:51]),
-    .in1(const_0_2_out),
-    .out(magma_Bits_2_eq_inst0_out)
-);
-coreir_eq #(
-    .width(2)
-) magma_Bits_2_eq_inst1 (
-    .in0(inst[52:51]),
-    .in1(const_1_2_out),
-    .out(magma_Bits_2_eq_inst1_out)
-);
-coreir_eq #(
-    .width(2)
-) magma_Bits_2_eq_inst2 (
-    .in0(inst[52:51]),
-    .in1(const_2_2_out),
-    .out(magma_Bits_2_eq_inst2_out)
-);
-coreir_eq #(
     .width(3)
 ) magma_Bits_3_eq_inst0 (
-    .in0(inst[63:61]),
+    .in0(inst[43:41]),
     .in1(const_0_3_out),
     .out(magma_Bits_3_eq_inst0_out)
 );
 coreir_eq #(
     .width(3)
 ) magma_Bits_3_eq_inst1 (
-    .in0(inst[63:61]),
+    .in0(inst[43:41]),
     .in1(const_1_3_out),
     .out(magma_Bits_3_eq_inst1_out)
 );
 coreir_eq #(
     .width(3)
 ) magma_Bits_3_eq_inst2 (
-    .in0(inst[63:61]),
+    .in0(inst[43:41]),
     .in1(const_2_3_out),
     .out(magma_Bits_3_eq_inst2_out)
 );
 coreir_eq #(
     .width(3)
 ) magma_Bits_3_eq_inst3 (
-    .in0(inst[63:61]),
+    .in0(inst[43:41]),
     .in1(const_3_3_out),
     .out(magma_Bits_3_eq_inst3_out)
 );
 coreir_eq #(
     .width(3)
 ) magma_Bits_3_eq_inst4 (
-    .in0(inst[63:61]),
+    .in0(inst[43:41]),
     .in1(const_4_3_out),
     .out(magma_Bits_3_eq_inst4_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst0 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_0_4_out),
     .out(magma_Bits_4_eq_inst0_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst1 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_1_4_out),
     .out(magma_Bits_4_eq_inst1_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst10 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_10_4_out),
     .out(magma_Bits_4_eq_inst10_out)
 );
 coreir_eq #(
     .width(4)
-) magma_Bits_4_eq_inst11 (
-    .in0(inst[60:57]),
-    .in1(const_11_4_out),
-    .out(magma_Bits_4_eq_inst11_out)
-);
-coreir_eq #(
-    .width(4)
 ) magma_Bits_4_eq_inst2 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_2_4_out),
     .out(magma_Bits_4_eq_inst2_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst3 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_3_4_out),
     .out(magma_Bits_4_eq_inst3_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst4 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_4_4_out),
     .out(magma_Bits_4_eq_inst4_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst5 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_5_4_out),
     .out(magma_Bits_4_eq_inst5_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst6 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_6_4_out),
     .out(magma_Bits_4_eq_inst6_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst7 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_7_4_out),
     .out(magma_Bits_4_eq_inst7_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst8 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_8_4_out),
     .out(magma_Bits_4_eq_inst8_out)
 );
 coreir_eq #(
     .width(4)
 ) magma_Bits_4_eq_inst9 (
-    .in0(inst[60:57]),
+    .in0(inst[40:37]),
     .in1(const_9_4_out),
     .out(magma_Bits_4_eq_inst9_out)
 );
-assign O = {Mux2xBit_inst4$coreir_commonlib_mux2x1_inst0$_join_out[0],Mux2xBits16_inst22_O_out[15:0]};
+assign O = {Mux2xBit_inst4$coreir_commonlib_mux2x1_inst0$_join_out[0],Mux2xBits16_inst14_O_out[15:0]};
 endmodule
 
 module WrappedPE (
-    input [75:0] inst,
+    input [55:0] inst,
     input [15:0] inputs0,
     input [15:0] inputs1,
     input [15:0] inputs2,
-    input [15:0] inputs3,
+    input inputs3,
     input inputs4,
     input inputs5,
-    input inputs6,
     input clk_en,
     output [15:0] O0,
     output O1,
@@ -27073,9 +26741,8 @@ wire [15:0] PE_inst0$self_O0_in;
 wire [15:0] PE_inst0$self_inputs0_out;
 wire [15:0] PE_inst0$self_inputs1_out;
 wire [15:0] PE_inst0$self_inputs2_out;
-wire [15:0] PE_inst0$self_inputs3_out;
-wire [66:0] PE_inst0$PE_gen_inst0_inputs;
-assign PE_inst0$PE_gen_inst0_inputs = {inputs6,inputs5,inputs4,PE_inst0$self_inputs3_out[15:0],PE_inst0$self_inputs2_out[15:0],PE_inst0$self_inputs1_out[15:0],PE_inst0$self_inputs0_out[15:0]};
+wire [50:0] PE_inst0$PE_gen_inst0_inputs;
+assign PE_inst0$PE_gen_inst0_inputs = {inputs5,inputs4,inputs3,PE_inst0$self_inputs2_out[15:0],PE_inst0$self_inputs1_out[15:0],PE_inst0$self_inputs0_out[15:0]};
 PE_gen PE_inst0$PE_gen_inst0 (
     .inst(inst),
     .inputs(PE_inst0$PE_gen_inst0_inputs),
@@ -27100,10 +26767,6 @@ mantle_wire__typeBit16 PE_inst0$self_inputs2 (
     .in(inputs2),
     .out(PE_inst0$self_inputs2_out)
 );
-mantle_wire__typeBit16 PE_inst0$self_inputs3 (
-    .in(inputs3),
-    .out(PE_inst0$self_inputs3_out)
-);
 assign O0 = PE_inst0$self_O0_in;
 assign O1 = PE_inst0$PE_gen_inst0_O[16];
 endmodule
@@ -27117,10 +26780,9 @@ module PE_unq1 (
     input [15:0] inputs0,
     input [15:0] inputs1,
     input [15:0] inputs2,
-    input [15:0] inputs3,
+    input [0:0] inputs3,
     input [0:0] inputs4,
     input [0:0] inputs5,
-    input [0:0] inputs6,
     output [15:0] pe_outputs_0,
     output [0:0] pe_outputs_1,
     output [31:0] read_config_data,
@@ -27128,45 +26790,37 @@ module PE_unq1 (
     input [0:0] stall
 );
 wire [0:0] Invert1_inst0_out;
-wire [31:0] MuxWrapper_3_32_inst0$Mux3x32_inst0$coreir_commonlib_mux3x32_inst0_out;
-wire [1:0] MuxWrapper_3_32_inst0_S_in;
+wire [31:0] MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
 wire [15:0] WrappedPE_inst0_O0;
 wire WrappedPE_inst0_O1;
 wire [31:0] config_reg_0_O;
 wire [31:0] config_reg_1_O;
-wire [31:0] config_reg_2_O;
 wire [31:0] inst_0_inst0_O;
 wire [31:0] inst_1_inst0_O;
-wire [31:0] inst_2_inst0_O;
-wire [7:0] self_config_config_addr_out;
 coreir_not #(
     .width(1)
 ) Invert1_inst0 (
     .in(stall),
     .out(Invert1_inst0_out)
 );
-commonlib_muxn__N3__width32 MuxWrapper_3_32_inst0$Mux3x32_inst0$coreir_commonlib_mux3x32_inst0 (
-    .in_data_0(config_reg_0_O),
-    .in_data_1(config_reg_1_O),
-    .in_data_2(config_reg_2_O),
-    .in_sel(MuxWrapper_3_32_inst0_S_in),
-    .out(MuxWrapper_3_32_inst0$Mux3x32_inst0$coreir_commonlib_mux3x32_inst0_out)
+coreir_mux #(
+    .width(32)
+) MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join (
+    .in0(config_reg_0_O),
+    .in1(config_reg_1_O),
+    .sel(config_config_addr[0]),
+    .out(MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out)
 );
-mantle_wire__typeBitIn2 MuxWrapper_3_32_inst0_S (
-    .in(MuxWrapper_3_32_inst0_S_in),
-    .out(self_config_config_addr_out[1:0])
-);
-wire [75:0] WrappedPE_inst0_inst;
-assign WrappedPE_inst0_inst = {inst_2_inst0_O[11:0],inst_1_inst0_O[31:0],inst_0_inst0_O[31:0]};
+wire [55:0] WrappedPE_inst0_inst;
+assign WrappedPE_inst0_inst = {inst_1_inst0_O[23:0],inst_0_inst0_O[31:0]};
 WrappedPE WrappedPE_inst0 (
     .inst(WrappedPE_inst0_inst),
     .inputs0(inputs0),
     .inputs1(inputs1),
     .inputs2(inputs2),
-    .inputs3(inputs3),
+    .inputs3(inputs3[0]),
     .inputs4(inputs4[0]),
     .inputs5(inputs5[0]),
-    .inputs6(inputs6[0]),
     .clk_en(Invert1_inst0_out[0]),
     .O0(WrappedPE_inst0_O0),
     .O1(WrappedPE_inst0_O1),
@@ -27189,14 +26843,6 @@ ConfigRegister_32_8_32_1 config_reg_1 (
     .config_data(config_config_data),
     .config_en(config_write[0])
 );
-ConfigRegister_32_8_32_2 config_reg_2 (
-    .clk(clk),
-    .reset(reset),
-    .O(config_reg_2_O),
-    .config_addr(config_config_addr),
-    .config_data(config_config_data),
-    .config_en(config_write[0])
-);
 inst_0 inst_0_inst0 (
     .I(config_reg_0_O),
     .O(inst_0_inst0_O)
@@ -27205,17 +26851,9 @@ inst_1 inst_1_inst0 (
     .I(config_reg_1_O),
     .O(inst_1_inst0_O)
 );
-inst_2 inst_2_inst0 (
-    .I(config_reg_2_O),
-    .O(inst_2_inst0_O)
-);
-mantle_wire__typeBit8 self_config_config_addr (
-    .in(config_config_addr),
-    .out(self_config_config_addr_out)
-);
 assign pe_outputs_0 = WrappedPE_inst0_O0;
 assign pe_outputs_1 = WrappedPE_inst0_O1;
-assign read_config_data = MuxWrapper_3_32_inst0$Mux3x32_inst0$coreir_commonlib_mux3x32_inst0_out;
+assign read_config_data = MuxWrapper_2_32_inst0$Mux2x32_inst0$coreir_commonlib_mux2x32_inst0$_join_out;
 endmodule
 
 module Tile_PE (
@@ -27331,7 +26969,7 @@ wire [7:0] CB_inputs1_config_config_addr_in;
 wire [15:0] CB_inputs2_O;
 wire [31:0] CB_inputs2_read_config_data;
 wire [7:0] CB_inputs2_config_config_addr_in;
-wire [15:0] CB_inputs3_O;
+wire [0:0] CB_inputs3_O;
 wire [31:0] CB_inputs3_read_config_data;
 wire [7:0] CB_inputs3_config_config_addr_in;
 wire [0:0] CB_inputs4_O;
@@ -27340,9 +26978,6 @@ wire [7:0] CB_inputs4_config_config_addr_in;
 wire [0:0] CB_inputs5_O;
 wire [31:0] CB_inputs5_read_config_data;
 wire [7:0] CB_inputs5_config_config_addr_in;
-wire [0:0] CB_inputs6_O;
-wire [31:0] CB_inputs6_read_config_data;
-wire [7:0] CB_inputs6_config_config_addr_in;
 wire DECODE_FEATURE_0_O;
 wire DECODE_FEATURE_1_O;
 wire DECODE_FEATURE_2_O;
@@ -27352,7 +26987,6 @@ wire DECODE_FEATURE_5_O;
 wire DECODE_FEATURE_6_O;
 wire DECODE_FEATURE_7_O;
 wire DECODE_FEATURE_8_O;
-wire DECODE_FEATURE_9_O;
 wire FEATURE_AND_0_out;
 wire FEATURE_AND_1_out;
 wire FEATURE_AND_2_out;
@@ -27362,7 +26996,6 @@ wire FEATURE_AND_5_out;
 wire FEATURE_AND_6_out;
 wire FEATURE_AND_7_out;
 wire FEATURE_AND_8_out;
-wire FEATURE_AND_9_out;
 wire [15:0] PE_inst0_pe_outputs_0;
 wire [0:0] PE_inst0_pe_outputs_1;
 wire [31:0] PE_inst0_read_config_data;
@@ -27563,26 +27196,26 @@ mantle_wire__typeBitIn8 CB_inputs2_config_config_addr (
     .out(self_config_config_addr_out[31:24])
 );
 CB_inputs3 CB_inputs3 (
-    .I_0(WIRE_SB_T0_NORTH_SB_IN_B16_O),
-    .I_1(WIRE_SB_T0_SOUTH_SB_IN_B16_O),
-    .I_10(WIRE_SB_T2_EAST_SB_IN_B16_O),
-    .I_11(WIRE_SB_T2_WEST_SB_IN_B16_O),
-    .I_12(WIRE_SB_T3_NORTH_SB_IN_B16_O),
-    .I_13(WIRE_SB_T3_SOUTH_SB_IN_B16_O),
-    .I_14(WIRE_SB_T3_EAST_SB_IN_B16_O),
-    .I_15(WIRE_SB_T3_WEST_SB_IN_B16_O),
-    .I_16(WIRE_SB_T4_NORTH_SB_IN_B16_O),
-    .I_17(WIRE_SB_T4_SOUTH_SB_IN_B16_O),
-    .I_18(WIRE_SB_T4_EAST_SB_IN_B16_O),
-    .I_19(WIRE_SB_T4_WEST_SB_IN_B16_O),
-    .I_2(WIRE_SB_T0_EAST_SB_IN_B16_O),
-    .I_3(WIRE_SB_T0_WEST_SB_IN_B16_O),
-    .I_4(WIRE_SB_T1_NORTH_SB_IN_B16_O),
-    .I_5(WIRE_SB_T1_SOUTH_SB_IN_B16_O),
-    .I_6(WIRE_SB_T1_EAST_SB_IN_B16_O),
-    .I_7(WIRE_SB_T1_WEST_SB_IN_B16_O),
-    .I_8(WIRE_SB_T2_NORTH_SB_IN_B16_O),
-    .I_9(WIRE_SB_T2_SOUTH_SB_IN_B16_O),
+    .I_0(WIRE_SB_T0_NORTH_SB_IN_B1_O),
+    .I_1(WIRE_SB_T0_SOUTH_SB_IN_B1_O),
+    .I_10(WIRE_SB_T2_EAST_SB_IN_B1_O),
+    .I_11(WIRE_SB_T2_WEST_SB_IN_B1_O),
+    .I_12(WIRE_SB_T3_NORTH_SB_IN_B1_O),
+    .I_13(WIRE_SB_T3_SOUTH_SB_IN_B1_O),
+    .I_14(WIRE_SB_T3_EAST_SB_IN_B1_O),
+    .I_15(WIRE_SB_T3_WEST_SB_IN_B1_O),
+    .I_16(WIRE_SB_T4_NORTH_SB_IN_B1_O),
+    .I_17(WIRE_SB_T4_SOUTH_SB_IN_B1_O),
+    .I_18(WIRE_SB_T4_EAST_SB_IN_B1_O),
+    .I_19(WIRE_SB_T4_WEST_SB_IN_B1_O),
+    .I_2(WIRE_SB_T0_EAST_SB_IN_B1_O),
+    .I_3(WIRE_SB_T0_WEST_SB_IN_B1_O),
+    .I_4(WIRE_SB_T1_NORTH_SB_IN_B1_O),
+    .I_5(WIRE_SB_T1_SOUTH_SB_IN_B1_O),
+    .I_6(WIRE_SB_T1_EAST_SB_IN_B1_O),
+    .I_7(WIRE_SB_T1_WEST_SB_IN_B1_O),
+    .I_8(WIRE_SB_T2_NORTH_SB_IN_B1_O),
+    .I_9(WIRE_SB_T2_SOUTH_SB_IN_B1_O),
     .O(CB_inputs3_O),
     .clk(clk),
     .config_config_addr(CB_inputs3_config_config_addr_in),
@@ -27664,40 +27297,6 @@ mantle_wire__typeBitIn8 CB_inputs5_config_config_addr (
     .in(CB_inputs5_config_config_addr_in),
     .out(self_config_config_addr_out[31:24])
 );
-CB_inputs6 CB_inputs6 (
-    .I_0(WIRE_SB_T0_NORTH_SB_IN_B1_O),
-    .I_1(WIRE_SB_T0_SOUTH_SB_IN_B1_O),
-    .I_10(WIRE_SB_T2_EAST_SB_IN_B1_O),
-    .I_11(WIRE_SB_T2_WEST_SB_IN_B1_O),
-    .I_12(WIRE_SB_T3_NORTH_SB_IN_B1_O),
-    .I_13(WIRE_SB_T3_SOUTH_SB_IN_B1_O),
-    .I_14(WIRE_SB_T3_EAST_SB_IN_B1_O),
-    .I_15(WIRE_SB_T3_WEST_SB_IN_B1_O),
-    .I_16(WIRE_SB_T4_NORTH_SB_IN_B1_O),
-    .I_17(WIRE_SB_T4_SOUTH_SB_IN_B1_O),
-    .I_18(WIRE_SB_T4_EAST_SB_IN_B1_O),
-    .I_19(WIRE_SB_T4_WEST_SB_IN_B1_O),
-    .I_2(WIRE_SB_T0_EAST_SB_IN_B1_O),
-    .I_3(WIRE_SB_T0_WEST_SB_IN_B1_O),
-    .I_4(WIRE_SB_T1_NORTH_SB_IN_B1_O),
-    .I_5(WIRE_SB_T1_SOUTH_SB_IN_B1_O),
-    .I_6(WIRE_SB_T1_EAST_SB_IN_B1_O),
-    .I_7(WIRE_SB_T1_WEST_SB_IN_B1_O),
-    .I_8(WIRE_SB_T2_NORTH_SB_IN_B1_O),
-    .I_9(WIRE_SB_T2_SOUTH_SB_IN_B1_O),
-    .O(CB_inputs6_O),
-    .clk(clk),
-    .config_config_addr(CB_inputs6_config_config_addr_in),
-    .config_config_data(config_config_data),
-    .config_read(config_read),
-    .config_write(FEATURE_AND_7_out),
-    .read_config_data(CB_inputs6_read_config_data),
-    .reset(reset)
-);
-mantle_wire__typeBitIn8 CB_inputs6_config_config_addr (
-    .in(CB_inputs6_config_config_addr_in),
-    .out(self_config_config_addr_out[31:24])
-);
 Decode08 DECODE_FEATURE_0 (
     .I(self_config_config_addr_out[23:16]),
     .O(DECODE_FEATURE_0_O)
@@ -27733,10 +27332,6 @@ Decode78 DECODE_FEATURE_7 (
 Decode88 DECODE_FEATURE_8 (
     .I(self_config_config_addr_out[23:16]),
     .O(DECODE_FEATURE_8_O)
-);
-Decode98 DECODE_FEATURE_9 (
-    .I(self_config_config_addr_out[23:16]),
-    .O(DECODE_FEATURE_9_O)
 );
 corebit_and FEATURE_AND_0 (
     .in0(DECODE_FEATURE_0_O),
@@ -27783,11 +27378,6 @@ corebit_and FEATURE_AND_8 (
     .in1(and_inst1_out),
     .out(FEATURE_AND_8_out)
 );
-corebit_and FEATURE_AND_9 (
-    .in0(DECODE_FEATURE_9_O),
-    .in1(and_inst1_out),
-    .out(FEATURE_AND_9_out)
-);
 PE_unq1 PE_inst0 (
     .clk(clk),
     .config_config_addr(PE_inst0_config_config_addr_in),
@@ -27800,7 +27390,6 @@ PE_unq1 PE_inst0 (
     .inputs3(CB_inputs3_O),
     .inputs4(CB_inputs4_O),
     .inputs5(CB_inputs5_O),
-    .inputs6(CB_inputs6_O),
     .pe_outputs_0(PE_inst0_pe_outputs_0),
     .pe_outputs_1(PE_inst0_pe_outputs_1),
     .read_config_data(PE_inst0_read_config_data),
@@ -27856,7 +27445,7 @@ SB_ID0_5TRACKS_B16_PE SB_ID0_5TRACKS_B16_PE (
     .config_config_addr(SB_ID0_5TRACKS_B16_PE_config_config_addr_in),
     .config_config_data(config_config_data),
     .config_read(config_read),
-    .config_write(FEATURE_AND_9_out),
+    .config_write(FEATURE_AND_8_out),
     .pe_outputs_0(PE_inst0_pe_outputs_0),
     .read_config_data(SB_ID0_5TRACKS_B16_PE_read_config_data),
     .reset(reset),
@@ -27911,7 +27500,7 @@ SB_ID0_5TRACKS_B1_PE SB_ID0_5TRACKS_B1_PE (
     .config_config_addr(SB_ID0_5TRACKS_B1_PE_config_config_addr_in),
     .config_config_data(config_config_data),
     .config_read(config_read),
-    .config_write(FEATURE_AND_8_out),
+    .config_write(FEATURE_AND_7_out),
     .pe_outputs_1(PE_inst0_pe_outputs_1),
     .read_config_data(SB_ID0_5TRACKS_B1_PE_read_config_data),
     .reset(reset),
@@ -28117,7 +27706,7 @@ coreir_or #(
     .in1(read_config_data_in),
     .out(read_config_data_or_inst0_out)
 );
-MuxWithDefaultWrapper_10_32_8_0 read_data_mux (
+MuxWithDefaultWrapper_9_32_8_0 read_data_mux (
     .EN(and_inst0_out),
     .I_0(PE_inst0_read_config_data),
     .I_1(CB_inputs0_read_config_data),
@@ -28126,9 +27715,8 @@ MuxWithDefaultWrapper_10_32_8_0 read_data_mux (
     .I_4(CB_inputs3_read_config_data),
     .I_5(CB_inputs4_read_config_data),
     .I_6(CB_inputs5_read_config_data),
-    .I_7(CB_inputs6_read_config_data),
-    .I_8(SB_ID0_5TRACKS_B1_PE_read_config_data),
-    .I_9(SB_ID0_5TRACKS_B16_PE_read_config_data),
+    .I_7(SB_ID0_5TRACKS_B1_PE_read_config_data),
+    .I_8(SB_ID0_5TRACKS_B16_PE_read_config_data),
     .O(read_data_mux_O),
     .S(read_data_mux_S_in)
 );
