@@ -30,6 +30,7 @@ cd ${home}
 results_dir=../micro-2021/pe-dse-power/micro2021/results/${2}/${APP}/${CLK}
 mkdir -p ${results_dir}
 cp mflowgen/${build_dir}/Tile_PE/*-application/outputs/*.list ${results_dir}
+cp mflowgen/${build_dir}/*/*-synopsys-dc-synthesis/reports/*.mapped.area.rpt ${results_dir}
 for t in Tile_PE Tile_MemCore; do
     mkdir -p ${results_dir}/${t}
     cp mflowgen/${build_dir}/${t}/*-post-synth-power/outputs/reports/* ${results_dir}/${t}
