@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export APP=$1
-export DSE_PE=${APP}_$2
+export DSE_PE=${APP}_$2_dg
 export CLK=1c1
 
 home=$PWD
