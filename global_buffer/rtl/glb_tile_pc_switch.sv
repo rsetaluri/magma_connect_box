@@ -34,7 +34,7 @@ import global_buffer_param::*;
 );
 assign cgra_cfg_pc_esto = 0;
 always_comb begin
-    cgra_cfg_jtag_esto == cgra_cfg_jtag_wsti;
+    cgra_cfg_jtag_esto = cgra_cfg_jtag_wsti;
     cgra_cfg_jtag_esto_rd_en_bypass = cgra_cfg_jtag_wsti_rd_en_bypass;
     cgra_cfg_jtag_esto_addr_bypass = cgra_cfg_jtag_wsti_addr_bypass;
 end
