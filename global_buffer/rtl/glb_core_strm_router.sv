@@ -46,8 +46,20 @@ always_ff @(posedge clk or posedge reset) begin
         packet_e2w_esti_d1 <= '0;
     end
     else if (clk_en) begin
-        packet_w2e_wsti_d1 <= packet_w2e_wsti;
-        packet_e2w_esti_d1 <= packet_e2w_esti;
+        // Correct version
+        // packet_w2e_wsti_d1 <= packet_w2e_wsti;
+        // packet_e2w_esti_d1 <= packet_e2w_esti;
+
+        // Amber version
+        packet_w2e_wsti_d1.rdrq <= packet_w2e_wsti.rdrq;
+        packet_e2w_esti_d1.rdrq <= packet_e2w_esti.rdrq;
+        packet_w2e_wsti_d1.rdrs <= packet_w2e_wsti.rdrs;
+        packet_e2w_esti_d1.rdrs <= packet_e2w_esti.rdrs;
+        packet_w2e_wsti_d1.wr <= packet_w2e_wsti.wr;
+        packet_e2w_esti_d1.wr <= packet_e2w_esti.wr;
+        // wr_strb is always connected to 0 (AON buffer)
+        packet_w2e_wsti_d1.wr.wr_strb <= '0;
+        packet_e2w_esti_d1.wr.wr_strb <= '0;
     end
 end
 
