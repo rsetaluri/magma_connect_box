@@ -65,7 +65,10 @@ always_comb begin
     end
 end
 assign rdrq_packet.rd_en = rd_en_internal;
-assign rdrq_packet.rd_addr = rd_addr_internal;
+// Correct version
+// assign rdrq_packet.rd_addr = rd_addr_internal;
+// Amber version
+assign rdrq_packet.rd_addr = {rd_addr_internal[GLB_ADDR_WIDTH-1:10], 1'b0, rd_addr_internal[8:0]};
 // assign rdrq_packet.packet_sel.packet_type = PSEL_PCFG;
 // assign rdrq_packet.packet_sel.src = glb_tile_id;
 assign cgra_cfg_c2sw.cfg_rd_en = 0;

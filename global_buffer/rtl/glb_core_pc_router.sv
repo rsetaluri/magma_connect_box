@@ -78,8 +78,16 @@ end
 //============================================================================//
 // packet switch
 //============================================================================//
-assign packet_pcr2sw_int = (is_even == 1'b1)
-                        ? packet_w2e_wsti_turned : packet_e2w_esti_turned;
+// Correct version
+// assign packet_pcr2sw_int = (is_even == 1'b1)
+//                         ? packet_w2e_wsti_turned : packet_e2w_esti_turned;
+// Amber version
+always_comb begin
+    packet_pcr2sw_int = (is_even == 1'b1) ? packet_w2e_wsti_turned : packet_e2w_esti_turned;
+    // rd_addr is connected to 0 (AON buffer)
+    packet_pcr2sw_int.rdrq.rd_addr = '0;
+end
+
 assign packet_w2e_esto_int = (is_even == 1'b1)
                        ? packet_sw2pcr_d1 : packet_w2e_wsti_turned_d1;
 assign packet_e2w_wsto_int = (is_even == 1'b0)
