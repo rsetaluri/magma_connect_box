@@ -87,10 +87,12 @@ def create_testbench(design, inputs, outputs, input_widths, output_widths, num_t
 
     tb = open("testbench.sv", "w")
 
+    clock_period = float(os.environ.get("clock_period"))
+
     # write defines
     tb.write(f'`timescale 1ns/1ps\n')
     tb.write(f'`define NUM_TEST_VECTORS {num_test_vectors}\n')
-    tb.write(f'`define ASSIGNMENT_DELAY 0.2 \n')
+    tb.write(f'`define ASSIGNMENT_DELAY {0.2*clock_period:.2f}\n')
     tb.write(f'\n')
 
     input_base = 0

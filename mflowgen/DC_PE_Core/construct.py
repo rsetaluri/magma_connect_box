@@ -59,7 +59,7 @@ def construct():
   parameters = {
     'construct_path'    : __file__,
     'design_name'       : design_name,
-    'clock_period'      : 0.7,
+    'clock_period'      : 1.1,
     'adk'               : adk_name,
     'adk_view'          : adk_view,
     # Synthesis
