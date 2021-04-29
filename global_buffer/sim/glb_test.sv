@@ -296,7 +296,7 @@ program glb_test
             // for (int i=0; i<NUM_GLB_TILES; i=i+1) begin
             for (int i=0; i<1; i=i+1) begin
                 fd = $fopen("glb.regpair", "r");
-                $fscanf(fd, "%d", num);
+                status = $fscanf(fd, "%d", num);
                 // for (int j=0; j<num; j++) begin
                 for (int j=0; j<3; j++) begin
                     status = $fscanf(fd, "%h %d", glb_cfg_addr, glb_cfg_data);
@@ -389,12 +389,12 @@ program glb_test
             empty_queues();
 
             fd = $fopen("glb.test.bs", "r");
-            $fscanf(fd, "%d", num);
+            status = $fscanf(fd, "%d", num);
             cfg_addr_arr = new [num];
             cfg_data_arr = new [num];
             data64_arr = new [num];
             for (int i=0; i<num; i++) begin
-                $fscanf(fd, "%d %d", cfg_addr, cfg_data);
+                status = $fscanf(fd, "%d %d", cfg_addr, cfg_data);
                 cfg_addr_arr[i] = cfg_addr;
                 cfg_data_arr[i] = cfg_data;
                 data64_arr[i] = (cfg_addr << 32) | cfg_data;
