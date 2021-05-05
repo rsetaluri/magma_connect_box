@@ -11,35 +11,6 @@ class MyProcTransaction extends ProcTransaction;
     bit [BANK_DATA_WIDTH-1:0] data_internal [];
     int length_internal;
 
-    // constraint rd_en_c {
-    //     rd_en == is_read;
-    // }
-
-    // constraint addr_c {
-    //     solve wr_en before wr_addr;
-    //     solve rd_en before rd_addr;
-    //     length == length_internal;
-    //     if (wr_en) {
-    //         wr_addr == addr_internal;
-    //         rd_addr == 0;
-    //     } else {
-    //         wr_addr == 0;
-    //         wr_data.size() == 0;
-    //         rd_addr == addr_internal;
-    //     }
-    // }
-
-    // constraint data_c {
-    //     solve wr_en before wr_addr;
-    //     solve rd_en before rd_addr;
-    //     length == length_internal;
-    //     if (wr_en) {
-    //         wr_strb.size() == length;
-    //         wr_data == data_internal;
-    //         foreach(wr_strb[i]) wr_strb[i] == 8'hFF;
-    //     }
-    // }
-
     function new(bit[GLB_ADDR_WIDTH-1:0] addr=0, int length=128, bit is_read=0, bit[BANK_DATA_WIDTH-1:0] data []= {});
         this.length = length;
         if (is_read) begin
@@ -385,7 +356,7 @@ program glb_test
         //=============================================================================
         // parallel config tile 0, read tile 0
         //=============================================================================
-        if ($test$plusargs("TEST_PCFG")) begin
+        if ($test$plusargs("TEST_PCFG_NORMAL")) begin
             empty_queues();
 
             fd = $fopen("glb.test.bs", "r");
@@ -438,6 +409,65 @@ program glb_test
             // end
 
             repeat(30) @(posedge clk);
+        end
+
+        //=============================================================================
+        // parallel config tile 0, read tile 0
+        //=============================================================================
+        if ($test$plusargs("TEST_PCFG_BUG")) begin
+            empty_queues();
+
+            fd = $fopen("glb.test.bs", "r");
+            status = $fscanf(fd, "%d", num);
+            cfg_addr_arr = new [num];
+            cfg_data_arr = new [num];
+            data64_arr = new [num];
+            for (int i=0; i<num; i++) begin
+                status = $fscanf(fd, "%d %d", cfg_addr, cfg_data);
+                cfg_addr_arr[i] = cfg_addr;
+                cfg_data_arr[i] = cfg_data;
+                data64_arr[i] = (cfg_addr << 32) | cfg_data;
+            end
+            $fclose(fd);
+
+            r_trans_q[r_cnt++] = new((0 << 8) + addr_dic["TILE_CTRL"], (1 << 10));
+            r_trans_q[r_cnt++] = new((0 << 8) + addr_dic["LATENCY"], 'h4);
+            r_trans_q[r_cnt++] = new((0 << 8) + addr_dic["PC_DMA_HEADER_0_START_ADDR"], (1<<9));
+            r_trans_q[r_cnt++] = new((0 << 8) + addr_dic["PC_DMA_HEADER_0_NUM_CFG"], num);
+
+            p_trans_q[p_cnt++] = new((1<<9), num, 0, data64_arr);
+
+            foreach(p_trans_q[i]) begin
+                seq.add(p_trans_q[i]);
+            end
+            foreach(r_trans_q[i]) begin
+                seq.add(r_trans_q[i]);
+            end
+
+            env = new(seq, p_ifc, r_ifc, s_ifc, m_ifc);
+            env.build();
+            env.run();
+
+            repeat(10) @(posedge clk);
+            #300ps top.pc_start_pulse[0] <= 1;
+            @(posedge clk);
+            #300ps top.pc_start_pulse[0] <= 0;
+
+            repeat(50) @(posedge clk);
+            while(1) begin
+                @(posedge clk);
+                if (top.pcfg_g2f_interrupt_pulse[0]) begin
+                    break;
+                end
+            end
+
+            repeat(50) @(posedge clk);
+            for (int i=0; i<num; i++) begin
+                cfg_addr = cfg_addr_arr[i];
+                cfg_data = cfg_data_arr[i];
+                jtag_read(cfg_addr, cfg_data);
+            end
+
         end
 
         // //=============================================================================
@@ -561,10 +591,10 @@ program glb_test
                 while (1) begin
                     @(posedge clk);
                     if (top.cgra_cfg_rd_data_valid) begin
-                        if (data != top.cgra_cfg_rd_data) begin
+                        if (data !== top.cgra_cfg_rd_data) begin
                             $error("[JTAG-FAIL] #JTAG addr: 0x%0h, data expected: 0x%0h, data real: 0x%0h", addr, data, top.cgra_cfg_rd_data);
                         end
-                        $display("[JTAG-RD] @%0t: addr: 0x%0h, data: 0x%0h", $time, addr, data);
+                        $display("[JTAG-RD] @%0t: addr: %0d, data: %0d", $time, addr, data);
                         break;
                     end
                 end
