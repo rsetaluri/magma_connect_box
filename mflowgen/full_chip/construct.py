@@ -27,8 +27,8 @@ def sr_override_parms(parmdict):
         parm=e[23:99]
         print(f'+++ FOUND MFLOWGEN PARAMETER OVERRIDE "{parm}={os.environ[e]}"')
         parmdict[e]=os.environ[e]
-return(parmdict)
-      
+  return(parmdict)
+
 
 def construct():
 
