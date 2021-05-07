@@ -19,7 +19,7 @@ steps:
     commands:
     - '$$SETUP_BK 1G;
        mflowgen run --design $$GARNET_HOME/mflowgen/full_chip;
-       grep slack .mflowgen/*postroute_hold/mflowgen-run;'
+       grep slack .mflowgen/*postroute_hold/mflowgen-run;
        grep slack .mflowgen/*postroute_hold/configure.yml'
   - wait: ~
 
