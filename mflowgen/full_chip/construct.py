@@ -26,7 +26,11 @@ def sr_override_parms(parmdict):
       if e[0:22]=="MFLOWGEN_PARM_OVERRIDE":
         parm=e[23:99]
         print(f'+++ FOUND MFLOWGEN PARAMETER OVERRIDE "{parm}={os.environ[e]}"')
+        print(f'BEFOR: parmdict["hold_target_slack"]={parmdict["hold_target_slack"]}')
         parmdict[e]=os.environ[e]
+  print(f'AFTER: parmdict["hold_target_slack"]={parmdict["hold_target_slack"]}')
+
+
   return(parmdict)
 
 
@@ -470,6 +474,7 @@ def construct():
 
   # Allow user to override parms with env in a limited sort of way
   parameters = sr_override_parms( parameters )
+  print(f'parameters["hold_target_slack"]={parameters["hold_target_slack"]}')
   g.update_params( parameters )
 
   # Since we are adding an additional input script to the generic Innovus
