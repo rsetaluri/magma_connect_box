@@ -1,0 +1,1563 @@
+Net ID: e1 Segment Size: 10
+Segment: 0 Size: 6
+PORT io2f_1 (2, 0, 1)
+SB (0, 2, 1, 3, 0, 1)
+SB (1, 2, 1, 0, 1, 1)
+RMUX 0_1 (2, 1, 1)
+SB (1, 3, 1, 2, 0, 1)
+PORT flush (3, 1, 1)
+Segment: 1 Size: 5
+SB (1, 3, 1, 2, 0, 1)
+SB (0, 3, 1, 1, 1, 1)
+RMUX 1_0 (3, 1, 1)
+SB (0, 3, 2, 3, 0, 1)
+PORT flush (3, 2, 1)
+Segment: 2 Size: 20
+SB (0, 3, 2, 3, 0, 1)
+SB (0, 3, 2, 1, 1, 1)
+RMUX 1_0 (3, 2, 1)
+SB (0, 3, 3, 3, 0, 1)
+SB (0, 3, 3, 1, 1, 1)
+RMUX 1_0 (3, 3, 1)
+SB (0, 3, 4, 3, 0, 1)
+SB (0, 3, 4, 1, 1, 1)
+RMUX 1_0 (3, 4, 1)
+SB (0, 3, 5, 3, 0, 1)
+SB (0, 3, 5, 1, 1, 1)
+RMUX 1_0 (3, 5, 1)
+SB (0, 3, 6, 3, 0, 1)
+SB (0, 3, 6, 1, 1, 1)
+RMUX 1_0 (3, 6, 1)
+SB (0, 3, 7, 3, 0, 1)
+SB (0, 3, 7, 1, 1, 1)
+RMUX 1_0 (3, 7, 1)
+SB (0, 3, 8, 3, 0, 1)
+PORT flush (3, 8, 1)
+Segment: 3 Size: 5
+SB (0, 11, 10, 3, 0, 1)
+SB (0, 11, 10, 1, 1, 1)
+RMUX 1_0 (11, 10, 1)
+SB (0, 11, 11, 3, 0, 1)
+PORT flush (11, 11, 1)
+Segment: 4 Size: 5
+SB (1, 11, 9, 2, 0, 1)
+SB (0, 11, 9, 1, 1, 1)
+RMUX 1_0 (11, 9, 1)
+SB (0, 11, 10, 3, 0, 1)
+PORT flush (11, 10, 1)
+Segment: 5 Size: 17
+SB (1, 7, 8, 2, 0, 1)
+SB (0, 7, 8, 1, 1, 1)
+RMUX 1_0 (7, 8, 1)
+SB (0, 7, 9, 3, 0, 1)
+SB (1, 7, 9, 0, 1, 1)
+RMUX 0_1 (7, 9, 1)
+SB (1, 8, 9, 2, 0, 1)
+SB (1, 8, 9, 0, 1, 1)
+RMUX 0_1 (8, 9, 1)
+SB (1, 9, 9, 2, 0, 1)
+SB (1, 9, 9, 0, 1, 1)
+RMUX 0_1 (9, 9, 1)
+SB (1, 10, 9, 2, 0, 1)
+SB (1, 10, 9, 0, 1, 1)
+RMUX 0_1 (10, 9, 1)
+SB (1, 11, 9, 2, 0, 1)
+PORT flush (11, 9, 1)
+Segment: 6 Size: 8
+SB (0, 11, 11, 3, 0, 1)
+SB (0, 11, 11, 1, 1, 1)
+RMUX 1_0 (11, 11, 1)
+SB (0, 11, 12, 3, 0, 1)
+SB (0, 11, 12, 1, 1, 1)
+RMUX 1_0 (11, 12, 1)
+SB (0, 11, 13, 3, 0, 1)
+PORT flush (11, 13, 1)
+Segment: 7 Size: 5
+SB (0, 11, 13, 3, 0, 1)
+SB (0, 11, 13, 1, 1, 1)
+RMUX 1_0 (11, 13, 1)
+SB (0, 11, 14, 3, 0, 1)
+PORT flush (11, 14, 1)
+Segment: 8 Size: 14
+SB (0, 11, 14, 3, 0, 1)
+SB (1, 11, 14, 0, 1, 1)
+RMUX 0_1 (11, 14, 1)
+SB (1, 12, 14, 2, 0, 1)
+SB (1, 12, 14, 0, 1, 1)
+RMUX 0_1 (12, 14, 1)
+SB (1, 13, 14, 2, 0, 1)
+SB (1, 13, 14, 0, 1, 1)
+RMUX 0_1 (13, 14, 1)
+SB (1, 14, 14, 2, 0, 1)
+SB (1, 14, 14, 0, 1, 1)
+RMUX 0_1 (14, 14, 1)
+SB (1, 15, 14, 2, 0, 1)
+PORT flush (15, 14, 1)
+Segment: 9 Size: 14
+SB (0, 3, 8, 3, 0, 1)
+SB (1, 3, 8, 0, 1, 1)
+RMUX 0_1 (3, 8, 1)
+SB (1, 4, 8, 2, 0, 1)
+SB (1, 4, 8, 0, 1, 1)
+RMUX 0_1 (4, 8, 1)
+SB (1, 5, 8, 2, 0, 1)
+SB (1, 5, 8, 0, 1, 1)
+RMUX 0_1 (5, 8, 1)
+SB (1, 6, 8, 2, 0, 1)
+SB (1, 6, 8, 0, 1, 1)
+RMUX 0_1 (6, 8, 1)
+SB (1, 7, 8, 2, 0, 1)
+PORT flush (7, 8, 1)
+
+Net ID: e12 Segment Size: 1
+Segment: 0 Size: 16
+PORT stencil_valid (3, 2, 1)
+SB (1, 3, 2, 2, 1, 1)
+RMUX 2_1 (3, 2, 1)
+SB (1, 2, 2, 0, 0, 1)
+SB (1, 2, 2, 2, 1, 1)
+RMUX 2_1 (2, 2, 1)
+SB (1, 1, 2, 0, 0, 1)
+SB (1, 1, 2, 2, 1, 1)
+RMUX 2_1 (1, 2, 1)
+SB (1, 0, 2, 0, 0, 1)
+SB (0, 0, 2, 3, 1, 1)
+RMUX 3_0 (0, 2, 1)
+SB (0, 0, 1, 1, 0, 1)
+SB (0, 0, 1, 3, 1, 1)
+RMUX 3_0 (0, 1, 1)
+PORT f2io_1 (0, 0, 1)
+
+Net ID: e4 Segment Size: 1
+Segment: 0 Size: 10
+PORT stencil_valid (3, 1, 1)
+SB (1, 3, 1, 2, 1, 1)
+RMUX 2_1 (3, 1, 1)
+SB (1, 2, 1, 0, 0, 1)
+SB (1, 2, 1, 2, 1, 1)
+RMUX 2_1 (2, 1, 1)
+SB (1, 1, 1, 0, 0, 1)
+SB (0, 1, 1, 3, 1, 1)
+RMUX 3_0 (1, 1, 1)
+PORT f2io_1 (1, 0, 1)
+
+Net ID: e100 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 13, 16)
+SB (0, 12, 13, 0, 1, 16)
+RMUX 0_0 (12, 13, 16)
+SB (0, 13, 13, 2, 0, 16)
+PORT inputs3 (13, 13, 16)
+
+Net ID: e102 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (13, 13, 16)
+SB (0, 13, 13, 0, 1, 16)
+RMUX 0_0 (13, 13, 16)
+SB (0, 14, 13, 2, 0, 16)
+SB (0, 14, 13, 0, 1, 16)
+RMUX 0_0 (14, 13, 16)
+SB (0, 15, 13, 2, 0, 16)
+SB (0, 15, 13, 0, 1, 16)
+RMUX 0_0 (15, 13, 16)
+SB (0, 16, 13, 2, 0, 16)
+PORT inputs3 (16, 13, 16)
+
+Net ID: e104 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (16, 13, 16)
+SB (1, 16, 13, 0, 1, 16)
+RMUX 0_1 (16, 13, 16)
+SB (1, 17, 13, 2, 0, 16)
+PORT inputs3 (17, 13, 16)
+
+Net ID: e106 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (17, 13, 16)
+SB (2, 17, 13, 3, 1, 16)
+RMUX 3_2 (17, 13, 16)
+SB (2, 17, 12, 1, 0, 16)
+SB (1, 17, 12, 0, 1, 16)
+RMUX 0_1 (17, 12, 16)
+SB (1, 18, 12, 2, 0, 16)
+PORT inputs2 (18, 12, 16)
+
+Net ID: e108 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (18, 13, 16)
+SB (0, 18, 13, 3, 1, 16)
+RMUX 3_0 (18, 13, 16)
+SB (0, 18, 12, 1, 0, 16)
+PORT inputs3 (18, 12, 16)
+
+Net ID: e110 Segment Size: 2
+Segment: 0 Size: 11
+SB (0, 12, 12, 0, 0, 16)
+SB (0, 12, 12, 2, 1, 16)
+RMUX 2_0 (12, 12, 16)
+SB (0, 11, 12, 0, 0, 16)
+SB (4, 11, 12, 3, 1, 16)
+RMUX 3_4 (11, 12, 16)
+SB (4, 11, 11, 1, 0, 16)
+SB (4, 11, 11, 3, 1, 16)
+RMUX 3_4 (11, 11, 16)
+SB (4, 11, 10, 1, 0, 16)
+PORT data_in_0 (11, 10, 16)
+Segment: 1 Size: 20
+PORT pe_outputs_0 (18, 12, 16)
+SB (0, 18, 12, 2, 1, 16)
+RMUX 2_0 (18, 12, 16)
+SB (0, 17, 12, 0, 0, 16)
+SB (0, 17, 12, 2, 1, 16)
+RMUX 2_0 (17, 12, 16)
+SB (0, 16, 12, 0, 0, 16)
+SB (0, 16, 12, 2, 1, 16)
+RMUX 2_0 (16, 12, 16)
+SB (0, 15, 12, 0, 0, 16)
+SB (0, 15, 12, 2, 1, 16)
+RMUX 2_0 (15, 12, 16)
+SB (0, 14, 12, 0, 0, 16)
+SB (0, 14, 12, 2, 1, 16)
+RMUX 2_0 (14, 12, 16)
+SB (0, 13, 12, 0, 0, 16)
+SB (0, 13, 12, 2, 1, 16)
+RMUX 2_0 (13, 12, 16)
+SB (0, 12, 12, 0, 0, 16)
+PORT inputs3 (12, 12, 16)
+
+Net ID: e116 Segment Size: 3
+Segment: 0 Size: 5
+PORT data_out_0 (11, 10, 16)
+SB (0, 11, 10, 3, 1, 16)
+RMUX 3_0 (11, 10, 16)
+SB (0, 11, 9, 1, 0, 16)
+PORT data_in_0 (11, 9, 16)
+Segment: 1 Size: 11
+SB (1, 12, 10, 2, 0, 16)
+SB (1, 12, 10, 0, 1, 16)
+RMUX 0_1 (12, 10, 16)
+SB (1, 13, 10, 2, 0, 16)
+SB (4, 13, 10, 3, 1, 16)
+RMUX 3_4 (13, 10, 16)
+SB (4, 13, 9, 1, 0, 16)
+SB (0, 13, 9, 2, 1, 16)
+RMUX 2_0 (13, 9, 16)
+SB (0, 12, 9, 0, 0, 16)
+PORT inputs2 (12, 9, 16)
+Segment: 2 Size: 6
+PORT data_out_0 (11, 10, 16)
+SB (1, 11, 10, 0, 1, 16)
+RMUX 0_1 (11, 10, 16)
+SB (1, 12, 10, 2, 0, 16)
+SB (0, 12, 10, 1, 1, 16)
+REG T0_SOUTH (0, 12, 10, 16)
+
+Net ID: e120 Segment Size: 2
+Segment: 0 Size: 5
+PORT data_out_1 (11, 9, 16)
+SB (3, 11, 9, 2, 1, 16)
+RMUX 2_3 (11, 9, 16)
+SB (3, 10, 9, 0, 0, 16)
+PORT inputs2 (10, 9, 16)
+Segment: 1 Size: 6
+PORT data_out_1 (11, 9, 16)
+SB (0, 11, 9, 3, 1, 16)
+RMUX 3_0 (11, 9, 16)
+SB (0, 11, 8, 1, 0, 16)
+SB (1, 11, 8, 2, 1, 16)
+REG T1_WEST (1, 11, 8, 16)
+
+Net ID: e124 Segment Size: 2
+Segment: 0 Size: 11
+PORT data_out_0 (11, 9, 16)
+SB (2, 11, 9, 0, 1, 16)
+RMUX 0_2 (11, 9, 16)
+SB (2, 12, 9, 2, 0, 16)
+SB (3, 12, 9, 3, 1, 16)
+RMUX 3_3 (12, 9, 16)
+SB (3, 12, 8, 1, 0, 16)
+SB (3, 12, 8, 3, 1, 16)
+RMUX 3_3 (12, 8, 16)
+SB (3, 12, 7, 1, 0, 16)
+PORT inputs2 (12, 7, 16)
+Segment: 1 Size: 6
+SB (3, 12, 7, 1, 0, 16)
+SB (0, 12, 7, 0, 1, 16)
+RMUX 0_0 (12, 7, 16)
+SB (0, 13, 7, 2, 0, 16)
+SB (0, 13, 7, 0, 1, 16)
+REG T0_EAST (0, 13, 7, 16)
+
+Net ID: e128 Segment Size: 1
+Segment: 0 Size: 10
+REG T4_EAST (4, 10, 7, 16)
+RMUX 0_4 (10, 7, 16)
+SB (4, 11, 7, 2, 0, 16)
+SB (3, 11, 7, 1, 1, 16)
+RMUX 1_3 (11, 7, 16)
+SB (3, 11, 8, 3, 0, 16)
+SB (2, 11, 8, 2, 1, 16)
+RMUX 2_2 (11, 8, 16)
+SB (2, 10, 8, 0, 0, 16)
+PORT inputs2 (10, 8, 16)
+
+Net ID: e129 Segment Size: 1
+Segment: 0 Size: 4
+REG T4_WEST (4, 13, 8, 16)
+RMUX 2_4 (13, 8, 16)
+SB (4, 12, 8, 0, 0, 16)
+PORT inputs2 (12, 8, 16)
+
+Net ID: e130 Segment Size: 2
+Segment: 0 Size: 10
+REG T4_EAST (4, 13, 10, 16)
+RMUX 0_4 (13, 10, 16)
+SB (4, 14, 10, 2, 0, 16)
+SB (1, 14, 10, 3, 1, 16)
+RMUX 3_1 (14, 10, 16)
+SB (1, 14, 9, 1, 0, 16)
+SB (2, 14, 9, 2, 1, 16)
+RMUX 2_2 (14, 9, 16)
+SB (2, 13, 9, 0, 0, 16)
+PORT inputs2 (13, 9, 16)
+Segment: 1 Size: 12
+SB (2, 13, 9, 0, 0, 16)
+SB (1, 13, 9, 3, 1, 16)
+RMUX 3_1 (13, 9, 16)
+SB (1, 13, 8, 1, 0, 16)
+SB (2, 13, 8, 0, 1, 16)
+RMUX 0_2 (13, 8, 16)
+SB (2, 14, 8, 2, 0, 16)
+SB (1, 14, 8, 1, 1, 16)
+RMUX 1_1 (14, 8, 16)
+SB (1, 14, 9, 3, 0, 16)
+SB (4, 14, 9, 2, 1, 16)
+REG T4_WEST (4, 14, 9, 16)
+
+Net ID: e131 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (13, 9, 16)
+SB (2, 13, 9, 2, 1, 16)
+RMUX 2_2 (13, 9, 16)
+SB (2, 12, 9, 0, 0, 16)
+PORT inputs3 (12, 9, 16)
+
+Net ID: e133 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 9, 16)
+SB (0, 12, 9, 3, 1, 16)
+RMUX 3_0 (12, 9, 16)
+SB (0, 12, 8, 1, 0, 16)
+PORT inputs3 (12, 8, 16)
+
+Net ID: e135 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (12, 8, 16)
+SB (4, 12, 8, 2, 1, 16)
+RMUX 2_4 (12, 8, 16)
+SB (4, 11, 8, 0, 0, 16)
+SB (4, 11, 8, 1, 1, 16)
+RMUX 1_4 (11, 8, 16)
+SB (4, 11, 9, 3, 0, 16)
+SB (1, 11, 9, 2, 1, 16)
+RMUX 2_1 (11, 9, 16)
+SB (1, 10, 9, 0, 0, 16)
+PORT inputs3 (10, 9, 16)
+
+Net ID: e137 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (10, 9, 16)
+SB (1, 10, 9, 1, 1, 16)
+RMUX 1_1 (10, 9, 16)
+SB (1, 10, 10, 3, 0, 16)
+PORT inputs2 (10, 10, 16)
+
+Net ID: e139 Segment Size: 2
+Segment: 0 Size: 4
+REG T2_SOUTH (2, 9, 8, 16)
+RMUX 1_2 (9, 8, 16)
+SB (2, 9, 9, 3, 0, 16)
+PORT inputs2 (9, 9, 16)
+Segment: 1 Size: 17
+REG T2_SOUTH (2, 9, 8, 16)
+RMUX 1_2 (9, 8, 16)
+SB (2, 9, 9, 3, 0, 16)
+SB (3, 9, 9, 0, 1, 16)
+RMUX 0_3 (9, 9, 16)
+SB (3, 10, 9, 2, 0, 16)
+SB (2, 10, 9, 3, 1, 16)
+RMUX 3_2 (10, 9, 16)
+SB (2, 10, 8, 1, 0, 16)
+SB (2, 10, 8, 3, 1, 16)
+RMUX 3_2 (10, 8, 16)
+SB (2, 10, 7, 1, 0, 16)
+SB (3, 10, 7, 2, 1, 16)
+RMUX 2_3 (10, 7, 16)
+SB (3, 9, 7, 0, 0, 16)
+SB (0, 9, 7, 1, 1, 16)
+REG T0_SOUTH (0, 9, 7, 16)
+
+Net ID: e140 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (9, 9, 16)
+SB (1, 9, 9, 1, 1, 16)
+RMUX 1_1 (9, 9, 16)
+SB (1, 9, 10, 3, 0, 16)
+SB (2, 9, 10, 0, 1, 16)
+RMUX 0_2 (9, 10, 16)
+SB (2, 10, 10, 2, 0, 16)
+PORT inputs3 (10, 10, 16)
+
+Net ID: e142 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (10, 10, 16)
+SB (1, 10, 10, 3, 1, 16)
+RMUX 3_1 (10, 10, 16)
+SB (1, 10, 9, 1, 0, 16)
+SB (1, 10, 9, 3, 1, 16)
+RMUX 3_1 (10, 9, 16)
+SB (1, 10, 8, 1, 0, 16)
+PORT inputs3 (10, 8, 16)
+
+Net ID: e144 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (10, 8, 16)
+SB (4, 10, 8, 0, 1, 16)
+RMUX 0_4 (10, 8, 16)
+SB (4, 11, 8, 2, 0, 16)
+SB (1, 11, 8, 3, 1, 16)
+RMUX 3_1 (11, 8, 16)
+SB (1, 11, 7, 1, 0, 16)
+SB (2, 11, 7, 0, 1, 16)
+RMUX 0_2 (11, 7, 16)
+SB (2, 12, 7, 2, 0, 16)
+PORT inputs3 (12, 7, 16)
+
+Net ID: e146 Segment Size: 1
+Segment: 0 Size: 14
+PORT pe_outputs_0 (12, 7, 16)
+SB (4, 12, 7, 0, 1, 16)
+RMUX 0_4 (12, 7, 16)
+SB (4, 13, 7, 2, 0, 16)
+SB (4, 13, 7, 0, 1, 16)
+RMUX 0_4 (13, 7, 16)
+SB (4, 14, 7, 2, 0, 16)
+SB (4, 14, 7, 0, 1, 16)
+RMUX 0_4 (14, 7, 16)
+SB (4, 15, 7, 2, 0, 16)
+SB (4, 15, 7, 0, 1, 16)
+RMUX 0_4 (15, 7, 16)
+SB (4, 16, 7, 2, 0, 16)
+PORT inputs3 (16, 7, 16)
+
+Net ID: e148 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (16, 7, 16)
+SB (1, 16, 7, 1, 1, 16)
+RMUX 1_1 (16, 7, 16)
+SB (1, 16, 8, 3, 0, 16)
+PORT inputs3 (16, 8, 16)
+
+Net ID: e150 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (16, 8, 16)
+SB (3, 16, 8, 1, 1, 16)
+RMUX 1_3 (16, 8, 16)
+SB (3, 16, 9, 3, 0, 16)
+SB (3, 16, 9, 1, 1, 16)
+RMUX 1_3 (16, 9, 16)
+SB (3, 16, 10, 3, 0, 16)
+PORT inputs3 (16, 10, 16)
+
+Net ID: e152 Segment Size: 1
+Segment: 0 Size: 17
+PORT pe_outputs_0 (16, 10, 16)
+SB (3, 16, 10, 1, 1, 16)
+RMUX 1_3 (16, 10, 16)
+SB (3, 16, 11, 3, 0, 16)
+SB (2, 16, 11, 2, 1, 16)
+RMUX 2_2 (16, 11, 16)
+SB (2, 15, 11, 0, 0, 16)
+SB (1, 15, 11, 1, 1, 16)
+RMUX 1_1 (15, 11, 16)
+SB (1, 15, 12, 3, 0, 16)
+SB (1, 15, 12, 1, 1, 16)
+RMUX 1_1 (15, 12, 16)
+SB (1, 15, 13, 3, 0, 16)
+SB (4, 15, 13, 2, 1, 16)
+RMUX 2_4 (15, 13, 16)
+SB (4, 14, 13, 0, 0, 16)
+PORT inputs2 (14, 13, 16)
+
+Net ID: e154 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (14, 14, 16)
+SB (0, 14, 14, 3, 1, 16)
+RMUX 3_0 (14, 14, 16)
+SB (0, 14, 13, 1, 0, 16)
+PORT inputs3 (14, 13, 16)
+
+Net ID: e156 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (14, 13, 16)
+SB (2, 14, 13, 2, 1, 16)
+RMUX 2_2 (14, 13, 16)
+SB (2, 13, 13, 0, 0, 16)
+SB (1, 13, 13, 1, 1, 16)
+RMUX 1_1 (13, 13, 16)
+SB (1, 13, 14, 3, 0, 16)
+SB (4, 13, 14, 2, 1, 16)
+RMUX 2_4 (13, 14, 16)
+SB (4, 12, 14, 0, 0, 16)
+PORT inputs2 (12, 14, 16)
+
+Net ID: e158 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (12, 12, 16)
+SB (3, 12, 12, 1, 1, 16)
+RMUX 1_3 (12, 12, 16)
+SB (3, 12, 13, 3, 0, 16)
+SB (2, 12, 13, 2, 1, 16)
+RMUX 2_2 (12, 13, 16)
+SB (2, 11, 13, 0, 0, 16)
+PORT data_in_0 (11, 13, 16)
+
+Net ID: e164 Segment Size: 1
+Segment: 0 Size: 8
+PORT data_out_0 (11, 13, 16)
+SB (2, 11, 13, 1, 1, 16)
+RMUX 1_2 (11, 13, 16)
+SB (2, 11, 14, 3, 0, 16)
+SB (3, 11, 14, 0, 1, 16)
+RMUX 0_3 (11, 14, 16)
+SB (3, 12, 14, 2, 0, 16)
+PORT inputs3 (12, 14, 16)
+
+Net ID: e168 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 14, 16)
+SB (4, 12, 14, 2, 1, 16)
+RMUX 2_4 (12, 14, 16)
+SB (4, 11, 14, 0, 0, 16)
+PORT data_in_0 (11, 14, 16)
+
+Net ID: e174 Segment Size: 3
+Segment: 0 Size: 11
+SB (0, 12, 14, 2, 0, 16)
+SB (0, 12, 14, 0, 1, 16)
+RMUX 0_0 (12, 14, 16)
+SB (0, 13, 14, 2, 0, 16)
+SB (0, 13, 14, 0, 1, 16)
+RMUX 0_0 (13, 14, 16)
+SB (0, 14, 14, 2, 0, 16)
+SB (0, 14, 14, 0, 1, 16)
+RMUX 0_0 (14, 14, 16)
+SB (0, 15, 14, 2, 0, 16)
+PORT data_in_0 (15, 14, 16)
+Segment: 1 Size: 8
+PORT data_out_0 (11, 14, 16)
+SB (0, 11, 14, 0, 1, 16)
+RMUX 0_0 (11, 14, 16)
+SB (0, 12, 14, 2, 0, 16)
+SB (4, 12, 14, 1, 1, 16)
+RMUX 1_4 (12, 14, 16)
+SB (4, 12, 15, 3, 0, 16)
+PORT inputs2 (12, 15, 16)
+Segment: 2 Size: 12
+SB (0, 15, 14, 2, 0, 16)
+SB (4, 15, 14, 1, 1, 16)
+RMUX 1_4 (15, 14, 16)
+SB (4, 15, 15, 3, 0, 16)
+SB (4, 15, 15, 1, 1, 16)
+RMUX 1_4 (15, 15, 16)
+SB (4, 15, 16, 3, 0, 16)
+SB (1, 15, 16, 2, 1, 16)
+RMUX 2_1 (15, 16, 16)
+SB (1, 14, 16, 0, 0, 16)
+SB (1, 14, 16, 2, 1, 16)
+REG T1_WEST (1, 14, 16, 16)
+
+Net ID: e178 Segment Size: 2
+Segment: 0 Size: 5
+SB (1, 15, 15, 3, 0, 16)
+SB (4, 15, 15, 2, 1, 16)
+RMUX 2_4 (15, 15, 16)
+SB (4, 14, 15, 0, 0, 16)
+PORT inputs2 (14, 15, 16)
+Segment: 1 Size: 6
+PORT data_out_1 (15, 14, 16)
+SB (1, 15, 14, 1, 1, 16)
+RMUX 1_1 (15, 14, 16)
+SB (1, 15, 15, 3, 0, 16)
+SB (1, 15, 15, 1, 1, 16)
+REG T1_SOUTH (1, 15, 15, 16)
+
+Net ID: e18 Segment Size: 1
+Segment: 0 Size: 7
+REG T0_NORTH (0, 15, 12, 16)
+RMUX 3_0 (15, 12, 16)
+SB (0, 15, 11, 1, 0, 16)
+SB (1, 15, 11, 2, 1, 16)
+RMUX 2_1 (15, 11, 16)
+SB (1, 14, 11, 0, 0, 16)
+PORT inputs2 (14, 11, 16)
+
+Net ID: e182 Segment Size: 2
+Segment: 0 Size: 5
+PORT data_out_0 (15, 14, 16)
+SB (1, 15, 14, 0, 1, 16)
+RMUX 0_1 (15, 14, 16)
+SB (1, 16, 14, 2, 0, 16)
+PORT inputs2 (16, 14, 16)
+Segment: 1 Size: 6
+PORT data_out_0 (15, 14, 16)
+SB (0, 15, 14, 3, 1, 16)
+RMUX 3_0 (15, 14, 16)
+SB (0, 15, 13, 1, 0, 16)
+SB (0, 15, 13, 3, 1, 16)
+REG T0_NORTH (0, 15, 13, 16)
+
+Net ID: e186 Segment Size: 1
+Segment: 0 Size: 4
+REG T2_EAST (2, 15, 16, 16)
+RMUX 0_2 (15, 16, 16)
+SB (2, 16, 16, 2, 0, 16)
+PORT inputs2 (16, 16, 16)
+
+Net ID: e187 Segment Size: 1
+Segment: 0 Size: 4
+REG T0_NORTH (0, 13, 16, 16)
+RMUX 3_0 (13, 16, 16)
+SB (0, 13, 15, 1, 0, 16)
+PORT inputs2 (13, 15, 16)
+
+Net ID: e188 Segment Size: 2
+Segment: 0 Size: 5
+SB (1, 13, 16, 0, 0, 16)
+SB (1, 13, 16, 2, 1, 16)
+RMUX 2_1 (13, 16, 16)
+SB (1, 12, 16, 0, 0, 16)
+PORT inputs2 (12, 16, 16)
+Segment: 1 Size: 5
+REG T1_WEST (1, 14, 16, 16)
+RMUX 2_1 (14, 16, 16)
+SB (1, 13, 16, 0, 0, 16)
+SB (0, 13, 16, 3, 1, 16)
+REG T0_NORTH (0, 13, 16, 16)
+
+Net ID: e189 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 16, 16)
+SB (0, 12, 16, 3, 1, 16)
+RMUX 3_0 (12, 16, 16)
+SB (0, 12, 15, 1, 0, 16)
+PORT inputs3 (12, 15, 16)
+
+Net ID: e19 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (17, 11, 16)
+SB (3, 17, 11, 2, 1, 16)
+RMUX 2_3 (17, 11, 16)
+SB (3, 16, 11, 0, 0, 16)
+PORT inputs2 (16, 11, 16)
+
+Net ID: e191 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 15, 16)
+SB (1, 12, 15, 0, 1, 16)
+RMUX 0_1 (12, 15, 16)
+SB (1, 13, 15, 2, 0, 16)
+PORT inputs3 (13, 15, 16)
+
+Net ID: e193 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (13, 15, 16)
+SB (1, 13, 15, 0, 1, 16)
+RMUX 0_1 (13, 15, 16)
+SB (1, 14, 15, 2, 0, 16)
+PORT inputs3 (14, 15, 16)
+
+Net ID: e195 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (14, 15, 16)
+SB (1, 14, 15, 1, 1, 16)
+RMUX 1_1 (14, 15, 16)
+SB (1, 14, 16, 3, 0, 16)
+PORT inputs2 (14, 16, 16)
+
+Net ID: e197 Segment Size: 2
+Segment: 0 Size: 8
+SB (1, 15, 16, 3, 0, 16)
+SB (4, 15, 16, 2, 1, 16)
+RMUX 2_4 (15, 16, 16)
+SB (4, 14, 16, 0, 0, 16)
+SB (4, 14, 16, 1, 1, 16)
+RMUX 1_4 (14, 16, 16)
+SB (4, 14, 17, 3, 0, 16)
+PORT inputs2 (14, 17, 16)
+Segment: 1 Size: 5
+REG T1_SOUTH (1, 15, 15, 16)
+RMUX 1_1 (15, 15, 16)
+SB (1, 15, 16, 3, 0, 16)
+SB (2, 15, 16, 0, 1, 16)
+REG T2_EAST (2, 15, 16, 16)
+
+Net ID: e198 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (14, 17, 16)
+SB (0, 14, 17, 3, 1, 16)
+RMUX 3_0 (14, 17, 16)
+SB (0, 14, 16, 1, 0, 16)
+PORT inputs3 (14, 16, 16)
+
+Net ID: e200 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (14, 16, 16)
+SB (3, 14, 16, 0, 1, 16)
+RMUX 0_3 (14, 16, 16)
+SB (3, 15, 16, 2, 0, 16)
+SB (3, 15, 16, 0, 1, 16)
+RMUX 0_3 (15, 16, 16)
+SB (3, 16, 16, 2, 0, 16)
+PORT inputs3 (16, 16, 16)
+
+Net ID: e202 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (16, 16, 16)
+SB (1, 16, 16, 3, 1, 16)
+RMUX 3_1 (16, 16, 16)
+SB (1, 16, 15, 1, 0, 16)
+SB (1, 16, 15, 3, 1, 16)
+RMUX 3_1 (16, 15, 16)
+SB (1, 16, 14, 1, 0, 16)
+PORT inputs3 (16, 14, 16)
+
+Net ID: e204 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (16, 14, 16)
+SB (1, 16, 14, 3, 1, 16)
+RMUX 3_1 (16, 14, 16)
+SB (1, 16, 13, 1, 0, 16)
+SB (1, 16, 13, 3, 1, 16)
+RMUX 3_1 (16, 13, 16)
+SB (1, 16, 12, 1, 0, 16)
+PORT inputs3 (16, 12, 16)
+
+Net ID: e206 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (16, 12, 16)
+SB (0, 16, 12, 3, 1, 16)
+RMUX 3_0 (16, 12, 16)
+SB (0, 16, 11, 1, 0, 16)
+PORT inputs3 (16, 11, 16)
+
+Net ID: e208 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (16, 11, 16)
+SB (3, 16, 11, 2, 1, 16)
+RMUX 2_3 (16, 11, 16)
+SB (3, 15, 11, 0, 0, 16)
+SB (3, 15, 11, 2, 1, 16)
+RMUX 2_3 (15, 11, 16)
+SB (3, 14, 11, 0, 0, 16)
+PORT inputs3 (14, 11, 16)
+
+Net ID: e21 Segment Size: 2
+Segment: 0 Size: 5
+SB (0, 15, 12, 1, 0, 16)
+SB (3, 15, 12, 0, 1, 16)
+RMUX 0_3 (15, 12, 16)
+SB (3, 16, 12, 2, 0, 16)
+PORT inputs2 (16, 12, 16)
+Segment: 1 Size: 5
+REG T0_NORTH (0, 15, 13, 16)
+RMUX 3_0 (15, 13, 16)
+SB (0, 15, 12, 1, 0, 16)
+SB (0, 15, 12, 3, 1, 16)
+REG T0_NORTH (0, 15, 12, 16)
+
+Net ID: e210 Segment Size: 1
+Segment: 0 Size: 26
+PORT pe_outputs_0 (14, 11, 16)
+SB (2, 14, 11, 2, 1, 16)
+RMUX 2_2 (14, 11, 16)
+SB (2, 13, 11, 0, 0, 16)
+SB (2, 13, 11, 2, 1, 16)
+RMUX 2_2 (13, 11, 16)
+SB (2, 12, 11, 0, 0, 16)
+SB (2, 12, 11, 2, 1, 16)
+RMUX 2_2 (12, 11, 16)
+SB (2, 11, 11, 0, 0, 16)
+SB (2, 11, 11, 2, 1, 16)
+RMUX 2_2 (11, 11, 16)
+SB (2, 10, 11, 0, 0, 16)
+SB (2, 10, 11, 2, 1, 16)
+RMUX 2_2 (10, 11, 16)
+SB (2, 9, 11, 0, 0, 16)
+SB (1, 9, 11, 3, 1, 16)
+RMUX 3_1 (9, 11, 16)
+SB (1, 9, 10, 1, 0, 16)
+SB (1, 9, 10, 3, 1, 16)
+RMUX 3_1 (9, 10, 16)
+SB (1, 9, 9, 1, 0, 16)
+SB (1, 9, 9, 3, 1, 16)
+RMUX 3_1 (9, 9, 16)
+SB (1, 9, 8, 1, 0, 16)
+PORT inputs2 (9, 8, 16)
+
+Net ID: e212 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (9, 7, 16)
+SB (1, 9, 7, 1, 1, 16)
+RMUX 1_1 (9, 7, 16)
+SB (1, 9, 8, 3, 0, 16)
+PORT inputs3 (9, 8, 16)
+
+Net ID: e214 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (9, 8, 16)
+SB (3, 9, 8, 2, 1, 16)
+RMUX 2_3 (9, 8, 16)
+SB (3, 8, 8, 0, 0, 16)
+PORT inputs2 (8, 8, 16)
+
+Net ID: e216 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (6, 8, 16)
+SB (1, 6, 8, 0, 1, 16)
+RMUX 0_1 (6, 8, 16)
+SB (1, 7, 8, 2, 0, 16)
+PORT data_in_0 (7, 8, 16)
+
+Net ID: e22 Segment Size: 1
+Segment: 0 Size: 4
+REG T4_SOUTH (4, 16, 9, 16)
+RMUX 1_4 (16, 9, 16)
+SB (4, 16, 10, 3, 0, 16)
+PORT inputs2 (16, 10, 16)
+
+Net ID: e222 Segment Size: 1
+Segment: 0 Size: 5
+PORT data_out_0 (7, 8, 16)
+SB (1, 7, 8, 0, 1, 16)
+RMUX 0_1 (7, 8, 16)
+SB (1, 8, 8, 2, 0, 16)
+PORT inputs3 (8, 8, 16)
+
+Net ID: e226 Segment Size: 1
+Segment: 0 Size: 37
+PORT pe_outputs_0 (8, 8, 16)
+SB (0, 8, 8, 3, 1, 16)
+RMUX 3_0 (8, 8, 16)
+SB (0, 8, 7, 1, 0, 16)
+SB (0, 8, 7, 3, 1, 16)
+RMUX 3_0 (8, 7, 16)
+SB (0, 8, 6, 1, 0, 16)
+SB (0, 8, 6, 3, 1, 16)
+RMUX 3_0 (8, 6, 16)
+SB (0, 8, 5, 1, 0, 16)
+SB (0, 8, 5, 3, 1, 16)
+RMUX 3_0 (8, 5, 16)
+SB (0, 8, 4, 1, 0, 16)
+SB (1, 8, 4, 2, 1, 16)
+RMUX 2_1 (8, 4, 16)
+SB (1, 7, 4, 0, 0, 16)
+SB (0, 7, 4, 3, 1, 16)
+RMUX 3_0 (7, 4, 16)
+SB (0, 7, 3, 1, 0, 16)
+SB (1, 7, 3, 2, 1, 16)
+RMUX 2_1 (7, 3, 16)
+SB (1, 6, 3, 0, 0, 16)
+SB (0, 6, 3, 3, 1, 16)
+RMUX 3_0 (6, 3, 16)
+SB (0, 6, 2, 1, 0, 16)
+SB (0, 6, 2, 3, 1, 16)
+RMUX 3_0 (6, 2, 16)
+SB (0, 6, 1, 1, 0, 16)
+SB (1, 6, 1, 2, 1, 16)
+RMUX 2_1 (6, 1, 16)
+SB (1, 5, 1, 0, 0, 16)
+SB (1, 5, 1, 2, 1, 16)
+RMUX 2_1 (5, 1, 16)
+SB (1, 4, 1, 0, 0, 16)
+SB (0, 4, 1, 3, 1, 16)
+RMUX 3_0 (4, 1, 16)
+PORT f2io_16 (4, 0, 16)
+
+Net ID: e228 Segment Size: 1
+Segment: 0 Size: 11
+REG T0_SOUTH (0, 12, 10, 16)
+RMUX 1_0 (12, 10, 16)
+SB (0, 12, 11, 3, 0, 16)
+SB (1, 12, 11, 0, 1, 16)
+RMUX 0_1 (12, 11, 16)
+SB (1, 13, 11, 2, 0, 16)
+SB (4, 13, 11, 3, 1, 16)
+RMUX 3_4 (13, 11, 16)
+SB (4, 13, 10, 1, 0, 16)
+SB (4, 13, 10, 0, 1, 16)
+REG T4_EAST (4, 13, 10, 16)
+
+Net ID: e229 Segment Size: 1
+Segment: 0 Size: 8
+REG T4_WEST (4, 14, 9, 16)
+RMUX 2_4 (14, 9, 16)
+SB (4, 13, 9, 0, 0, 16)
+SB (3, 13, 9, 3, 1, 16)
+RMUX 3_3 (13, 9, 16)
+SB (3, 13, 8, 1, 0, 16)
+SB (4, 13, 8, 2, 1, 16)
+REG T4_WEST (4, 13, 8, 16)
+
+Net ID: e23 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (16, 9, 16)
+SB (0, 16, 9, 3, 1, 16)
+RMUX 3_0 (16, 9, 16)
+SB (0, 16, 8, 1, 0, 16)
+PORT inputs2 (16, 8, 16)
+
+Net ID: e230 Segment Size: 1
+Segment: 0 Size: 8
+REG T1_WEST (1, 11, 8, 16)
+RMUX 2_1 (11, 8, 16)
+SB (1, 10, 8, 0, 0, 16)
+SB (1, 10, 8, 2, 1, 16)
+RMUX 2_1 (10, 8, 16)
+SB (1, 9, 8, 0, 0, 16)
+SB (2, 9, 8, 1, 1, 16)
+REG T2_SOUTH (2, 9, 8, 16)
+
+Net ID: e231 Segment Size: 1
+Segment: 0 Size: 11
+REG T0_SOUTH (0, 9, 7, 16)
+RMUX 1_0 (9, 7, 16)
+SB (0, 9, 8, 3, 0, 16)
+SB (1, 9, 8, 0, 1, 16)
+RMUX 0_1 (9, 8, 16)
+SB (1, 10, 8, 2, 0, 16)
+SB (4, 10, 8, 3, 1, 16)
+RMUX 3_4 (10, 8, 16)
+SB (4, 10, 7, 1, 0, 16)
+SB (4, 10, 7, 0, 1, 16)
+REG T4_EAST (4, 10, 7, 16)
+
+Net ID: e232 Segment Size: 1
+Segment: 0 Size: 8
+REG T0_EAST (0, 13, 7, 16)
+RMUX 0_0 (13, 7, 16)
+SB (0, 14, 7, 2, 0, 16)
+SB (0, 14, 7, 0, 1, 16)
+RMUX 0_0 (14, 7, 16)
+SB (0, 15, 7, 2, 0, 16)
+SB (0, 15, 7, 0, 1, 16)
+REG T0_EAST (0, 15, 7, 16)
+
+Net ID: e233 Segment Size: 1
+Segment: 0 Size: 5
+REG T4_SOUTH (4, 16, 8, 16)
+RMUX 1_4 (16, 8, 16)
+SB (4, 16, 9, 3, 0, 16)
+SB (4, 16, 9, 1, 1, 16)
+REG T4_SOUTH (4, 16, 9, 16)
+
+Net ID: e234 Segment Size: 1
+Segment: 0 Size: 5
+REG T4_EAST (4, 12, 14, 16)
+RMUX 0_4 (12, 14, 16)
+SB (4, 13, 14, 2, 0, 16)
+SB (1, 13, 14, 3, 1, 16)
+REG T1_NORTH (1, 13, 14, 16)
+
+Net ID: e235 Segment Size: 1
+Segment: 0 Size: 8
+REG T2_EAST (2, 14, 13, 16)
+RMUX 0_2 (14, 13, 16)
+SB (2, 15, 13, 2, 0, 16)
+SB (2, 15, 13, 0, 1, 16)
+RMUX 0_2 (15, 13, 16)
+SB (2, 16, 13, 2, 0, 16)
+SB (2, 16, 13, 0, 1, 16)
+REG T2_EAST (2, 16, 13, 16)
+
+Net ID: e236 Segment Size: 1
+Segment: 0 Size: 5
+REG T0_WEST (0, 12, 9, 16)
+RMUX 2_0 (12, 9, 16)
+SB (0, 11, 9, 0, 0, 16)
+SB (3, 11, 9, 1, 1, 16)
+REG T3_SOUTH (3, 11, 9, 16)
+
+Net ID: e237 Segment Size: 1
+Segment: 0 Size: 5
+REG T2_WEST (2, 10, 10, 16)
+RMUX 2_2 (10, 10, 16)
+SB (2, 9, 10, 0, 0, 16)
+SB (1, 9, 10, 1, 1, 16)
+REG T1_SOUTH (1, 9, 10, 16)
+
+Net ID: e238 Segment Size: 1
+Segment: 0 Size: 5
+REG T1_SOUTH (1, 11, 12, 16)
+RMUX 1_1 (11, 12, 16)
+SB (1, 11, 13, 3, 0, 16)
+SB (1, 11, 13, 1, 1, 16)
+REG T1_SOUTH (1, 11, 13, 16)
+
+Net ID: e239 Segment Size: 1
+Segment: 0 Size: 11
+REG T1_SOUTH (1, 11, 14, 16)
+RMUX 1_1 (11, 14, 16)
+SB (1, 11, 15, 3, 0, 16)
+SB (4, 11, 15, 2, 1, 16)
+RMUX 2_4 (11, 15, 16)
+SB (4, 10, 15, 0, 0, 16)
+SB (3, 10, 15, 3, 1, 16)
+RMUX 3_3 (10, 15, 16)
+SB (3, 10, 14, 1, 0, 16)
+SB (4, 10, 14, 2, 1, 16)
+REG T4_WEST (4, 10, 14, 16)
+
+Net ID: e25 Segment Size: 2
+Segment: 0 Size: 4
+REG T0_EAST (0, 15, 7, 16)
+RMUX 0_0 (15, 7, 16)
+SB (0, 16, 7, 2, 0, 16)
+PORT inputs2 (16, 7, 16)
+Segment: 1 Size: 6
+SB (0, 16, 7, 2, 0, 16)
+SB (4, 16, 7, 1, 1, 16)
+RMUX 1_4 (16, 7, 16)
+SB (4, 16, 8, 3, 0, 16)
+SB (4, 16, 8, 1, 1, 16)
+REG T4_SOUTH (4, 16, 8, 16)
+
+Net ID: e26 Segment Size: 1
+Segment: 0 Size: 4
+REG T2_EAST (2, 16, 13, 16)
+RMUX 0_2 (16, 13, 16)
+SB (2, 17, 13, 2, 0, 16)
+PORT inputs2 (17, 13, 16)
+
+Net ID: e27 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (17, 12, 16)
+SB (1, 17, 12, 2, 1, 16)
+RMUX 2_1 (17, 12, 16)
+SB (1, 16, 12, 0, 0, 16)
+SB (2, 16, 12, 1, 1, 16)
+RMUX 1_2 (16, 12, 16)
+SB (2, 16, 13, 3, 0, 16)
+PORT inputs2 (16, 13, 16)
+
+Net ID: e29 Segment Size: 2
+Segment: 0 Size: 4
+REG T1_NORTH (1, 13, 14, 16)
+RMUX 3_1 (13, 14, 16)
+SB (1, 13, 13, 1, 0, 16)
+PORT inputs2 (13, 13, 16)
+Segment: 1 Size: 6
+SB (1, 13, 13, 1, 0, 16)
+SB (2, 13, 13, 0, 1, 16)
+RMUX 0_2 (13, 13, 16)
+SB (2, 14, 13, 2, 0, 16)
+SB (2, 14, 13, 0, 1, 16)
+REG T2_EAST (2, 14, 13, 16)
+
+Net ID: e30 Segment Size: 1
+Segment: 0 Size: 4
+REG T1_SOUTH (1, 4, 10, 16)
+RMUX 1_1 (4, 10, 16)
+SB (1, 4, 11, 3, 0, 16)
+PORT inputs2 (4, 11, 16)
+
+Net ID: e31 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (5, 10, 16)
+SB (3, 5, 10, 2, 1, 16)
+RMUX 2_3 (5, 10, 16)
+SB (3, 4, 10, 0, 0, 16)
+PORT inputs2 (4, 10, 16)
+
+Net ID: e33 Segment Size: 2
+Segment: 0 Size: 4
+REG T2_EAST (2, 3, 9, 16)
+RMUX 0_2 (3, 9, 16)
+SB (2, 4, 9, 2, 0, 16)
+PORT inputs2 (4, 9, 16)
+Segment: 1 Size: 6
+SB (2, 4, 9, 2, 0, 16)
+SB (1, 4, 9, 1, 1, 16)
+RMUX 1_1 (4, 9, 16)
+SB (1, 4, 10, 3, 0, 16)
+SB (1, 4, 10, 1, 1, 16)
+REG T1_SOUTH (1, 4, 10, 16)
+
+Net ID: e34 Segment Size: 3
+Segment: 0 Size: 8
+SB (1, 3, 6, 3, 0, 16)
+SB (1, 3, 6, 1, 1, 16)
+RMUX 1_1 (3, 6, 16)
+SB (1, 3, 7, 3, 0, 16)
+SB (1, 3, 7, 1, 1, 16)
+RMUX 1_1 (3, 7, 16)
+SB (1, 3, 8, 3, 0, 16)
+PORT data_in_0 (3, 8, 16)
+Segment: 1 Size: 18
+PORT io2f_16 (3, 0, 16)
+SB (3, 3, 1, 3, 0, 16)
+SB (4, 3, 1, 0, 1, 16)
+RMUX 0_4 (3, 1, 16)
+SB (4, 4, 1, 2, 0, 16)
+SB (3, 4, 1, 1, 1, 16)
+RMUX 1_3 (4, 1, 16)
+SB (3, 4, 2, 3, 0, 16)
+SB (3, 4, 2, 1, 1, 16)
+RMUX 1_3 (4, 2, 16)
+SB (3, 4, 3, 3, 0, 16)
+SB (3, 4, 3, 1, 1, 16)
+RMUX 1_3 (4, 3, 16)
+SB (3, 4, 4, 3, 0, 16)
+SB (3, 4, 4, 1, 1, 16)
+RMUX 1_3 (4, 4, 16)
+SB (3, 4, 5, 3, 0, 16)
+PORT inputs2 (4, 5, 16)
+Segment: 2 Size: 9
+SB (3, 4, 5, 3, 0, 16)
+SB (2, 4, 5, 2, 1, 16)
+RMUX 2_2 (4, 5, 16)
+SB (2, 3, 5, 0, 0, 16)
+SB (1, 3, 5, 1, 1, 16)
+RMUX 1_1 (3, 5, 16)
+SB (1, 3, 6, 3, 0, 16)
+SB (2, 3, 6, 0, 1, 16)
+REG T2_EAST (2, 3, 6, 16)
+
+Net ID: e36 Segment Size: 2
+Segment: 0 Size: 5
+PORT data_out_1 (3, 8, 16)
+SB (1, 3, 8, 0, 1, 16)
+RMUX 0_1 (3, 8, 16)
+SB (1, 4, 8, 2, 0, 16)
+PORT inputs2 (4, 8, 16)
+Segment: 1 Size: 6
+SB (1, 4, 8, 2, 0, 16)
+SB (4, 4, 8, 3, 1, 16)
+RMUX 3_4 (4, 8, 16)
+SB (4, 4, 7, 1, 0, 16)
+SB (4, 4, 7, 0, 1, 16)
+REG T4_EAST (4, 4, 7, 16)
+
+Net ID: e40 Segment Size: 2
+Segment: 0 Size: 5
+SB (1, 3, 9, 3, 0, 16)
+SB (4, 3, 9, 2, 1, 16)
+RMUX 2_4 (3, 9, 16)
+SB (4, 2, 9, 0, 0, 16)
+PORT inputs2 (2, 9, 16)
+Segment: 1 Size: 6
+PORT data_out_0 (3, 8, 16)
+SB (1, 3, 8, 1, 1, 16)
+RMUX 1_1 (3, 8, 16)
+SB (1, 3, 9, 3, 0, 16)
+SB (2, 3, 9, 0, 1, 16)
+REG T2_EAST (2, 3, 9, 16)
+
+Net ID: e44 Segment Size: 1
+Segment: 0 Size: 4
+REG T3_SOUTH (3, 5, 8, 16)
+RMUX 1_3 (5, 8, 16)
+SB (3, 5, 9, 3, 0, 16)
+PORT inputs2 (5, 9, 16)
+
+Net ID: e45 Segment Size: 1
+Segment: 0 Size: 10
+REG T4_SOUTH (4, 3, 7, 16)
+RMUX 1_4 (3, 7, 16)
+SB (4, 3, 8, 3, 0, 16)
+SB (0, 3, 8, 0, 1, 16)
+RMUX 0_0 (3, 8, 16)
+SB (0, 4, 8, 2, 0, 16)
+SB (0, 4, 8, 3, 1, 16)
+RMUX 3_0 (4, 8, 16)
+SB (0, 4, 7, 1, 0, 16)
+PORT inputs2 (4, 7, 16)
+
+Net ID: e46 Segment Size: 2
+Segment: 0 Size: 4
+REG T2_EAST (2, 3, 6, 16)
+RMUX 0_2 (3, 6, 16)
+SB (2, 4, 6, 2, 0, 16)
+PORT inputs2 (4, 6, 16)
+Segment: 1 Size: 11
+REG T2_EAST (2, 3, 6, 16)
+RMUX 0_2 (3, 6, 16)
+SB (2, 4, 6, 2, 0, 16)
+SB (1, 4, 6, 1, 1, 16)
+RMUX 1_1 (4, 6, 16)
+SB (1, 4, 7, 3, 0, 16)
+SB (4, 4, 7, 2, 1, 16)
+RMUX 2_4 (4, 7, 16)
+SB (4, 3, 7, 0, 0, 16)
+SB (4, 3, 7, 1, 1, 16)
+REG T4_SOUTH (4, 3, 7, 16)
+
+Net ID: e47 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 6, 16)
+SB (0, 4, 6, 3, 1, 16)
+RMUX 3_0 (4, 6, 16)
+SB (0, 4, 5, 1, 0, 16)
+PORT inputs3 (4, 5, 16)
+
+Net ID: e49 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (4, 5, 16)
+SB (2, 4, 5, 1, 1, 16)
+RMUX 1_2 (4, 5, 16)
+SB (2, 4, 6, 3, 0, 16)
+SB (2, 4, 6, 1, 1, 16)
+RMUX 1_2 (4, 6, 16)
+SB (2, 4, 7, 3, 0, 16)
+PORT inputs3 (4, 7, 16)
+
+Net ID: e51 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 7, 16)
+SB (1, 4, 7, 1, 1, 16)
+RMUX 1_1 (4, 7, 16)
+SB (1, 4, 8, 3, 0, 16)
+PORT inputs3 (4, 8, 16)
+
+Net ID: e53 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 8, 16)
+SB (1, 4, 8, 0, 1, 16)
+RMUX 0_1 (4, 8, 16)
+SB (1, 5, 8, 2, 0, 16)
+PORT inputs2 (5, 8, 16)
+
+Net ID: e55 Segment Size: 3
+Segment: 0 Size: 4
+REG T4_EAST (4, 4, 7, 16)
+RMUX 0_4 (4, 7, 16)
+SB (4, 5, 7, 2, 0, 16)
+PORT inputs2 (5, 7, 16)
+Segment: 1 Size: 5
+SB (3, 5, 8, 3, 0, 16)
+SB (4, 5, 8, 0, 1, 16)
+RMUX 0_4 (5, 8, 16)
+SB (4, 6, 8, 2, 0, 16)
+PORT inputs2 (6, 8, 16)
+Segment: 2 Size: 6
+SB (4, 5, 7, 2, 0, 16)
+SB (3, 5, 7, 1, 1, 16)
+RMUX 1_3 (5, 7, 16)
+SB (3, 5, 8, 3, 0, 16)
+SB (3, 5, 8, 1, 1, 16)
+REG T3_SOUTH (3, 5, 8, 16)
+
+Net ID: e56 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (5, 7, 16)
+SB (1, 5, 7, 1, 1, 16)
+RMUX 1_1 (5, 7, 16)
+SB (1, 5, 8, 3, 0, 16)
+PORT inputs3 (5, 8, 16)
+
+Net ID: e58 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (5, 8, 16)
+SB (1, 5, 8, 1, 1, 16)
+RMUX 1_1 (5, 8, 16)
+SB (1, 5, 9, 3, 0, 16)
+PORT inputs3 (5, 9, 16)
+
+Net ID: e60 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (5, 9, 16)
+SB (1, 5, 9, 2, 1, 16)
+RMUX 2_1 (5, 9, 16)
+SB (1, 4, 9, 0, 0, 16)
+SB (1, 4, 9, 2, 1, 16)
+RMUX 2_1 (4, 9, 16)
+SB (1, 3, 9, 0, 0, 16)
+SB (1, 3, 9, 2, 1, 16)
+RMUX 2_1 (3, 9, 16)
+SB (1, 2, 9, 0, 0, 16)
+PORT inputs3 (2, 9, 16)
+
+Net ID: e62 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (2, 9, 16)
+SB (0, 2, 9, 0, 1, 16)
+RMUX 0_0 (2, 9, 16)
+SB (0, 3, 9, 2, 0, 16)
+SB (0, 3, 9, 0, 1, 16)
+RMUX 0_0 (3, 9, 16)
+SB (0, 4, 9, 2, 0, 16)
+PORT inputs3 (4, 9, 16)
+
+Net ID: e64 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 9, 16)
+SB (3, 4, 9, 1, 1, 16)
+RMUX 1_3 (4, 9, 16)
+SB (3, 4, 10, 3, 0, 16)
+PORT inputs3 (4, 10, 16)
+
+Net ID: e66 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 10, 16)
+SB (3, 4, 10, 1, 1, 16)
+RMUX 1_3 (4, 10, 16)
+SB (3, 4, 11, 3, 0, 16)
+PORT inputs3 (4, 11, 16)
+
+Net ID: e68 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (4, 11, 16)
+SB (1, 4, 11, 0, 1, 16)
+RMUX 0_1 (4, 11, 16)
+SB (1, 5, 11, 2, 0, 16)
+PORT inputs2 (5, 11, 16)
+
+Net ID: e70 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (6, 11, 16)
+SB (3, 6, 11, 2, 1, 16)
+RMUX 2_3 (6, 11, 16)
+SB (3, 5, 11, 0, 0, 16)
+PORT inputs3 (5, 11, 16)
+
+Net ID: e72 Segment Size: 4
+Segment: 0 Size: 20
+PORT pe_outputs_0 (5, 11, 16)
+SB (1, 5, 11, 0, 1, 16)
+RMUX 0_1 (5, 11, 16)
+SB (1, 6, 11, 2, 0, 16)
+SB (1, 6, 11, 0, 1, 16)
+RMUX 0_1 (6, 11, 16)
+SB (1, 7, 11, 2, 0, 16)
+SB (1, 7, 11, 0, 1, 16)
+RMUX 0_1 (7, 11, 16)
+SB (1, 8, 11, 2, 0, 16)
+SB (1, 8, 11, 0, 1, 16)
+RMUX 0_1 (8, 11, 16)
+SB (1, 9, 11, 2, 0, 16)
+SB (1, 9, 11, 0, 1, 16)
+RMUX 0_1 (9, 11, 16)
+SB (1, 10, 11, 2, 0, 16)
+SB (1, 10, 11, 0, 1, 16)
+RMUX 0_1 (10, 11, 16)
+SB (1, 11, 11, 2, 0, 16)
+PORT data_in_0 (11, 11, 16)
+Segment: 1 Size: 5
+SB (1, 11, 11, 2, 0, 16)
+SB (1, 11, 11, 0, 1, 16)
+RMUX 0_1 (11, 11, 16)
+SB (1, 12, 11, 2, 0, 16)
+PORT inputs2 (12, 11, 16)
+Segment: 2 Size: 14
+PORT pe_outputs_0 (5, 11, 16)
+SB (3, 5, 11, 3, 1, 16)
+RMUX 3_3 (5, 11, 16)
+SB (3, 5, 10, 1, 0, 16)
+SB (3, 5, 10, 3, 1, 16)
+RMUX 3_3 (5, 10, 16)
+SB (3, 5, 9, 1, 0, 16)
+SB (0, 5, 9, 0, 1, 16)
+RMUX 0_0 (5, 9, 16)
+SB (0, 6, 9, 2, 0, 16)
+SB (0, 6, 9, 3, 1, 16)
+RMUX 3_0 (6, 9, 16)
+SB (0, 6, 8, 1, 0, 16)
+PORT inputs3 (6, 8, 16)
+Segment: 3 Size: 9
+SB (1, 12, 11, 2, 0, 16)
+SB (4, 12, 11, 3, 1, 16)
+RMUX 3_4 (12, 11, 16)
+SB (4, 12, 10, 1, 0, 16)
+SB (4, 12, 10, 3, 1, 16)
+RMUX 3_4 (12, 10, 16)
+SB (4, 12, 9, 1, 0, 16)
+SB (0, 12, 9, 2, 1, 16)
+REG T0_WEST (0, 12, 9, 16)
+
+Net ID: e74 Segment Size: 2
+Segment: 0 Size: 5
+PORT data_out_1 (11, 11, 16)
+SB (3, 11, 11, 2, 1, 16)
+RMUX 2_3 (11, 11, 16)
+SB (3, 10, 11, 0, 0, 16)
+PORT inputs2 (10, 11, 16)
+Segment: 1 Size: 6
+PORT data_out_1 (11, 11, 16)
+SB (1, 11, 11, 1, 1, 16)
+RMUX 1_1 (11, 11, 16)
+SB (1, 11, 12, 3, 0, 16)
+SB (1, 11, 12, 1, 1, 16)
+REG T1_SOUTH (1, 11, 12, 16)
+
+Net ID: e78 Segment Size: 2
+Segment: 0 Size: 11
+PORT data_out_0 (11, 11, 16)
+SB (3, 11, 11, 1, 1, 16)
+RMUX 1_3 (11, 11, 16)
+SB (3, 11, 12, 3, 0, 16)
+SB (3, 11, 12, 1, 1, 16)
+RMUX 1_3 (11, 12, 16)
+SB (3, 11, 13, 3, 0, 16)
+SB (4, 11, 13, 0, 1, 16)
+RMUX 0_4 (11, 13, 16)
+SB (4, 12, 13, 2, 0, 16)
+PORT inputs2 (12, 13, 16)
+Segment: 1 Size: 6
+SB (4, 12, 13, 2, 0, 16)
+SB (3, 12, 13, 1, 1, 16)
+RMUX 1_3 (12, 13, 16)
+SB (3, 12, 14, 3, 0, 16)
+SB (4, 12, 14, 0, 1, 16)
+REG T4_EAST (4, 12, 14, 16)
+
+Net ID: e82 Segment Size: 1
+Segment: 0 Size: 10
+REG T4_WEST (4, 10, 14, 16)
+RMUX 2_4 (10, 14, 16)
+SB (4, 9, 14, 0, 0, 16)
+SB (3, 9, 14, 3, 1, 16)
+RMUX 3_3 (9, 14, 16)
+SB (3, 9, 13, 1, 0, 16)
+SB (0, 9, 13, 0, 1, 16)
+RMUX 0_0 (9, 13, 16)
+SB (0, 10, 13, 2, 0, 16)
+PORT inputs2 (10, 13, 16)
+
+Net ID: e83 Segment Size: 1
+Segment: 0 Size: 4
+REG T1_SOUTH (1, 9, 10, 16)
+RMUX 1_1 (9, 10, 16)
+SB (1, 9, 11, 3, 0, 16)
+PORT inputs2 (9, 11, 16)
+
+Net ID: e84 Segment Size: 2
+Segment: 0 Size: 7
+REG T3_SOUTH (3, 11, 9, 16)
+RMUX 1_3 (11, 9, 16)
+SB (3, 11, 10, 3, 0, 16)
+SB (4, 11, 10, 0, 1, 16)
+RMUX 0_4 (11, 10, 16)
+SB (4, 12, 10, 2, 0, 16)
+PORT inputs2 (12, 10, 16)
+Segment: 1 Size: 6
+SB (3, 11, 10, 3, 0, 16)
+SB (2, 11, 10, 2, 1, 16)
+RMUX 2_2 (11, 10, 16)
+SB (2, 10, 10, 0, 0, 16)
+SB (2, 10, 10, 2, 1, 16)
+REG T2_WEST (2, 10, 10, 16)
+
+Net ID: e85 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (12, 10, 16)
+SB (1, 12, 10, 1, 1, 16)
+RMUX 1_1 (12, 10, 16)
+SB (1, 12, 11, 3, 0, 16)
+PORT inputs3 (12, 11, 16)
+
+Net ID: e87 Segment Size: 1
+Segment: 0 Size: 11
+PORT pe_outputs_0 (12, 11, 16)
+SB (0, 12, 11, 2, 1, 16)
+RMUX 2_0 (12, 11, 16)
+SB (0, 11, 11, 0, 0, 16)
+SB (0, 11, 11, 2, 1, 16)
+RMUX 2_0 (11, 11, 16)
+SB (0, 10, 11, 0, 0, 16)
+SB (0, 10, 11, 2, 1, 16)
+RMUX 2_0 (10, 11, 16)
+SB (0, 9, 11, 0, 0, 16)
+PORT inputs3 (9, 11, 16)
+
+Net ID: e89 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (9, 11, 16)
+SB (2, 9, 11, 0, 1, 16)
+RMUX 0_2 (9, 11, 16)
+SB (2, 10, 11, 2, 0, 16)
+PORT inputs3 (10, 11, 16)
+
+Net ID: e91 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (10, 11, 16)
+SB (0, 10, 11, 1, 1, 16)
+RMUX 1_0 (10, 11, 16)
+SB (0, 10, 12, 3, 0, 16)
+PORT inputs2 (10, 12, 16)
+
+Net ID: e93 Segment Size: 3
+Segment: 0 Size: 16
+REG T1_SOUTH (1, 11, 13, 16)
+RMUX 1_1 (11, 13, 16)
+SB (1, 11, 14, 3, 0, 16)
+SB (4, 11, 14, 2, 1, 16)
+RMUX 2_4 (11, 14, 16)
+SB (4, 10, 14, 0, 0, 16)
+SB (3, 10, 14, 3, 1, 16)
+RMUX 3_3 (10, 14, 16)
+SB (3, 10, 13, 1, 0, 16)
+SB (3, 10, 13, 3, 1, 16)
+RMUX 3_3 (10, 13, 16)
+SB (3, 10, 12, 1, 0, 16)
+SB (4, 10, 12, 2, 1, 16)
+RMUX 2_4 (10, 12, 16)
+SB (4, 9, 12, 0, 0, 16)
+PORT inputs2 (9, 12, 16)
+Segment: 1 Size: 13
+REG T1_SOUTH (1, 11, 13, 16)
+RMUX 1_1 (11, 13, 16)
+SB (1, 11, 14, 3, 0, 16)
+SB (2, 11, 14, 0, 1, 16)
+RMUX 0_2 (11, 14, 16)
+SB (2, 12, 14, 2, 0, 16)
+SB (3, 12, 14, 3, 1, 16)
+RMUX 3_3 (12, 14, 16)
+SB (3, 12, 13, 1, 0, 16)
+SB (3, 12, 13, 3, 1, 16)
+RMUX 3_3 (12, 13, 16)
+SB (3, 12, 12, 1, 0, 16)
+PORT inputs2 (12, 12, 16)
+Segment: 2 Size: 5
+REG T1_SOUTH (1, 11, 13, 16)
+RMUX 1_1 (11, 13, 16)
+SB (1, 11, 14, 3, 0, 16)
+SB (1, 11, 14, 1, 1, 16)
+REG T1_SOUTH (1, 11, 14, 16)
+
+Net ID: e94 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (9, 12, 16)
+SB (1, 9, 12, 0, 1, 16)
+RMUX 0_1 (9, 12, 16)
+SB (1, 10, 12, 2, 0, 16)
+PORT inputs3 (10, 12, 16)
+
+Net ID: e96 Segment Size: 1
+Segment: 0 Size: 5
+PORT pe_outputs_0 (10, 12, 16)
+SB (1, 10, 12, 1, 1, 16)
+RMUX 1_1 (10, 12, 16)
+SB (1, 10, 13, 3, 0, 16)
+PORT inputs3 (10, 13, 16)
+
+Net ID: e98 Segment Size: 1
+Segment: 0 Size: 8
+PORT pe_outputs_0 (10, 13, 16)
+SB (2, 10, 13, 0, 1, 16)
+RMUX 0_2 (10, 13, 16)
+SB (2, 11, 13, 2, 0, 16)
+SB (2, 11, 13, 0, 1, 16)
+RMUX 0_2 (11, 13, 16)
+SB (2, 12, 13, 2, 0, 16)
+PORT inputs3 (12, 13, 16)
+

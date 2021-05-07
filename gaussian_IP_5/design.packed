@@ -1,0 +1,88 @@
+Netlists:
+e1: (i0, io2f_1)	(m1, flush)	(m3, flush)	(m9, flush)
+e4: (m1, stencil_valid)	(i2, f2io_1)
+e12: (m3, stencil_valid)	(i4, f2io_1)
+e18: (p5, pe_outputs_0)	(p21, inputs1)
+e20: (r26, reg)	(p6, inputs4)
+e21: (p6, pe_outputs_0)	(p18, inputs0)
+e23: (r27, reg)	(p7, inputs4)	(r28, reg)
+e24: (p7, pe_outputs_0)	(p18, inputs1)
+e26: (I8, io2f_16)	(m9, data_in_0)	(p11, inputs4)	(r23, reg)
+e28: (m9, data_out_1)	(p10, inputs4)	(r27, reg)
+e32: (m9, data_out_0)	(p12, inputs4)	(r25, reg)
+e36: (p10, pe_outputs_0)	(p18, inputs2)
+e38: (p11, pe_outputs_0)	(p16, inputs0)
+e40: (p12, pe_outputs_0)	(p16, inputs1)
+e42: (r24, reg)	(p13, inputs4)
+e43: (p13, pe_outputs_0)	(p16, inputs2)
+e45: (r23, reg)	(p14, inputs4)	(r24, reg)
+e46: (p14, pe_outputs_0)	(p16, inputs3)
+e48: (r25, reg)	(p15, inputs4)	(r26, reg)
+e49: (p15, pe_outputs_0)	(p16, inputs4)
+e51: (p16, pe_outputs_0)	(p18, inputs3)
+e53: (p17, pe_outputs_0)	(p18, inputs4)
+e55: (p18, pe_outputs_0)	(p20, inputs2)
+e57: (r28, reg)	(p19, inputs4)
+e58: (p19, pe_outputs_0)	(p20, inputs4)
+e60: (p20, pe_outputs_0)	(p21, inputs2)
+e62: (p21, pe_outputs_0)	(I22, f2io_16)
+
+ID to Names:
+i0: reset
+m1: op_hcompute_hw_input_global_wrapper_stencil_port_controller_garnet
+i2: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_en
+m3: op_hcompute_hw_output_stencil_port_controller_garnet
+i4: hw_output_stencil_op_hcompute_hw_output_stencil_write_valid
+p5: op_hcompute_blur_stencil$inner_compute$i139625144832976_i139625129552080
+p6: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109816400_i139625124663568
+p7: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625110179984_i139625124663568
+I8: hw_input_stencil_op_hcompute_hw_input_global_wrapper_stencil_read_0
+m9: hw_input_global_wrapper_stencil$ub_hw_input_global_wrapper_stencil_BANK_0_garnet
+p10: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625110181712_i139625124663568
+p11: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109853968_i139625124663568
+p12: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109818640_i139625124663568
+p13: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109853648_i139625124663568
+p14: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109855568_i139625124663568
+p15: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625110068368_i139625124663568
+p16: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109854992_i139625114990992
+p17: op_hcompute_blur_unnormalized_stencil$inner_compute$i139625118937616_i139625129552080
+p18: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109856208_i139625114990992
+p19: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625128360848_i139625124663568
+p20: op_hcompute_blur_unnormalized_stencil_1$inner_compute$i139625109942544_i139625124152080
+p21: op_hcompute_blur_stencil$inner_compute$i139625120651792_i139625132558352
+I22: hw_output_stencil_op_hcompute_hw_output_stencil_write_0
+r23: hw_input_global_wrapper_stencil$d_reg__U2
+r24: hw_input_global_wrapper_stencil$d_reg__U3
+r25: hw_input_global_wrapper_stencil$d_reg__U4
+r26: hw_input_global_wrapper_stencil$d_reg__U5
+r27: hw_input_global_wrapper_stencil$d_reg__U6
+r28: hw_input_global_wrapper_stencil$d_reg__U7
+
+Netlist Bus:
+e1: 1
+e4: 1
+e12: 1
+e18: 16
+e20: 16
+e21: 16
+e23: 16
+e24: 16
+e26: 16
+e28: 16
+e32: 16
+e36: 16
+e38: 16
+e40: 16
+e42: 16
+e43: 16
+e45: 16
+e46: 16
+e48: 16
+e49: 16
+e51: 16
+e53: 16
+e55: 16
+e57: 16
+e58: 16
+e60: 16
+e62: 16

@@ -83,6 +83,7 @@ class CreateBuses(Visitor):
         assert node.field in child_bid
         bid = child_bid[node.field]
         self.node_to_bid[node] = bid
+        print(node.field)
         self.netlist[bid].append((child, node.field))
 
     def visit_RegisterSource(self, node):
@@ -101,6 +102,7 @@ class CreateBuses(Visitor):
         if node.node_name not in self.inst_info:
             raise ValueError(f"Missing {node.node_name} in info")
         input_t = self.inst_info[node.node_name]
+        
         for field, child_bid in zip(input_t.field_dict.keys(), child_bids):
             if child_bid is None:
                 continue

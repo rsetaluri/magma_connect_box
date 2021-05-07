@@ -1,0 +1,22 @@
+{"namespaces":{
+  "global":{
+    "modules":{
+      "PE":{
+        "type":["Record",[
+          ["inst",["Array",55,"BitIn"]],
+          ["inputs0",["Array",16,"BitIn"]],
+          ["inputs1",["Array",16,"BitIn"]],
+          ["inputs2","BitIn"],
+          ["inputs3","BitIn"],
+          ["inputs4","BitIn"],
+          ["clk_en","BitIn"],
+          ["O0",["Array",16,"Bit"]],
+          ["O1","Bit"],
+          ["CLK",["Named","coreir.clkIn"]],
+          ["ASYNCRESET",["Named","coreir.arstIn"]]
+        ]]
+      }
+    }
+  }
+}
+}

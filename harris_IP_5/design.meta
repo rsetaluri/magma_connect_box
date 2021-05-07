@@ -1,0 +1,4 @@
+placement=design.place
+bitstream=.bs
+input=input.raw
+output=gold.raw

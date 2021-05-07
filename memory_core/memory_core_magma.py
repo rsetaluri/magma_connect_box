@@ -194,51 +194,52 @@ class MemCore(LakeCoreBase):
 
     def get_config_bitstream(self, instr):
         configs = []
-        # if "init" in instr['config'][1]:
-        #     config_mem = [("tile_en", 1),
-        #                   ("mode", 2),
-        #                   ("wen_in_0_reg_sel", 1),
-        #                   ("wen_in_1_reg_sel", 1)]
-        #     for name, v in config_mem:
-        #         configs = [self.get_config_data(name, v)] + configs
-        #     # this is SRAM content
-        #     content = instr['config'][1]['init']
-        #     for addr, data in enumerate(content):
-        #         if (not isinstance(data, int)) and len(data) == 2:
-        #             addr, data = data
-        #         feat_addr = addr // 256 + 1
-        #         addr = (addr % 256) >> 2
-        #         configs.append((addr, feat_addr, data))
-        #     print(configs)
-        #     return configs
+        if instr["mode"] == "sram":
+            if "init" in instr:
+                print("ROM")
+                config_mem = [("tile_en", 1),
+                            ("mode", 2),
+                            ("wen_in_0_reg_sel", 1),
+                            ("wen_in_1_reg_sel", 1)]
+                for name, v in config_mem:
+                    configs = [self.get_config_data(name, v)] + configs
+                # this is SRAM content
+                content = instr['init']
+                for addr, data in enumerate(content):
+                    if (not isinstance(data, int)) and len(data) == 2:
+                        addr, data = data
+                    feat_addr = addr // 256 + 1
+                    addr = (addr % 256) >> 2
+                    configs.append((addr, feat_addr, data))
+            else:
+                exit()
+                config_mem = [("tile_en", 1),
+                            ("mode", 2),
+                            ("wen_in_0_reg_sel", 1),
+                            ("wen_in_1_reg_sel", 1)]
+                for name, v in config_mem:
+                    configs = [self.get_config_data(name, v)] + configs
+        else:
+            config_mem = []
+            use_json = True
+            top_controller_node = instr['config']
+            config_mem = self.dut.get_static_bitstream_json(top_controller_node)
 
-        # # unified buffer buffer stuff
-        # if "is_ub" in instr and instr["is_ub"]:
-        #     depth = instr["range_0"]
-        #     instr["depth"] = depth
-        #     print("configure ub to have depth", depth)
-        # if "depth" in instr:
-            # need to download the csv and get configuration files
-        # hardcode the config bitstream depends on the apps
-        config_mem = []
-        use_json = True
-        top_controller_node = instr
-        config_mem = self.dut.get_static_bitstream_json(top_controller_node)
+            for name, v in config_mem:
+                configs += [self.get_config_data(name, v)]
+            if "init" in instr:
+                content = instr['init']
+                for addr, data in enumerate(content):
+                    if (not isinstance(data, int)) and len(data) == 2:
+                        addr, data = data
+                    feat_addr = addr // 256 + 1
+                    addr = (addr % 256) >> 2
+                    configs.append((addr, feat_addr, data))
+            # gate config signals
+            conf_names = ["wen_in_1_reg_sel"]
+            for conf_name in conf_names:
+                configs += [self.get_config_data(conf_name, 1)]
 
-        for name, v in config_mem:
-            configs += [self.get_config_data(name, v)]
-        # gate config signals
-        conf_names = ["wen_in_1_reg_sel"]
-        for conf_name in conf_names:
-            configs += [self.get_config_data(conf_name, 1)]
-        # else:
-        #     # for now config it as sram
-        #     config_mem = [("tile_en", 1),
-        #                     ("mode", 2),
-        #                     ("wen_in_0_reg_sel", 1),
-        #                     ("wen_in_1_reg_sel", 1)]
-        #     for name, v in config_mem:
-        #         configs = [self.get_config_data(name, v)] + configs
         print(configs)
         return configs
 
