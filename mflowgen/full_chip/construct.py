@@ -23,11 +23,12 @@ def sr_override_parms(parmdict):
 '''
   import os
   for e in os.environ:
-      if e[0:22]=="MFLOWGEN_PARM_OVERRIDE":
-        parm=e[23:99]
-        print(f'+++ FOUND MFLOWGEN PARAMETER OVERRIDE "{parm}={os.environ[e]}"')
-        print(f'BEFOR: parmdict["hold_target_slack"]={parmdict["hold_target_slack"]}')
-        parmdict[e]=os.environ[e]
+    # e.g. e="MFLOWGEN_PARM_OVERRIDE_hold_target_slack"
+    if e[0:22]=="MFLOWGEN_PARM_OVERRIDE":
+      parm=e[23:99];     # e.g. parm="hold_target_slack"
+      print(f'+++ FOUND MFLOWGEN PARAMETER OVERRIDE "{parm}={os.environ[e]}"')
+      print(f'BEFOR: parmdict["hold_target_slack"]={parmdict["hold_target_slack"]}')
+      parmdict[parm]=os.environ[e]
   print(f'AFTER: parmdict["hold_target_slack"]={parmdict["hold_target_slack"]}')
 
 
